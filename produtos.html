@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080808">
+  <meta name="description" content="Produtos Dekorar para pintura, acabamento, tratamento de paredes e efeitos decorativos.">
+  <title>Produtos — Dekorar Tintas & Acabamentos</title>
+  <link rel="icon" href="assets/logo-dekorar.png">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#catalogo">Ir para os produtos</a>
+  <header class="site-header scrolled">
+    <nav class="nav shell" aria-label="Navegação principal">
+      <a class="brand" href="index.html" aria-label="Dekorar — início"><img src="assets/logo-dekorar.png" width="610" height="150" alt="Dekorar Tintas e Acabamentos"></a>
+      <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button>
+      <div class="nav-links">
+        <a href="index.html">Início</a><a href="produtos.html" aria-current="page">Produtos</a><a href="index.html#lojas">Lojas</a>
+        <button class="nav-cta cart-button" type="button" data-open-cart aria-label="Abrir carrinho">Carrinho <span class="cart-count" data-cart-count>0</span></button>
+      </div>
+    </nav>
+  </header>
+  <main id="catalogo">
+    <section class="catalog-hero"><div class="shell">
+      <span class="eyebrow">Catálogo Dekorar</span>
+      <h1>Escolha pelo produto.<br><span class="accent">Sem distrações.</span></h1>
+      <p>Fotos reais dos itens apresentados pela Dekorar. Use os filtros para encontrar a categoria ideal e toque em um produto para adicionar ou consultar.</p>
+    </div></section>
+    <div class="shell catalog-layout">
+      <aside class="filters" id="filters" aria-label="Filtros de produtos">
+        <div class="filter-block">
+          <span class="filter-title">Categoria</span>
+          <div class="filter-options" data-category-filters></div>
+        </div>
+        <div class="filter-block">
+          <label class="filter-title" for="priceRange">Preço máximo</label>
+          <input id="priceRange" name="precoMaximo" type="range" min="50" max="500" step="10" value="500">
+          <div class="range-value"><span>R$ 50</span><strong data-price-label>R$ 500</strong></div>
+        </div>
+        <div class="filter-block">
+          <span class="filter-title">Disponibilidade de preço</span>
+          <div class="filter-options">
+            <label><input type="radio" name="priceStatus" value="all" checked> Todos</label>
+            <label><input type="radio" name="priceStatus" value="priced"> Com preço</label>
+            <label><input type="radio" name="priceStatus" value="quote"> Sob consulta</label>
+          </div>
+        </div>
+        <button class="btn btn-secondary full" type="button" data-clear-filters>Limpar filtros</button>
+      </aside>
+      <section class="catalog-main" aria-label="Lista de produtos">
+        <div class="catalog-toolbar">
+          <div class="search-wrap"><span aria-hidden="true">⌕</span><label class="visually-hidden" for="search">Buscar produto</label><input class="field" id="search" type="search" name="busca" placeholder="Busque por produto ou categoria…" autocomplete="off"></div>
+          <select id="sort" name="ordenacao" aria-label="Ordenar produtos"><option value="featured">Em destaque</option><option value="price-asc">Menor preço</option><option value="price-desc">Maior preço</option><option value="name">Nome A–Z</option></select>
+        </div>
+        <div class="catalog-meta"><span data-results-count aria-live="polite"></span><button class="btn btn-secondary mobile-filters" type="button" data-toggle-filters aria-controls="filters" aria-expanded="false">Filtros</button></div>
+        <div class="product-grid" data-product-grid></div>
+      </section>
+    </div>
+  </main>
+
+  <dialog class="cart-sheet" id="cartDialog" aria-labelledby="cartTitle">
+    <div class="dialog-inner">
+      <div class="dialog-header"><h2 id="cartTitle">Seu Carrinho</h2><button class="icon-button" type="button" data-close-cart aria-label="Fechar carrinho">×</button></div>
+      <div class="dialog-body" data-cart-lines></div>
+      <div class="dialog-footer"><div class="cart-total"><span>Subtotal</span><strong data-cart-total>R$ 0,00</strong></div><button class="btn btn-primary full" type="button" data-checkout>Ir para o checkout</button></div>
+    </div>
+  </dialog>
+
+  <dialog class="checkout-dialog" id="checkoutDialog" aria-labelledby="checkoutTitle">
+    <div class="dialog-header"><h2 id="checkoutTitle">Finalizar Pedido</h2><button class="icon-button" type="button" data-close-checkout aria-label="Fechar checkout">×</button></div>
+    <div data-checkout-content>
+      <form id="checkoutForm" class="checkout-grid">
+        <div class="checkout-form">
+          <div class="form-section"><h3>Seus Dados</h3><div class="form-grid">
+            <div class="field-group full-row"><label for="name">Nome completo</label><input class="field" id="name" name="name" autocomplete="name" required placeholder="Ex.: Maria Silva…"></div>
+            <div class="field-group"><label for="email">E-mail</label><input class="field" id="email" name="email" type="email" autocomplete="email" spellcheck="false" required placeholder="voce@exemplo.com…"></div>
+            <div class="field-group"><label for="phone">Telefone</label><input class="field" id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="(35) 99999-9999…"></div>
+            <div class="field-group"><label for="cpf">CPF</label><input class="field" id="cpf" name="cpf" inputmode="numeric" autocomplete="off" required placeholder="000.000.000-00…"></div>
+          </div></div>
+          <div class="form-section"><h3>Entrega</h3><div class="choice-grid">
+            <label class="choice"><input type="radio" name="delivery" value="correios" checked> Correios — todo o Brasil</label>
+            <label class="choice"><input type="radio" name="delivery" value="pickup"> Retirada na loja — grátis</label>
+          </div><div class="form-grid" data-address-fields style="margin-top:14px">
+            <div class="field-group"><label for="cep">CEP</label><input class="field" id="cep" name="cep" inputmode="numeric" autocomplete="postal-code" required placeholder="00000-000…"></div>
+            <div class="field-group"><label for="state">Estado</label><input class="field" id="state" name="state" autocomplete="address-level1" required placeholder="MG…"></div>
+            <div class="field-group full-row"><label for="address">Endereço</label><input class="field" id="address" name="address" autocomplete="street-address" required placeholder="Rua, avenida…"></div>
+            <div class="field-group"><label for="number">Número</label><input class="field" id="number" name="number" inputmode="numeric" autocomplete="off" required placeholder="123…"></div>
+            <div class="field-group"><label for="complement">Complemento</label><input class="field" id="complement" name="complement" autocomplete="address-line2" placeholder="Apto., bloco…"></div>
+            <div class="field-group"><label for="district">Bairro</label><input class="field" id="district" name="district" autocomplete="address-level3" required placeholder="Seu bairro…"></div>
+            <div class="field-group"><label for="city">Cidade</label><input class="field" id="city" name="city" autocomplete="address-level2" required placeholder="Sua cidade…"></div>
+          </div></div>
+          <div class="form-section"><h3>Pagamento</h3><div class="choice-grid">
+            <label class="choice"><input type="radio" name="payment" value="pix" checked> Pix</label>
+            <label class="choice"><input type="radio" name="payment" value="credit"> Cartão de crédito</label>
+            <label class="choice"><input type="radio" name="payment" value="debit"> Cartão de débito</label>
+          </div><div class="form-grid" data-card-fields hidden style="margin-top:14px">
+            <div class="field-group full-row"><label for="cardName">Nome no cartão</label><input class="field" id="cardName" name="cardName" autocomplete="cc-name" placeholder="Como está no cartão…"></div>
+            <div class="field-group full-row"><label for="cardNumber">Número do cartão</label><input class="field" id="cardNumber" name="cardNumber" inputmode="numeric" autocomplete="cc-number" placeholder="0000 0000 0000 0000…"></div>
+            <div class="field-group"><label for="expiry">Validade</label><input class="field" id="expiry" name="expiry" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/AA…"></div>
+            <div class="field-group"><label for="cvv">CVV</label><input class="field" id="cvv" name="cvv" inputmode="numeric" autocomplete="cc-csc" placeholder="123…"></div>
+          </div></div>
+        </div>
+        <aside class="checkout-summary"><h3>Resumo do Pedido</h3><div data-checkout-items></div><div class="summary-lines"><div class="summary-line"><span>Produtos</span><strong data-summary-subtotal></strong></div><div class="summary-line"><span>Entrega</span><strong data-summary-shipping></strong></div><div class="summary-line total"><span>Total</span><strong data-summary-total></strong></div></div><p class="checkout-note">Checkout demonstrativo. O pedido será confirmado pela equipe da Dekorar no WhatsApp; nenhum pagamento é processado nesta página.</p><button class="btn btn-primary full" type="submit" style="margin-top:16px">Revisar e Enviar Pedido</button></aside>
+      </form>
+    </div>
+  </dialog>
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+  <footer class="site-footer"><div class="shell"><div class="footer-bottom"><span>© <span data-year></span> Dekorar Tintas e Acabamentos.</span><span><a href="gerencia.html">Área da Equipe</a> · Preços sujeitos a alteração e disponibilidade.</span></div></div></footer>
+  <script src="assets/site.js"></script><script src="assets/products.js"></script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080808">
+  <meta name="description" content="Área interna da equipe Dekorar para controle de estoque, pedidos e entregas.">
+  <title>Gerência — Dekorar Tintas & Acabamentos</title>
+  <link rel="icon" href="assets/logo-dekorar.png">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body class="admin-page">
+  <a class="skip-link" href="#painel">Ir para o painel</a>
+  <header class="site-header">
+    <nav class="nav shell" aria-label="Navegação da área interna">
+      <a class="brand" href="gerencia.html" aria-label="Dekorar — área da equipe"><img src="assets/logo-dekorar.png" width="610" height="150" alt="Dekorar Tintas e Acabamentos"></a>
+      <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false">☰</button>
+      <div class="nav-links">
+        <a href="index.html">Ver Site</a>
+        <a href="produtos.html">Catálogo</a>
+        <a href="gerencia.html" aria-current="page">Gerência</a>
+        <span class="admin-user"><span aria-hidden="true">D</span> Equipe Dekorar</span>
+      </div>
+    </nav>
+  </header>
+
+  <main id="painel" class="admin-main">
+    <div class="shell admin-layout">
+      <aside class="admin-sidebar" aria-label="Seções da gerência">
+        <div class="admin-sidebar-title"><span>Área Interna</span><strong>Gerência</strong></div>
+        <nav class="admin-nav">
+          <button class="active" type="button" data-admin-tab="overview"><span aria-hidden="true">◫</span> Visão Geral</button>
+          <button type="button" data-admin-tab="inventory"><span aria-hidden="true">▦</span> Estoque <span class="nav-badge" data-low-count>0</span></button>
+          <button type="button" data-admin-tab="orders"><span aria-hidden="true">□</span> Pedidos <span class="nav-badge" data-open-count>0</span></button>
+          <button type="button" data-admin-tab="shipping"><span aria-hidden="true">⌁</span> Envios <span class="nav-badge" data-shipping-count>0</span></button>
+        </nav>
+        <div class="admin-local-note"><span aria-hidden="true">●</span><div><strong>Modo Local</strong><small>Dados salvos neste navegador.</small></div></div>
+      </aside>
+
+      <div class="admin-content">
+        <header class="admin-topbar">
+          <div><span class="eyebrow">Operação Dekorar</span><h1 data-view-title>Visão Geral</h1></div>
+          <div class="admin-date"><span data-admin-date></span><strong data-admin-time></strong></div>
+        </header>
+
+        <section class="admin-view active" data-admin-view="overview" aria-labelledby="overview-title">
+          <h2 class="visually-hidden" id="overview-title">Visão Geral</h2>
+          <div class="metric-grid">
+            <article class="metric-card"><span>Produtos Cadastrados</span><strong data-metric-products>0</strong><small>itens monitorados</small></article>
+            <article class="metric-card warning"><span>Estoque Baixo</span><strong data-metric-low>0</strong><small>precisam de reposição</small></article>
+            <article class="metric-card orange"><span>Pedidos Abertos</span><strong data-metric-orders>0</strong><small>aguardando conclusão</small></article>
+            <article class="metric-card green"><span>Em Transporte</span><strong data-metric-shipping>0</strong><small>entregas em andamento</small></article>
+          </div>
+
+          <div class="admin-overview-grid">
+            <section class="admin-panel"><div class="panel-heading"><div><span>Prioridade</span><h2>Reposição de Estoque</h2></div><button class="text-action" type="button" data-go-view="inventory">Ver Estoque</button></div><div class="stock-alerts" data-stock-alerts></div></section>
+            <section class="admin-panel"><div class="panel-heading"><div><span>Movimentação</span><h2>Pedidos Recentes</h2></div><button class="text-action" type="button" data-go-view="orders">Ver Pedidos</button></div><div class="recent-orders" data-recent-orders></div></section>
+          </div>
+        </section>
+
+        <section class="admin-view" data-admin-view="inventory" aria-labelledby="inventory-title">
+          <div class="view-heading"><div><span>Controle por Loja</span><h2 id="inventory-title">Estoque</h2><p>Atualize as quantidades disponíveis em Lavras e Três Corações.</p></div><button class="btn btn-primary" type="button" data-open-product>Adicionar Produto</button></div>
+          <div class="admin-toolbar"><label class="admin-search"><span aria-hidden="true">⌕</span><span class="visually-hidden">Buscar no estoque</span><input class="field" name="buscaEstoque" type="search" placeholder="Buscar produto ou categoria…" autocomplete="off" data-stock-search></label><select name="filtroEstoque" aria-label="Filtrar estoque" data-stock-filter><option value="all">Todos os estoques</option><option value="low">Estoque baixo</option><option value="out">Sem estoque</option><option value="ok">Estoque regular</option></select></div>
+          <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Produto</th><th>Lavras</th><th>Três Corações</th><th>Mínimo</th><th>Total</th><th>Situação</th><th><span class="visually-hidden">Ações</span></th></tr></thead><tbody data-inventory-rows></tbody></table></div>
+        </section>
+
+        <section class="admin-view" data-admin-view="orders" aria-labelledby="orders-title">
+          <div class="view-heading"><div><span>Vendas</span><h2 id="orders-title">Pedidos</h2><p>Acompanhe o pedido do recebimento até a conclusão.</p></div></div>
+          <div class="admin-toolbar"><label class="admin-search"><span aria-hidden="true">⌕</span><span class="visually-hidden">Buscar pedidos</span><input class="field" name="buscaPedidos" type="search" placeholder="Buscar pedido ou cliente…" autocomplete="off" data-order-search></label><select name="filtroPedidos" aria-label="Filtrar pedidos por status" data-order-filter><option value="all">Todos os status</option><option value="Novo">Novos</option><option value="Separação">Em Separação</option><option value="Pronto">Prontos</option><option value="Enviado">Enviados</option><option value="Entregue">Entregues</option><option value="Cancelado">Cancelados</option></select></div>
+          <div class="admin-table-wrap"><table class="admin-table orders-table"><thead><tr><th>Pedido</th><th>Cliente</th><th>Data</th><th>Entrega</th><th>Total</th><th>Status</th><th><span class="visually-hidden">Ações</span></th></tr></thead><tbody data-order-rows></tbody></table></div>
+        </section>
+
+        <section class="admin-view" data-admin-view="shipping" aria-labelledby="shipping-title">
+          <div class="view-heading"><div><span>Logística</span><h2 id="shipping-title">Envios & Retiradas</h2><p>Registre transportadora, previsão e código de rastreio.</p></div></div>
+          <div class="shipping-board" data-shipping-board></div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <dialog class="admin-dialog" id="orderDialog" aria-labelledby="orderDialogTitle">
+    <div class="dialog-header"><h2 id="orderDialogTitle">Gerenciar Pedido</h2><button class="icon-button" type="button" data-close-order aria-label="Fechar pedido">×</button></div>
+    <form class="admin-dialog-body" data-order-form>
+      <input type="hidden" name="orderId">
+      <div class="order-detail-summary" data-order-summary></div>
+      <div class="form-grid">
+        <div class="field-group"><label for="orderStatus">Status</label><select id="orderStatus" name="status"><option>Novo</option><option>Separação</option><option>Pronto</option><option>Enviado</option><option>Entregue</option><option>Cancelado</option></select></div>
+        <div class="field-group"><label for="orderCarrier">Transportadora</label><select id="orderCarrier" name="carrier"><option value="">Não definida</option><option>Correios</option><option>Entrega Dekorar</option><option>Retirada na Loja</option><option>Transportadora Parceira</option></select></div>
+        <div class="field-group"><label for="orderTracking">Código de Rastreio</label><input class="field" id="orderTracking" name="tracking" autocomplete="off" placeholder="Ex.: BR123456789…"></div>
+        <div class="field-group"><label for="orderEstimate">Previsão</label><input class="field" id="orderEstimate" name="estimate" type="date" autocomplete="off"></div>
+        <div class="field-group full-row"><label for="orderNotes">Observações</label><textarea class="field admin-textarea" id="orderNotes" name="notes" placeholder="Orientações para separação ou entrega…"></textarea></div>
+      </div>
+      <div class="admin-dialog-actions"><button class="btn btn-secondary" type="button" data-close-order>Cancelar</button><button class="btn btn-primary" type="submit">Salvar Pedido</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="admin-dialog" id="productDialog" aria-labelledby="productDialogTitle">
+    <div class="dialog-header"><h2 id="productDialogTitle">Adicionar Produto</h2><button class="icon-button" type="button" data-close-product aria-label="Fechar cadastro">×</button></div>
+    <form class="admin-dialog-body" data-product-form>
+      <div class="form-grid">
+        <div class="field-group full-row"><label for="productName">Nome do Produto</label><input class="field" id="productName" name="name" required autocomplete="off" placeholder="Ex.: Tinta Acrílica 18 L…"></div>
+        <div class="field-group"><label for="productCategory">Categoria</label><select id="productCategory" name="category"><option>Tintas</option><option>Preparação</option><option>Tratamento</option><option>Revestimentos</option><option>Decorativos</option><option>Ferramentas</option></select></div>
+        <div class="field-group"><label for="productMinimum">Estoque Mínimo</label><input class="field" id="productMinimum" name="minimum" type="number" min="0" value="5" required></div>
+        <div class="field-group"><label for="productLavras">Quantidade em Lavras</label><input class="field" id="productLavras" name="lavras" type="number" min="0" value="0" required></div>
+        <div class="field-group"><label for="productTres">Quantidade em Três Corações</label><input class="field" id="productTres" name="tres" type="number" min="0" value="0" required></div>
+      </div>
+      <div class="admin-dialog-actions"><button class="btn btn-secondary" type="button" data-close-product>Cancelar</button><button class="btn btn-primary" type="submit">Cadastrar Produto</button></div>
+    </form>
+  </dialog>
+
+  <div class="toast" role="status" aria-live="polite" data-admin-toast></div>
+  <script src="assets/site.js"></script>
+  <script src="assets/admin.js"></script>
+</body>
+</html>
