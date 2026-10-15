@@ -1,11 +1,11 @@
 const PRODUCTS = [
-  {id:'suvinil-rende-20l',name:'Suvinil Rende e Cobre Muito 20 L',category:'Tintas',price:319.90,image:'assets/product-suvinil.webp',description:'Tinta interior e exterior, na cor Neve, com ótimo rendimento e cobertura.'},
-  {id:'coral-rende-20l',name:'Coral Rende Muito 20 L',category:'Tintas',price:329.90,image:'assets/product-coral-rende.webp',description:'Tinta concentrada Coral, na cor Gelo, para alto rendimento na pintura.'},
-  {id:'massa-coral-25kg',name:'Massa Corrida Coral 25 kg',category:'Preparação',price:79.90,image:'assets/product-massa-coral.webp',description:'Massa corrida para nivelar e preparar superfícies internas antes da pintura.'},
-  {id:'massa-dkorar',name:'Massa Corrida Dkorar',category:'Preparação',price:null,image:'assets/product-dkorar.webp',description:'Produto da linha própria Dkorar para obras de pequeno, médio e grande porte.'},
-  {id:'mactra-seca-parede',name:'Coral Mactra Seca Parede',category:'Tratamento',price:null,image:'assets/product-mactra.webp',description:'Linha de tratamento para umidade, mofo, bolhas, salitre e reboco deteriorado.'},
-  {id:'revestliso-ceramfix',name:'Revestliso Ceramfix 15 kg',category:'Revestimentos',price:null,image:'assets/product-revestliso.webp',description:'Revestimento colorido para camada fina e textura, em áreas internas ou externas.'},
-  {id:'efeito-velvet',name:'Efeito Velvet Coral 2,1 L',category:'Decorativos',price:null,image:'assets/product-velvet.webp',description:'Acabamento Velvet ou Nuage para criar paredes com efeito sofisticado.'}
+  {id:'suvinil-rende-20l',name:'Suvinil Rende e Cobre Muito 20 L',category:'Tintas',price:319.90,image:'assets/product-suvinil.webp',description:'Tinta para áreas internas e externas, na cor Neve, com proposta de bom rendimento e cobertura.',package:'20 litros',indication:'Pintura de paredes internas e externas'},
+  {id:'coral-rende-20l',name:'Coral Rende Muito 20 L',category:'Tintas',price:329.90,image:'assets/product-coral-rende.webp',description:'Tinta concentrada Coral, na cor Gelo, indicada para projetos que buscam rendimento na pintura.',package:'20 litros',indication:'Pintura de paredes internas'},
+  {id:'massa-coral-25kg',name:'Massa Corrida Coral 25 kg',category:'Preparação',price:79.90,image:'assets/product-massa-coral.webp',description:'Massa corrida para nivelar e preparar superfícies internas antes da aplicação da tinta.',package:'25 kg',indication:'Preparação de paredes internas'},
+  {id:'massa-dkorar',name:'Massa Corrida Dkorar',category:'Preparação',price:null,image:'assets/product-dkorar.webp',description:'Produto da linha própria Dkorar para preparação de obras de pequeno, médio e grande porte.',package:'Consulte as opções',indication:'Nivelamento e preparação de paredes'},
+  {id:'mactra-seca-parede',name:'Coral Mactra Seca Parede',category:'Tratamento',price:null,image:'assets/product-mactra.webp',description:'Linha de tratamento para paredes com sinais de umidade, mofo, bolhas, salitre e reboco deteriorado.',package:'Kit de tratamento',indication:'Tratamento de paredes com umidade'},
+  {id:'revestliso-ceramfix',name:'Revestliso Ceramfix 15 kg',category:'Revestimentos',price:null,image:'assets/product-revestliso.webp',description:'Revestimento colorido de camada fina para acabamento e textura em áreas internas ou externas.',package:'15 kg',indication:'Revestimento e textura de paredes'},
+  {id:'efeito-velvet',name:'Efeito Velvet Coral 2,1 L',category:'Decorativos',price:null,image:'assets/product-velvet.webp',description:'Acabamento decorativo Velvet ou Nuage para criar paredes com efeito visual sofisticado.',package:'2,1 litros',indication:'Efeito decorativo para paredes'}
 ];
 const money = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
 const state = { category:'Todos', maxPrice:500, priceStatus:'all', query:'', sort:'featured' };
@@ -19,7 +19,10 @@ const search = document.querySelector('#search');
 const sort = document.querySelector('#sort');
 const cartDialog = document.querySelector('#cartDialog');
 const checkoutDialog = document.querySelector('#checkoutDialog');
+const productDialog = document.querySelector('#productDialog');
 const toast = document.querySelector('[data-toast]');
+let activeProduct = null;
+let activeQuantity = 1;
 
 function readUrl() {
   const params = new URLSearchParams(location.search);
@@ -50,10 +53,12 @@ function renderCategories() {
   categoryRoot.innerHTML=categories.map((category,index)=>`<label><input type="radio" name="category" value="${category}" ${state.category===category?'checked':''}> ${category}</label>`).join('');
   categoryRoot.addEventListener('change',event=>{ state.category=event.target.value; syncUrl(); renderProducts(); });
 }
-function productCard(product,index) {
-  const image=`<img src="${product.image}" width="1024" height="1024" alt="${product.name}" loading="eager">`;
-  if(product.price===null) return `<a class="product-card product-card-image" href="https://wa.me/5535984336650?text=${encodeURIComponent('Olá, quero consultar '+product.name+'.')}" target="_blank" rel="noreferrer" aria-label="Consultar ${product.name} no WhatsApp">${image}</a>`;
-  return `<button class="product-card product-card-image" type="button" data-add="${product.id}" aria-label="Adicionar ${product.name} ao carrinho">${image}</button>`;
+function productCard(product) {
+  const price=product.price===null?'Sob consulta':money.format(product.price);
+  return `<button class="product-card" type="button" data-product="${product.id}" aria-label="Ver detalhes de ${product.name}">
+    <span class="product-card-image"><img src="${product.image}" width="1024" height="1024" alt="${product.name}" loading="eager"></span>
+    <span class="product-card-body"><span class="product-category">${product.category}</span><strong class="product-name">${product.name}</strong><span class="product-description">${product.description}</span><span class="product-card-footer"><strong>${price}</strong><span>Ver detalhes</span></span></span>
+  </button>`;
 }
 function renderProducts() {
   const normalized=state.query.trim().toLocaleLowerCase('pt-BR');
@@ -83,7 +88,46 @@ function updateCart() {
   document.querySelector('[data-checkout]').disabled=!items.length;
 }
 function showToast(message) { toast.textContent=message; toast.classList.add('show'); clearTimeout(showToast.timer); showToast.timer=setTimeout(()=>toast.classList.remove('show'),2400); }
-grid.addEventListener('click',event=>{ const button=event.target.closest('[data-add]'); if(!button)return; cart[button.dataset.add]=(cart[button.dataset.add]||0)+1; saveCart(); showToast('Produto adicionado ao carrinho.'); });
+function setProductQuantity(value) {
+  activeQuantity=Math.max(1,Math.min(99,Number(value)||1));
+  document.querySelector('[data-product-quantity]').value=String(activeQuantity);
+  document.querySelector('[data-product-quantity-label]').textContent=String(activeQuantity);
+  const action=document.querySelector('[data-product-action]');
+  if(activeProduct?.price!==null) action.textContent=`Adicionar ${activeQuantity} ao carrinho`;
+  else if(activeProduct) action.href=`https://wa.me/5535984336650?text=${encodeURIComponent(`Olá, quero consultar ${activeQuantity} unidade(s) de ${activeProduct.name}.`)}`;
+}
+function openProduct(product) {
+  activeProduct=product; activeQuantity=1;
+  document.querySelector('[data-product-image]').src=product.image;
+  document.querySelector('[data-product-image]').alt=product.name;
+  document.querySelector('[data-product-category]').textContent=product.category;
+  document.querySelector('[data-product-name]').textContent=product.name;
+  document.querySelector('[data-product-description]').textContent=product.description;
+  document.querySelector('[data-product-package]').textContent=product.package;
+  document.querySelector('[data-product-indication]').textContent=product.indication;
+  document.querySelector('[data-product-price]').textContent=product.price===null?'Preço sob consulta':money.format(product.price);
+  document.querySelector('[data-product-price-note]').textContent=product.price===null?'Consulte disponibilidade e valor atualizado com a equipe.':'Preço unitário. Confirme estoque antes de finalizar.';
+  const action=document.querySelector('[data-product-action]');
+  if(product.price===null){
+    action.textContent='Consultar no WhatsApp';
+    action.href=`https://wa.me/5535984336650?text=${encodeURIComponent(`Olá, quero consultar ${activeQuantity} unidade(s) de ${product.name}.`)}`;
+    action.target='_blank'; action.rel='noreferrer';
+  } else {
+    action.textContent='Adicionar 1 ao carrinho'; action.href='#'; action.removeAttribute('target'); action.removeAttribute('rel');
+  }
+  setProductQuantity(1);
+  productDialog.showModal();
+}
+grid.addEventListener('click',event=>{ const button=event.target.closest('[data-product]'); if(!button)return; const product=PRODUCTS.find(item=>item.id===button.dataset.product); if(product) openProduct(product); });
+document.querySelector('[data-close-product]').addEventListener('click',()=>productDialog.close());
+document.querySelector('[data-product-quantity-controls]').addEventListener('click',event=>{ const button=event.target.closest('[data-product-quantity-delta]'); if(!button)return; setProductQuantity(activeQuantity+Number(button.dataset.productQuantityDelta)); });
+document.querySelector('[data-product-quantity]').addEventListener('input',event=>setProductQuantity(event.target.value));
+document.querySelector('[data-product-action]').addEventListener('click',event=>{
+  if(!activeProduct)return;
+  if(activeProduct.price===null){ productDialog.close(); return; }
+  event.preventDefault(); cart[activeProduct.id]=(cart[activeProduct.id]||0)+activeQuantity; saveCart(); productDialog.close(); showToast(`${activeQuantity} produto(s) adicionado(s) ao carrinho.`);
+});
+productDialog.addEventListener('click',event=>{ if(event.target===productDialog) productDialog.close(); });
 document.querySelector('[data-cart-lines]').addEventListener('click',event=>{
   const qty=event.target.closest('[data-qty]'); const remove=event.target.closest('[data-remove]');
   if(qty){ const id=qty.dataset.qty; cart[id]=(cart[id]||0)+Number(qty.dataset.delta); if(cart[id]<=0) delete cart[id]; saveCart(); }

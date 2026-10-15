@@ -7,7 +7,7 @@
   <meta name="description" content="Produtos Dekorar para pintura, acabamento, tratamento de paredes e efeitos decorativos.">
   <title>Produtos — Dekorar Tintas & Acabamentos</title>
   <link rel="icon" href="assets/logo-dekorar.png">
-  <link rel="stylesheet" href="assets/styles.css?v=3">
+  <link rel="stylesheet" href="assets/styles.css?v=4">
 </head>
 <body>
   <a class="skip-link" href="#catalogo">Ir para os produtos</a>
@@ -25,7 +25,7 @@
     <section class="catalog-hero"><div class="shell">
       <span class="eyebrow">Catálogo Dekorar</span>
       <h1>Escolha pelo produto.<br><span class="accent">Sem distrações.</span></h1>
-      <p>Fotos reais dos itens apresentados pela Dekorar. Use os filtros para encontrar a categoria ideal e toque em um produto para adicionar ou consultar.</p>
+      <p>Consulte preços, descrições e detalhes de cada item. Selecione a quantidade desejada e adicione ao carrinho ou fale com a equipe.</p>
     </div></section>
     <div class="shell catalog-layout">
       <aside class="filters" id="filters" aria-label="Filtros de produtos">
@@ -58,6 +58,29 @@
       </section>
     </div>
   </main>
+
+  <dialog class="product-dialog" id="productDialog" aria-labelledby="productDialogTitle">
+    <div class="product-dialog-shell">
+      <button class="icon-button product-dialog-close" type="button" data-close-product aria-label="Fechar detalhes do produto">×</button>
+      <div class="product-detail-grid">
+        <div class="product-detail-media"><img data-product-image src="assets/product-suvinil.webp" width="1024" height="1024" alt="Suvinil Rende e Cobre Muito 20 L"></div>
+        <div class="product-detail-copy">
+          <span class="product-category" data-product-category></span>
+          <h2 id="productDialogTitle" data-product-name></h2>
+          <p data-product-description></p>
+          <dl class="product-specs">
+            <div><dt>Embalagem</dt><dd data-product-package></dd></div>
+            <div><dt>Indicação</dt><dd data-product-indication></dd></div>
+          </dl>
+          <div class="product-detail-price"><strong data-product-price></strong><span data-product-price-note></span></div>
+          <div class="product-buy-row">
+            <div><span class="quantity-title">Quantidade</span><div class="quantity-selector" data-product-quantity-controls><button type="button" data-product-quantity-delta="-1" aria-label="Diminuir quantidade">−</button><input data-product-quantity type="number" min="1" max="99" value="1" inputmode="numeric" aria-label="Quantidade desejada"><button type="button" data-product-quantity-delta="1" aria-label="Aumentar quantidade">+</button></div><span class="quantity-caption"><span data-product-quantity-label>1</span> unidade(s)</span></div>
+            <a class="btn btn-primary product-detail-action" data-product-action href="#">Adicionar ao carrinho</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
 
   <dialog class="cart-sheet" id="cartDialog" aria-labelledby="cartTitle">
     <div class="dialog-inner">
@@ -107,6 +130,6 @@
   </dialog>
   <div class="toast" role="status" aria-live="polite" data-toast></div>
   <footer class="site-footer"><div class="shell"><div class="footer-bottom"><span>© <span data-year></span> Dekorar Tintas e Acabamentos.</span><span><a href="gerencia.html">Área da Equipe</a> · Preços sujeitos a alteração e disponibilidade.</span></div></div></footer>
-  <script src="assets/site.js"></script><script src="assets/products.js"></script>
+  <script src="assets/site.js"></script><script src="assets/products.js?v=2"></script>
 </body>
 </html>
