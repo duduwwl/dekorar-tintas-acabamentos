@@ -249,7 +249,7 @@ dialog::backdrop { background: rgba(0,0,0,.76); backdrop-filter: blur(6px); }
 .reveal { opacity: 1; transform: translate3d(0,0,0); transition: opacity .65s ease,transform .65s cubic-bezier(.2,.7,.2,1); }
 .reveal.is-visible { opacity: 1; transform: translate3d(0,0,0); }
 
-.text-motion-ready .text-effect-word { display: inline-block; margin-inline-end: .12em; white-space: nowrap; }
+.text-motion-ready .text-effect-word { display: inline-block; white-space: nowrap; }
 .text-motion-ready .text-effect-char { display: inline-block; opacity: 0; filter: blur(10px) brightness(0); transform: translateY(0); }
 .text-motion-ready .text-effect-word.is-visible .text-effect-char { animation: textEffectBlurSlide .4s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--char-index,0) * 10ms); }
 @keyframes textEffectBlurSlide {
