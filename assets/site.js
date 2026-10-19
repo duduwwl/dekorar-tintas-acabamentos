@@ -16,7 +16,7 @@ if (!reducedMotion && 'IntersectionObserver' in window) {
 } else document.querySelectorAll('.reveal').forEach(element => element.classList.add('is-visible'));
 
 if (!reducedMotion && 'IntersectionObserver' in window) {
-  const ignoredText = 'script,style,noscript,svg,[aria-hidden="true"],.visually-hidden,.text-effect-word';
+  const ignoredText = 'script,style,noscript,svg,select,textarea,[contenteditable="true"],[aria-hidden="true"],.visually-hidden,.text-effect-word';
   const wordObserver = new IntersectionObserver(entries => entries.forEach(entry => {
     if (entry.isIntersecting) {
       entry.target.classList.add('is-visible');
@@ -28,6 +28,7 @@ if (!reducedMotion && 'IntersectionObserver' in window) {
     const value = textNode.nodeValue;
     if (!value || !/[\p{L}\p{N}]/u.test(value) || textNode.parentElement?.closest(ignoredText)) return;
     const fragment = document.createDocumentFragment();
+    let wordIndex = 0;
     for (const part of value.split(/(\s+)/u)) {
       if (!part) continue;
       if (/^\s+$/u.test(part)) {
@@ -36,13 +37,8 @@ if (!reducedMotion && 'IntersectionObserver' in window) {
       }
       const word = document.createElement('span');
       word.className = 'text-effect-word';
-      Array.from(part).forEach((character,index) => {
-        const letter = document.createElement('span');
-        letter.className = 'text-effect-char';
-        letter.style.setProperty('--char-index', index);
-        letter.textContent = character;
-        word.append(letter);
-      });
+      word.style.setProperty('--word-index', Math.min(wordIndex++, 15));
+      word.textContent = part;
       fragment.append(word);
     }
     textNode.replaceWith(fragment);

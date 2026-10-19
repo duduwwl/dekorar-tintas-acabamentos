@@ -249,12 +249,12 @@ dialog::backdrop { background: rgba(0,0,0,.76); backdrop-filter: blur(6px); }
 .reveal { opacity: 1; transform: translate3d(0,0,0); transition: opacity .65s ease,transform .65s cubic-bezier(.2,.7,.2,1); }
 .reveal.is-visible { opacity: 1; transform: translate3d(0,0,0); }
 
-.text-motion-ready .text-effect-word { display: inline-block; white-space: nowrap; }
-.text-motion-ready .text-effect-char { display: inline-block; opacity: 0; filter: blur(10px) brightness(0); transform: translateY(0); }
-.text-motion-ready .text-effect-word.is-visible .text-effect-char { animation: textEffectBlurSlide .4s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--char-index,0) * 10ms); }
-@keyframes textEffectBlurSlide {
-  from { opacity: 0; filter: blur(10px) brightness(0); transform: translateY(0); }
-  to { opacity: 1; filter: blur(0) brightness(1); transform: translateY(0); }
+.text-motion-ready .text-effect-word { display: inline-block; white-space: nowrap; opacity: 0; transform: translateY(20px); }
+.text-motion-ready .text-effect-word.is-visible { animation: textEffectSlide .3s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--word-index,0) * 50ms); }
+:is(.btn,.nav-cta,.text-link,.eyebrow) > .text-effect-word + .text-effect-word { margin-inline-start: .25em; }
+@keyframes textEffectSlide {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 980px) {
@@ -349,7 +349,7 @@ dialog::backdrop { background: rgba(0,0,0,.76); backdrop-filter: blur(6px); }
   html { scroll-behavior: auto; }
   *,*::before,*::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .hero-visual,.reveal { opacity: 1; transform: none; }
-  .text-motion-ready .text-effect-char { opacity: 1; filter: none; }
+  .text-motion-ready .text-effect-word { opacity: 1; transform: none; animation: none; }
 }
 
 /* Management area */
