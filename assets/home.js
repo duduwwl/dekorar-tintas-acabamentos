@@ -103,24 +103,6 @@
     slider.classList.add('is-running');
   });
 
-  /* ---------- Motion Primitives: Magnetic ---------- */
-  if (canMove && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    $$('[data-magnetic]').forEach(btn => {
-      const inner = btn.firstElementChild;
-      btn.addEventListener('pointermove', e => {
-        const r = btn.getBoundingClientRect();
-        const x = (e.clientX - r.left - r.width / 2) * 0.18;
-        const y = (e.clientY - r.top - r.height / 2) * 0.28;
-        M.animate(btn, { transform: `translate(${x}px, ${y}px)` }, { type: 'spring', stiffness: 260, damping: 18 });
-        if (inner) M.animate(inner, { transform: `translate(${x * 0.4}px, ${y * 0.4}px)` }, { type: 'spring', stiffness: 260, damping: 18 });
-      });
-      btn.addEventListener('pointerleave', () => {
-        M.animate(btn, { transform: 'translate(0px, 0px)' }, { type: 'spring', stiffness: 200, damping: 16 });
-        if (inner) M.animate(inner, { transform: 'translate(0px, 0px)' }, { type: 'spring', stiffness: 200, damping: 16 });
-      });
-    });
-  }
-
   /* ---------- Abas com fundo deslizante ---------- */
   const moveBg = (group, btn) => {
     const bg = $('.tabs-bg', group);
@@ -159,13 +141,7 @@
     $$('[data-tabs], [data-filter]').forEach(g => moveBg(g, $('[aria-selected="true"], [aria-pressed="true"]', g)));
   });
 
-  /* ---------- Orçamento (estado) ---------- */
-  const KEY = 'dekorar-orcamento';
-  let cart = new Map();
-  try { cart = new Map(Object.entries(JSON.parse(localStorage.getItem(KEY) || '{}')).filter(([id]) => byId.has(id))); } catch { cart = new Map(); }
-  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(Object.fromEntries(cart))); } catch { /* sem armazenamento */ } };
-  const count = () => [...cart.values()].reduce((a, b) => a + b, 0);
-
+  /* ---------- Aviso curto ---------- */
   const toast = $('[data-toast]');
   let toastTimer;
   const showToast = msg => {
@@ -176,174 +152,42 @@
     toastTimer = setTimeout(() => toast.classList.remove('is-on'), 3200);
   };
 
-  const island = $('[data-island]');
-  const islandCount = $('[data-island-count]');
-  const islandLabel = $('[data-island-label]');
-  const pedido = $('#pedido');
-  let pedidoVisible = false;
-  if (island) {
-    island.hidden = false;
-    island.classList.add('is-hidden');
-    if ('IntersectionObserver' in window && pedido) {
-      new IntersectionObserver(([e]) => { pedidoVisible = e.isIntersecting; renderIsland(); }, { threshold: 0.15 }).observe(pedido);
-    }
-  }
-  function renderIsland() {
-    if (!island) return;
-    const n = count();
-    islandCount.textContent = String(n);
-    islandLabel.textContent = n === 1 ? 'item no orçamento' : 'itens no orçamento';
-    island.classList.toggle('is-hidden', n === 0 || pedidoVisible);
-    island.setAttribute('aria-hidden', String(n === 0 || pedidoVisible));
-    island.tabIndex = n === 0 || pedidoVisible ? -1 : 0;
-  }
-
-  const addLabel = id => (cart.has(id) ? 'Adicionado' : 'Adicionar ao orçamento');
-  const syncButtons = () => {
-    $$('[data-add]').forEach(b => {
-      const on = cart.has(b.dataset.add);
-      b.setAttribute('aria-pressed', String(on));
-      b.textContent = b.classList.contains('add-short') ? (on ? 'Adicionado' : 'Adicionar') : addLabel(b.dataset.add);
-    });
-  };
-  const add = (id, silent) => {
-    const p = byId.get(id);
-    if (!p) return;
-    cart.set(id, (cart.get(id) || 0) + (cart.has(id) ? 0 : 1));
-    save(); renderCart(); syncButtons(); renderIsland();
-    if (!silent) showToast(`${p.name} está no orçamento`);
-  };
-  const remove = id => { cart.delete(id); save(); renderCart(); syncButtons(); renderIsland(); };
-  document.addEventListener('click', e => {
-    const b = e.target.closest('[data-add]');
-    if (!b) return;
-    const id = b.dataset.add;
-    if (cart.has(id)) remove(id); else add(id);
-  });
-
-  /* ---------- Render: linha Dkorar, etapas e prateleira ---------- */
-  const isPack = p => /pack-|product-/.test(p.image);
+  /* ---------- Produtos: tudo leva para a loja online (produtos.html) ---------- */
+  const money = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+  const shopUrl = id => `produtos.html?produto=${encodeURIComponent(id)}`;
   $$('[data-linha]').forEach(panel => {
     const items = panel.dataset.linha.split(' ').map(id => byId.get(id)).filter(Boolean);
     panel.innerHTML = `<ul class="prod-rows">${items.map(p => `
       <li class="prod-row"><div><strong>${esc(p.name.replace(' Dkorar', ''))}</strong><p>${esc(p.description)}</p></div>
-      <button class="add" type="button" data-add="${p.id}" aria-pressed="false">Adicionar ao orçamento</button></li>`).join('')}</ul>`;
+      <div class="row-side"><span class="row-price">${money.format(p.price)}</span><a class="add" href="${shopUrl(p.id)}">Comprar</a></div></li>`).join('')}</ul>`;
   });
-  $$('[data-step]').forEach(panel => {
-    const items = panel.dataset.step.split(' ').map(id => byId.get(id)).filter(Boolean);
-    panel.insertAdjacentHTML('beforeend', `<ul class="step-cards">${items.map(p => cardHTML(p, true)).join('')}</ul>`);
-  });
-  function cardHTML(p, short) {
-    return `<li class="card" data-brand="${esc(p.brand)}">
-      <button class="card-media${isPack(p) ? ' is-pack' : ''}" type="button" data-quick-open="${p.id}" aria-label="Ver detalhes de ${esc(p.name)}"><img src="${p.image}" alt="" loading="lazy" decoding="async"></button>
+  const cardHTML = p => `<li class="card">
+      <a class="card-media is-pack" href="${shopUrl(p.id)}" tabindex="-1" aria-hidden="true"><img src="${p.image}" alt="" loading="lazy" decoding="async"></a>
       <p class="card-brand" translate="no">${esc(p.brand)}</p>
       <h3>${esc(p.name)}</h3>
       <p>${esc(p.description)}</p>
-      <div class="card-actions"><button class="add${short ? ' add-short' : ''}" type="button" data-add="${p.id}" aria-pressed="false">${short ? 'Adicionar' : 'Adicionar ao orçamento'}</button></div>
+      <div class="card-actions"><span class="card-price">${money.format(p.price)}</span><a class="add" href="${shopUrl(p.id)}" aria-label="Comprar ${esc(p.name)}">Comprar</a></div>
     </li>`;
-  }
-
-  const shop = $('[data-shop]');
-  const shopItems = PRODUCTS.filter(p => p.category === 'Tintas' || (p.brand === 'Dkorar'));
-  const order = ['Dkorar', 'Coral', 'Suvinil', 'Anjo'];
-  shopItems.sort((a, b) => order.indexOf(a.brand) - order.indexOf(b.brand));
-  const filter = $('[data-filter]');
-  let currentBrand = 'all';
-  const renderShop = brand => {
-    if (!shop) return;
-    const list = shopItems.filter(p => (brand === 'all' ? p.category === 'Tintas' : p.brand === brand));
-    shop.innerHTML = list.map(p => cardHTML(p, false)).join('');
-    if (canMove) $$('.card', shop).forEach((c, i) => { c.style.setProperty('--i', String(i)); c.classList.add('is-entering'); });
-    syncButtons();
-  };
-  if (filter) {
-    $$('[data-count-brand]', filter).forEach(s => {
-      const b = s.dataset.countBrand;
-      s.textContent = String(shopItems.filter(p => (b === 'all' ? p.category === 'Tintas' : p.brand === b)).length);
-    });
-    $$('button', filter).forEach(btn => btn.addEventListener('click', () => {
-      if (btn.dataset.brand === currentBrand) return;
-      currentBrand = btn.dataset.brand;
-      $$('button', filter).forEach(x => x.setAttribute('aria-pressed', String(x === btn)));
-      moveBg(filter, btn);
-      renderShop(currentBrand);
-    }));
-    requestAnimationFrame(() => moveBg(filter, $('[aria-pressed="true"]', filter)));
-  }
-  renderShop('all');
-
-  /* ---------- Motion Primitives: Morphing Dialog (detalhes do produto) ---------- */
-  const quick = $('[data-quick]');
-  if (quick && typeof quick.showModal === 'function') {
-    const qImg = $('[data-quick-img]', quick);
-    const qMedia = $('.quick-media', quick);
-    const qAdd = $('[data-quick-add]', quick);
-    let opener = null;
-    const fill = p => {
-      qImg.src = p.image; qImg.alt = p.name;
-      qMedia.classList.toggle('is-pack', isPack(p));
-      $('[data-quick-brand]', quick).textContent = p.brand;
-      $('[data-quick-name]', quick).textContent = p.name;
-      $('[data-quick-desc]', quick).textContent = p.description;
-      $('[data-quick-pack]', quick).textContent = p.package || 'Consulte as opções';
-      $('[data-quick-use]', quick).textContent = p.indication || '';
-      qAdd.dataset.add = p.id;
-      syncButtons();
-    };
-    document.addEventListener('click', e => {
-      const b = e.target.closest('[data-quick-open]');
-      if (!b) return;
-      const p = byId.get(b.dataset.quickOpen);
-      if (!p) return;
-      opener = b;
-      const srcImg = $('img', b);
-      if (canMove && document.startViewTransition) {
-        srcImg.style.viewTransitionName = 'produto';
-        document.startViewTransition(() => { srcImg.style.viewTransitionName = ''; fill(p); qImg.style.viewTransitionName = 'produto'; quick.showModal(); })
-          .finished.finally(() => { qImg.style.viewTransitionName = ''; });
-      } else { fill(p); quick.showModal(); }
-    });
-    $('[data-quick-close]', quick).addEventListener('click', () => quick.close());
-    quick.addEventListener('click', e => { if (e.target === quick) quick.close(); });
-    quick.addEventListener('close', () => opener?.focus());
-    // o botão "Adicionar" do diálogo usa o mesmo [data-add]
-    qAdd.classList.remove('add');
-  }
-
-  /* ---------- Ficha de orçamento ---------- */
-  const form = $('[data-builder]');
-  const cartList = $('[data-cart]');
-  const cartEmpty = $('[data-cart-empty]');
-  function renderCart() {
-    if (!cartList) return;
-    cartList.innerHTML = [...cart.entries()].map(([id, q]) => {
-      const p = byId.get(id);
-      return `<li class="cart-item" data-id="${id}"><img src="${p.image}" alt="" loading="lazy">
-        <div><strong>${esc(p.name)}</strong><button class="remove" type="button" data-remove="${id}">Remover</button></div>
-        <div class="stepper" role="group" aria-label="Quantidade de ${esc(p.name)}"><button type="button" data-step-q="-1" aria-label="Diminuir">−</button><output aria-live="polite">${q}</output><button type="button" data-step-q="1" aria-label="Aumentar">+</button></div></li>`;
-    }).join('');
-    cartEmpty.hidden = cart.size > 0;
-    compose();
-  }
-  cartList?.addEventListener('click', e => {
-    const rm = e.target.closest('[data-remove]');
-    if (rm) { remove(rm.dataset.remove); return; }
-    const st = e.target.closest('[data-step-q]');
-    if (!st) return;
-    const li = st.closest('.cart-item'); const id = li.dataset.id;
-    const q = Math.max(1, Math.min(99, (cart.get(id) || 1) + Number(st.dataset.stepQ)));
-    cart.set(id, q); save();
-    const out = $('output', li); out.textContent = String(q);
-    out.classList.remove('is-pop'); void out.offsetWidth; out.classList.add('is-pop');
-    compose(); renderIsland();
+  $$('[data-step]').forEach(panel => {
+    const items = panel.dataset.step.split(' ').map(id => byId.get(id)).filter(Boolean);
+    panel.insertAdjacentHTML('beforeend', `<ul class="step-cards">${items.map(cardHTML).join('')}</ul>`);
   });
+  $$('[data-featured]').forEach(list => {
+    const items = list.dataset.featured.split(' ').map(id => byId.get(id)).filter(Boolean);
+    list.innerHTML = items.map(p => `<li><a class="feat" href="${shopUrl(p.id)}">
+      <span class="feat-media"><img src="${p.image}" alt="" loading="lazy" decoding="async"></span>
+      <span class="feat-brand" translate="no">${esc(p.brand)}</span>
+      <h3>${esc(p.name)}</h3>
+      <span class="feat-price">${money.format(p.price)}</span></a></li>`).join('');
+  });
+
+  /* ---------- Ficha de orçamento (WhatsApp) ---------- */
+  const form = $('[data-builder]');
   function message() {
     const loja = $('input[name="loja"]:checked', form)?.value || 'Lavras';
     const receber = $('input[name="receber"]:checked', form)?.value;
     const detalhes = $('textarea[name="detalhes"]', form)?.value.trim();
-    const lines = ['Olá, vim pelo site da Dekorar e quero um orçamento.'];
-    if (cart.size) { lines.push('', 'Produtos:'); cart.forEach((q, id) => lines.push(`- ${q}x ${byId.get(id).name}`)); lines.push(''); }
-    lines.push(`Loja: ${loja}.`);
+    const lines = ['Olá, vim pelo site da Dekorar e quero um orçamento.', `Loja: ${loja}.`];
     lines.push(receber === 'retirada' ? `Vou retirar na loja de ${loja}.` : 'Preciso de entrega na obra.');
     if (detalhes) lines.push(`Detalhes: ${detalhes}`);
     return lines.join('\n');
@@ -362,7 +206,7 @@
     const w = window.open(url, '_blank', 'noopener');
     if (!w) window.location.href = url;
   });
-  renderCart(); syncButtons(); renderIsland();
+  compose();
 
   /* ---------- Watermelon UI: Copy Confirm ---------- */
   const copyText = async text => {
@@ -391,6 +235,9 @@
     const hexEl = $('[data-hex]', reader);
     const rgbEl = $('[data-rgb]', reader);
     const nearEl = $('[data-near]', reader);
+    const nameEl = $('[data-name]', reader);
+    const pick = $('[data-pick]', reader);
+    const pickSw = $('[data-pick-swatch]', reader), pickName = $('[data-pick-name]', reader), pickHex = $('[data-pick-hex]', reader);
     const waBtn = $('[data-reader-wa]', reader);
     const copyHex = $('[data-copy-hex]', reader);
     // Tons de referência ilustrativos (não são códigos de fabricante)
@@ -438,8 +285,10 @@
       rgbEl.textContent = `RGB ${r}, ${g}, ${b}`;
       const lab = toLab(hex);
       const near = TONES_LAB.map(([n, h, l]) => [n, h, Math.hypot(l[0] - lab[0], l[1] - lab[1], l[2] - lab[2])]).sort((a, b) => a[2] - b[2]).slice(0, 4);
+      nameEl.textContent = near[0][0];
+      pickSw.style.backgroundColor = hex; pickName.textContent = near[0][0]; pickHex.textContent = hex;
       nearEl.innerHTML = near.map(([n, h, de]) => `<li><button type="button" data-tone="${h}" aria-label="Copiar ${n}, ${h.toUpperCase()}"><i style="background:${h}"></i><span>${n}</span><small>ΔE ${fmt1.format(de)}</small></button></li>`).join('');
-      waBtn.href = `${WA}?text=${encodeURIComponent(`Olá! Usei o leitor de cor no site da Dekorar e encontrei a cor ${hex} (RGB ${r}, ${g}, ${b}). Quero tinta nesse tom.`)}`;
+      waBtn.href = `${WA}?text=${encodeURIComponent(`Olá! Usei o leitor de cor no site da Dekorar e encontrei a cor ${hex} (RGB ${r}, ${g}, ${b}). Quero tinta nesse tom (parecido com ${near[0][0]}).`)}`;
     };
     const drawLoupe = (cx, cy, rect) => {
       const s = 12; lctx.imageSmoothingEnabled = false;
@@ -447,6 +296,11 @@
       lctx.drawImage(canvas, Math.round(cx - s / 2), Math.round(cy - s / 2), s, s, 0, 0, 140, 140);
       const k = rect.width / canvas.width;
       loupe.style.left = `${cx * k}px`; loupe.style.top = `${cy * k - 90}px`;
+      // etiqueta com o nome da cor logo abaixo do cursor, sem sair da foto
+      const px = Math.max(90, Math.min(rect.width - 90, cx * k));
+      const py = cy * k + 22 > rect.height - 52 ? cy * k - 190 : cy * k + 22;
+      pick.style.left = `${px}px`; pick.style.top = `${py}px`;
+      pick.classList.add('is-on');
     };
     const load = src => new Promise((resolve, reject) => {
       const im = new Image();
@@ -461,13 +315,14 @@
     });
     const fromEvent = e => { const r = canvas.getBoundingClientRect(); const k = canvas.width / r.width; return { x: (e.clientX - r.left) * k, y: (e.clientY - r.top) * k, r }; };
     let dragging = false;
-    canvas.addEventListener('pointerdown', e => { dragging = true; canvas.setPointerCapture(e.pointerId); const p = fromEvent(e); read(p.x, p.y, true); drawLoupe(p.x, p.y, p.r); loupe.classList.add('is-on'); });
+    canvas.addEventListener('pointerdown', e => { dragging = true; canvas.setPointerCapture(e.pointerId); const p = fromEvent(e); read(p.x, p.y, false); drawLoupe(p.x, p.y, p.r); loupe.classList.add('is-on'); });
     canvas.addEventListener('pointermove', e => {
       if (e.pointerType !== 'mouse' && !dragging) return;
-      const p = fromEvent(e); drawLoupe(p.x, p.y, p.r); loupe.classList.add('is-on');
-      if (dragging || e.pointerType === 'mouse') read(p.x, p.y, false);
+      const p = fromEvent(e);
+      read(p.x, p.y, false);
+      drawLoupe(p.x, p.y, p.r); loupe.classList.add('is-on');
     });
-    const end = () => { dragging = false; loupe.classList.remove('is-on'); };
+    const end = () => { dragging = false; loupe.classList.remove('is-on'); pick.classList.remove('is-on'); };
     canvas.addEventListener('pointerup', e => { end(); const p = fromEvent(e); read(p.x, p.y, true); });
     canvas.addEventListener('pointerleave', end);
     canvas.addEventListener('pointercancel', end);
@@ -477,7 +332,7 @@
       if (!mv) return;
       e.preventDefault(); read(point.x + mv[0], point.y + mv[1], false);
       const r = canvas.getBoundingClientRect(); drawLoupe(point.x, point.y, r); loupe.classList.add('is-on');
-      clearTimeout(canvas._t); canvas._t = setTimeout(() => loupe.classList.remove('is-on'), 900);
+      clearTimeout(canvas._t); canvas._t = setTimeout(() => { loupe.classList.remove('is-on'); pick.classList.remove('is-on'); }, 900);
     });
     nearEl.addEventListener('click', async e => {
       const b = e.target.closest('[data-tone]'); if (!b) return;
@@ -536,7 +391,19 @@
       cities.forEach((c, i) => c.classList.toggle('is-lit', s >= cityAt[i] - 2));
     };
     if (canMove) {
-      M.scroll(p => place(Math.min(1, Math.max(0, p))), { target: $('#entrega'), offset: ['start 70%', 'end 80%'] });
+      // o trajeto termina (Lavras → Três Corações → Varginha) enquanto o mapa ainda está inteiro na tela
+      const svg = $('svg', route);
+      const run = p => place(Math.min(1, Math.max(0, p / 0.85)));
+      let stop = null;
+      const bind = () => {
+        stop?.();
+        const sticky = getComputedStyle(route).position === 'sticky';
+        stop = sticky
+          ? M.scroll(run, { target: $('.entrega-grid'), offset: ['start 75%', 'end end'] })
+          : M.scroll(run, { target: svg, offset: ['start 95%', 'end 75%'] });
+      };
+      bind();
+      window.matchMedia('(max-width: 900px)').addEventListener('change', bind);
     } else place(1);
   }
   $('[data-city-check]')?.addEventListener('submit', e => {
