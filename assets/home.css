@@ -292,12 +292,12 @@ figure figcaption { font-size: var(--fs-small); color: var(--ink-2); }
   .cover { grid-template-columns: 1fr; grid-template-areas: "copy" "plate" "stores"; min-height: 0; }
   .cover-page { display: contents; }
   .cover-copy { grid-area: copy; padding: 40px var(--m) 36px; }
-  .cover-plate { grid-area: plate; aspect-ratio: 4 / 5; max-height: 82svh; }
+  .cover-plate { grid-area: plate; width: 100%; aspect-ratio: 4 / 3; }
   .cover-stores { grid-area: stores; grid-template-columns: 1fr 1fr; padding: 28px var(--m) 0; }
   .cover-copy .lead { margin-top: 22px; }
   .cover-copy .actions { margin-top: 26px; }
   .dkorar, .entrega, .fecho { grid-template-columns: 1fr; }
-  .dkorar-plate, .entrega-plate { min-height: 0; aspect-ratio: 4 / 5; max-height: 86svh; }
+  .dkorar-plate, .entrega-plate { width: 100%; min-height: 0; aspect-ratio: 4 / 3; }
   .dkorar-page, .entrega-page, .pedido, .enderecos { padding: 56px var(--m) 64px; }
   .linha-head, .etapas-head { grid-template-columns: 1fr; }
   .dkorar-plate figcaption { display: none; }
@@ -309,6 +309,7 @@ figure figcaption { font-size: var(--fs-small); color: var(--ink-2); }
 
 @media (max-width: 600px) {
   .header-cta { display: none; }
+  .cover-plate, .dkorar-plate, .entrega-plate { aspect-ratio: 4 / 5; }
   .menu-toggle { margin-left: auto; }
   .actions .btn { width: 100%; }
   .cover-stores { grid-template-columns: 1fr 1fr; }
