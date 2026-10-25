@@ -524,3 +524,4 @@ select, .field { background: var(--surface); color: var(--white); }
 .admin-sidebar-title span, .admin-user { color: var(--muted); }
 .product-category, .card-link, .text-action, .table-action { color: #b13e12; }
 .product-card-footer span { color: #b13e12; }
+.catalog-layout { min-height: 150vh; }

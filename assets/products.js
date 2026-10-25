@@ -1,12 +1,4 @@
-const PRODUCTS = [
-  {id:'suvinil-rende-20l',name:'Suvinil Rende e Cobre Muito 20 L',category:'Tintas',price:319.90,image:'assets/product-suvinil.webp',description:'Tinta para áreas internas e externas, na cor Neve, com proposta de bom rendimento e cobertura.',package:'20 litros',indication:'Pintura de paredes internas e externas'},
-  {id:'coral-rende-20l',name:'Coral Rende Muito 20 L',category:'Tintas',price:329.90,image:'assets/product-coral-rende.webp',description:'Tinta concentrada Coral, na cor Gelo, indicada para projetos que buscam rendimento na pintura.',package:'20 litros',indication:'Pintura de paredes internas'},
-  {id:'massa-coral-25kg',name:'Massa Corrida Coral 25 kg',category:'Preparação',price:79.90,image:'assets/product-massa-coral.webp',description:'Massa corrida para nivelar e preparar superfícies internas antes da aplicação da tinta.',package:'25 kg',indication:'Preparação de paredes internas'},
-  {id:'massa-dkorar',name:'Massa Corrida Dkorar',category:'Preparação',price:null,image:'assets/product-dkorar.webp',description:'Produto da linha própria Dkorar para preparação de obras de pequeno, médio e grande porte.',package:'Consulte as opções',indication:'Nivelamento e preparação de paredes'},
-  {id:'mactra-seca-parede',name:'Coral Mactra Seca Parede',category:'Tratamento',price:null,image:'assets/product-mactra.webp',description:'Linha de tratamento para paredes com sinais de umidade, mofo, bolhas, salitre e reboco deteriorado.',package:'Kit de tratamento',indication:'Tratamento de paredes com umidade'},
-  {id:'revestliso-ceramfix',name:'Revestliso Ceramfix 15 kg',category:'Revestimentos',price:null,image:'assets/product-revestliso.webp',description:'Revestimento colorido de camada fina para acabamento e textura em áreas internas ou externas.',package:'15 kg',indication:'Revestimento e textura de paredes'},
-  {id:'efeito-velvet',name:'Efeito Velvet Coral 2,1 L',category:'Decorativos',price:null,image:'assets/product-velvet.webp',description:'Acabamento decorativo Velvet ou Nuage para criar paredes com efeito visual sofisticado.',package:'2,1 litros',indication:'Efeito decorativo para paredes'}
-];
+const PRODUCTS = window.PRODUCTS || [];
 const money = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
 const state = { category:'Todos', maxPrice:500, priceStatus:'all', query:'', sort:'featured' };
 let cart = JSON.parse(localStorage.getItem('dekorar-cart') || '{}');

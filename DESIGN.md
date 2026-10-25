@@ -21,8 +21,13 @@ Archivo variável, auto-hospedada. Títulos em largura 125% e peso 600–620, tr
 - Embalagens: recortadas em PNG/WebP com transparência, sobre placa branca.
 - Sem ícones, bullets, selos, cards com sombra ou rótulos acima de títulos.
 
-## Movimento
-Uma única sequência na abertura: a foto da capa se revela da direita (clip-path, 1.25s), o título sobe linha a linha e o resto aparece em fade. Fora isso, só resposta a ação (hover, pressão, galeria). Tudo some com `prefers-reduced-motion`.
+## Movimento e componentes
+Biblioteca: Motion 12 (motion.dev), vendorizada em `assets/vendor/`. Componentes portados para JS puro:
+- Motion Primitives: Text Effect (título da capa, palavra por palavra com blur), In View (entradas das seções), Animated Number (1.200 kg), Infinite Slider (faixa de marcas, pausa no hover), Magnetic (botão do WhatsApp), Animated Background (abas e filtros com fundo deslizante), Morphing Dialog (detalhes do produto com View Transitions), Scroll Progress, Text Scramble (código da cor no leitor).
+- Fancy Components: Text Highlighter (frase da Dkorar), Underline Center (links), Element Along SVG Path (caminhonete na rota de entregas).
+- Watermelon UI: Fluid Tabs, Copy Confirm (copiar endereço e código da cor), Pop Stepper (quantidades do orçamento), Scroll Island (pílula do orçamento).
+- Canvas UI: Magnify (lupa do leitor de cor).
+A foto da capa se revela da direita só no desktop. Tudo respeita `prefers-reduced-motion` e o conteúdo aparece mesmo sem JavaScript.
 
 ## Catálogo e área da equipe
 `styles.css` usa os mesmos tokens em versão clara: fundo papel, superfícies brancas, texto grafite, laranja escurecido `#b13e12` para texto pequeno em laranja.

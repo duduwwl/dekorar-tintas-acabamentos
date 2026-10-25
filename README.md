@@ -5,7 +5,7 @@ https://duduwwl.github.io/dekorar-tintas-acabamentos/
 
 ## Páginas
 
-- `index.html`: landing page em formato de catálogo de showroom: capa com a fachada, marca própria Dkorar e a linha completa, produtos por etapa, a loja por dentro (galeria), entrega e obras, marcas, ficha de pedido para o WhatsApp e endereços.
+- `index.html`: landing page em formato de catálogo de showroom: capa, faixa de marcas, Dkorar e a linha completa em abas, tintas na prateleira com filtro por marca e orçamento, leitor de cor interativo, produtos por etapa, a loja por dentro (galeria), entregas com mapa da rota, as duas lojas com fachada e a ficha de orçamento para o WhatsApp.
 - `produtos.html`: catálogo com busca, filtros e carrinho demonstrativo (pedido enviado pelo WhatsApp).
 - `gerencia.html`: área da equipe (estoque, pedidos e envios guardados no `localStorage` do navegador).
 
@@ -14,6 +14,8 @@ https://duduwwl.github.io/dekorar-tintas-acabamentos/
 ```
 assets/
   home.css / home.js     landing page (HTML, CSS e JS puros, sem build)
+  catalog-data.js        lista de produtos usada pela landing e pelo catálogo
+  vendor/                Motion 12 (motion.dev, licença MIT)
   styles.css / site.js   catálogo e área da equipe
   products.js / admin.js dados e lógica do catálogo e da gestão
   img/                   fotos reais da loja ampliadas 2x (Real-ESRGAN) em AVIF/WebP 640/1080/1800 px, embalagens recortadas (pack-*.webp), logo vetorizada e ícones

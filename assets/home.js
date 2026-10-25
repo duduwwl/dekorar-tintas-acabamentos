@@ -1,18 +1,36 @@
-/* Dekorar — interações da landing page (sem dependências) */
+/* Dekorar — interações da landing page.
+   Animações com Motion (motion.dev), a mesma base dos componentes Motion Primitives,
+   portados para HTML/CSS/JS puros. */
 (() => {
   'use strict';
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const doc = document.documentElement;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const M = window.Motion;
+  const canMove = !!(M && !reduce);
+  if (!canMove) doc.classList.remove('motion');
+  const EASE = [0.16, 1, 0.3, 1];
+  const WA = 'https://wa.me/5535984336650';
+  const fmtInt = new Intl.NumberFormat('pt-BR');
+  const PRODUCTS = Array.isArray(window.PRODUCTS) ? window.PRODUCTS : [];
+  const byId = new Map(PRODUCTS.map(p => [p.id, p]));
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  /* Header: fundo branco depois de rolar */
+  /* ---------- Header e progresso de leitura ---------- */
   const header = $('[data-header]');
+  const bar = $('[data-progress]');
   let ticking = false;
-  const onScroll = () => { header?.classList.toggle('is-scrolled', window.scrollY > 8); ticking = false; };
+  const onScroll = () => {
+    header?.classList.toggle('is-scrolled', window.scrollY > 8);
+    const max = doc.scrollHeight - window.innerHeight;
+    if (bar) bar.style.transform = `scaleX(${max > 0 ? Math.min(1, window.scrollY / max) : 0})`;
+    ticking = false;
+  };
   window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
   onScroll();
 
-  /* Menu no celular e tablet */
+  /* ---------- Menu ---------- */
   const toggle = $('.menu-toggle');
   const menu = $('#menu');
   const setMenu = open => {
@@ -25,58 +43,510 @@
   };
   toggle?.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
   menu?.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') { setMenu(false); toggle.focus(); }
-  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') { setMenu(false); toggle.focus(); } });
   window.matchMedia('(min-width: 1181px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
 
-  /* Seção atual na navegação */
+  /* ---------- Seção atual ---------- */
   const navLinks = $$('[data-nav]');
   if ('IntersectionObserver' in window && navLinks.length) {
-    const byId = new Map(navLinks.map(a => [a.getAttribute('href').slice(1), a]));
-    const spy = new IntersectionObserver(entries => entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
+    const map = new Map(navLinks.map(a => [a.getAttribute('href').slice(1), a]));
+    const spy = new IntersectionObserver(entries => entries.forEach(en => {
+      if (!en.isIntersecting) return;
       navLinks.forEach(a => a.removeAttribute('aria-current'));
-      byId.get(entry.target.id)?.setAttribute('aria-current', 'true');
+      map.get(en.target.id)?.setAttribute('aria-current', 'true');
     }), { rootMargin: '-45% 0px -50% 0px' });
-    byId.forEach((_, id) => { const el = document.getElementById(id); if (el) spy.observe(el); });
-    const top = document.getElementById('inicio');
-    if (top) new IntersectionObserver(([e]) => { if (e.isIntersecting) navLinks.forEach(a => a.removeAttribute('aria-current')); }, { rootMargin: '-45% 0px -50% 0px' }).observe(top);
+    map.forEach((_, id) => { const el = document.getElementById(id); if (el) spy.observe(el); });
   }
 
-  /* Ficha de pedido: monta a mensagem do WhatsApp */
-  const form = $('[data-builder]');
-  if (form) {
-    const preview = $('[data-preview]', form);
-    const hidden = $('[data-text]', form);
-    const compose = () => {
-      const etapas = $$('input[name="etapa"]:checked', form).map(i => i.value.toLowerCase());
-      const loja = $('input[name="loja"]:checked', form)?.value || 'Lavras';
-      const receber = $('input[name="receber"]:checked', form)?.value;
-      const detalhes = $('textarea[name="detalhes"]', form).value.trim();
-      const lines = ['Olá, vim pelo site da Dekorar e quero um orçamento.'];
-      if (etapas.length) {
-        const list = etapas.length > 1 ? `${etapas.slice(0, -1).join(', ')} e ${etapas.at(-1)}` : etapas[0];
-        lines.push(`Etapa da obra: ${list}.`);
-      }
-      lines.push(`Loja: ${loja}.`);
-      lines.push(receber === 'retirada' ? `Vou retirar na loja de ${loja}.` : 'Preciso de entrega na obra.');
-      if (detalhes) lines.push(`Detalhes: ${detalhes}`);
-      return lines.join('\n');
-    };
-    const update = () => { const t = compose(); preview.textContent = t; hidden.value = t; };
-    form.addEventListener('input', update);
-    form.addEventListener('change', update);
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const url = `https://wa.me/5535984336650?text=${encodeURIComponent(compose())}`;
-      const win = window.open(url, '_blank', 'noopener');
-      if (!win) window.location.href = url;
+  /* ---------- Motion Primitives: Text Effect (título da capa) ---------- */
+  const title = $('[data-text-effect]');
+  if (title) {
+    const words = title.textContent.trim().split(/\s+/);
+    title.setAttribute('aria-label', words.join(' '));
+    title.innerHTML = words.map(w => `<span class="w" aria-hidden="true">${esc(w)}</span>`).join(' ');
+    if (canMove) {
+      M.animate($$('.w', title), { opacity: [0, 1], filter: ['blur(10px)', 'blur(0px)'], transform: ['translateY(18px)', 'translateY(0px)'] },
+        { duration: 0.8, ease: EASE, delay: M.stagger(0.07, { startDelay: 0.2 }) });
+    }
+  }
+
+  /* ---------- Motion Primitives: In View (entradas das seções) ---------- */
+  if (canMove) {
+    $$('[data-reveal]').forEach(el => {
+      M.inView(el, () => { M.animate(el, { opacity: [0, 1], transform: ['translateY(24px)', 'translateY(0px)'] }, { duration: 0.8, ease: EASE }); }, { margin: '0px 0px -8% 0px' });
     });
-    update();
+    $$('[data-stagger]').forEach(group => {
+      M.inView(group, () => { M.animate([...group.children], { opacity: [0, 1], transform: ['translateY(18px)', 'translateY(0px)'] }, { duration: 0.7, ease: EASE, delay: M.stagger(0.08) }); }, { margin: '0px 0px -8% 0px' });
+    });
   }
 
-  /* Galeria ampliada */
+  /* ---------- Fancy Components: Text Highlighter ---------- */
+  $$('[data-highlight]').forEach(el => {
+    if (!canMove) { el.classList.add('is-on'); return; }
+    M.inView(el, () => { setTimeout(() => el.classList.add('is-on'), 300); }, { amount: 1 });
+  });
+
+  /* ---------- Motion Primitives: Animated Number ---------- */
+  $$('[data-count]').forEach(el => {
+    const target = Number(el.dataset.count);
+    if (!canMove) { el.textContent = fmtInt.format(target); return; }
+    el.textContent = '0';
+    M.inView(el, () => { M.animate(0, target, { duration: 1.6, ease: EASE, onUpdate: v => { el.textContent = fmtInt.format(Math.round(v)); } }); }, { amount: 1 });
+  });
+
+  /* ---------- Motion Primitives: Infinite Slider (marcas) ---------- */
+  $$('[data-slider]').forEach(slider => {
+    if (reduce) return;
+    const track = $('.slider-track', slider);
+    [...track.children].forEach(li => { const c = li.cloneNode(true); c.setAttribute('aria-hidden', 'true'); track.append(c); });
+    slider.style.setProperty('--marquee-dur', `${Math.max(24, track.scrollWidth / 60)}s`);
+    slider.classList.add('is-running');
+  });
+
+  /* ---------- Motion Primitives: Magnetic ---------- */
+  if (canMove && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    $$('[data-magnetic]').forEach(btn => {
+      const inner = btn.firstElementChild;
+      btn.addEventListener('pointermove', e => {
+        const r = btn.getBoundingClientRect();
+        const x = (e.clientX - r.left - r.width / 2) * 0.18;
+        const y = (e.clientY - r.top - r.height / 2) * 0.28;
+        M.animate(btn, { transform: `translate(${x}px, ${y}px)` }, { type: 'spring', stiffness: 260, damping: 18 });
+        if (inner) M.animate(inner, { transform: `translate(${x * 0.4}px, ${y * 0.4}px)` }, { type: 'spring', stiffness: 260, damping: 18 });
+      });
+      btn.addEventListener('pointerleave', () => {
+        M.animate(btn, { transform: 'translate(0px, 0px)' }, { type: 'spring', stiffness: 200, damping: 16 });
+        if (inner) M.animate(inner, { transform: 'translate(0px, 0px)' }, { type: 'spring', stiffness: 200, damping: 16 });
+      });
+    });
+  }
+
+  /* ---------- Abas com fundo deslizante ---------- */
+  const moveBg = (group, btn) => {
+    const bg = $('.tabs-bg', group);
+    if (!bg || !btn) return;
+    bg.style.setProperty('--tx', `${btn.offsetLeft}px`);
+    bg.style.setProperty('--ty', `${btn.offsetTop}px`);
+    bg.style.setProperty('--tw', `${btn.offsetWidth}px`);
+    bg.style.setProperty('--th', `${btn.offsetHeight}px`);
+  };
+  $$('[data-tabs]').forEach(list => {
+    const tabs = $$('[role="tab"]', list);
+    const select = (tab, focus) => {
+      tabs.forEach(t => {
+        const on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        const panel = document.getElementById(t.getAttribute('aria-controls'));
+        if (panel) panel.hidden = !on;
+      });
+      moveBg(list, tab);
+      if (focus) tab.focus();
+      tab.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(t));
+      t.addEventListener('keydown', e => {
+        const k = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+        if (k) { e.preventDefault(); select(tabs[(i + k + tabs.length) % tabs.length], true); }
+        if (e.key === 'Home') { e.preventDefault(); select(tabs[0], true); }
+        if (e.key === 'End') { e.preventDefault(); select(tabs.at(-1), true); }
+      });
+    });
+    requestAnimationFrame(() => moveBg(list, tabs.find(t => t.getAttribute('aria-selected') === 'true')));
+  });
+  window.addEventListener('resize', () => {
+    $$('[data-tabs], [data-filter]').forEach(g => moveBg(g, $('[aria-selected="true"], [aria-pressed="true"]', g)));
+  });
+
+  /* ---------- Orçamento (estado) ---------- */
+  const KEY = 'dekorar-orcamento';
+  let cart = new Map();
+  try { cart = new Map(Object.entries(JSON.parse(localStorage.getItem(KEY) || '{}')).filter(([id]) => byId.has(id))); } catch { cart = new Map(); }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(Object.fromEntries(cart))); } catch { /* sem armazenamento */ } };
+  const count = () => [...cart.values()].reduce((a, b) => a + b, 0);
+
+  const toast = $('[data-toast]');
+  let toastTimer;
+  const showToast = msg => {
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('is-on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('is-on'), 3200);
+  };
+
+  const island = $('[data-island]');
+  const islandCount = $('[data-island-count]');
+  const islandLabel = $('[data-island-label]');
+  const pedido = $('#pedido');
+  let pedidoVisible = false;
+  if (island) {
+    island.hidden = false;
+    island.classList.add('is-hidden');
+    if ('IntersectionObserver' in window && pedido) {
+      new IntersectionObserver(([e]) => { pedidoVisible = e.isIntersecting; renderIsland(); }, { threshold: 0.15 }).observe(pedido);
+    }
+  }
+  function renderIsland() {
+    if (!island) return;
+    const n = count();
+    islandCount.textContent = String(n);
+    islandLabel.textContent = n === 1 ? 'item no orçamento' : 'itens no orçamento';
+    island.classList.toggle('is-hidden', n === 0 || pedidoVisible);
+    island.setAttribute('aria-hidden', String(n === 0 || pedidoVisible));
+    island.tabIndex = n === 0 || pedidoVisible ? -1 : 0;
+  }
+
+  const addLabel = id => (cart.has(id) ? 'Adicionado' : 'Adicionar ao orçamento');
+  const syncButtons = () => {
+    $$('[data-add]').forEach(b => {
+      const on = cart.has(b.dataset.add);
+      b.setAttribute('aria-pressed', String(on));
+      b.textContent = b.classList.contains('add-short') ? (on ? 'Adicionado' : 'Adicionar') : addLabel(b.dataset.add);
+    });
+  };
+  const add = (id, silent) => {
+    const p = byId.get(id);
+    if (!p) return;
+    cart.set(id, (cart.get(id) || 0) + (cart.has(id) ? 0 : 1));
+    save(); renderCart(); syncButtons(); renderIsland();
+    if (!silent) showToast(`${p.name} está no orçamento`);
+  };
+  const remove = id => { cart.delete(id); save(); renderCart(); syncButtons(); renderIsland(); };
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-add]');
+    if (!b) return;
+    const id = b.dataset.add;
+    if (cart.has(id)) remove(id); else add(id);
+  });
+
+  /* ---------- Render: linha Dkorar, etapas e prateleira ---------- */
+  const isPack = p => /pack-|product-/.test(p.image);
+  $$('[data-linha]').forEach(panel => {
+    const items = panel.dataset.linha.split(' ').map(id => byId.get(id)).filter(Boolean);
+    panel.innerHTML = `<ul class="prod-rows">${items.map(p => `
+      <li class="prod-row"><div><strong>${esc(p.name.replace(' Dkorar', ''))}</strong><p>${esc(p.description)}</p></div>
+      <button class="add" type="button" data-add="${p.id}" aria-pressed="false">Adicionar ao orçamento</button></li>`).join('')}</ul>`;
+  });
+  $$('[data-step]').forEach(panel => {
+    const items = panel.dataset.step.split(' ').map(id => byId.get(id)).filter(Boolean);
+    panel.insertAdjacentHTML('beforeend', `<ul class="step-cards">${items.map(p => cardHTML(p, true)).join('')}</ul>`);
+  });
+  function cardHTML(p, short) {
+    return `<li class="card" data-brand="${esc(p.brand)}">
+      <button class="card-media${isPack(p) ? ' is-pack' : ''}" type="button" data-quick-open="${p.id}" aria-label="Ver detalhes de ${esc(p.name)}"><img src="${p.image}" alt="" loading="lazy" decoding="async"></button>
+      <p class="card-brand" translate="no">${esc(p.brand)}</p>
+      <h3>${esc(p.name)}</h3>
+      <p>${esc(p.description)}</p>
+      <div class="card-actions"><button class="add${short ? ' add-short' : ''}" type="button" data-add="${p.id}" aria-pressed="false">${short ? 'Adicionar' : 'Adicionar ao orçamento'}</button></div>
+    </li>`;
+  }
+
+  const shop = $('[data-shop]');
+  const shopItems = PRODUCTS.filter(p => p.category === 'Tintas' || (p.brand === 'Dkorar'));
+  const order = ['Dkorar', 'Coral', 'Suvinil', 'Anjo'];
+  shopItems.sort((a, b) => order.indexOf(a.brand) - order.indexOf(b.brand));
+  const filter = $('[data-filter]');
+  let currentBrand = 'all';
+  const renderShop = brand => {
+    if (!shop) return;
+    const list = shopItems.filter(p => (brand === 'all' ? p.category === 'Tintas' : p.brand === brand));
+    shop.innerHTML = list.map(p => cardHTML(p, false)).join('');
+    if (canMove) $$('.card', shop).forEach((c, i) => { c.style.setProperty('--i', String(i)); c.classList.add('is-entering'); });
+    syncButtons();
+  };
+  if (filter) {
+    $$('[data-count-brand]', filter).forEach(s => {
+      const b = s.dataset.countBrand;
+      s.textContent = String(shopItems.filter(p => (b === 'all' ? p.category === 'Tintas' : p.brand === b)).length);
+    });
+    $$('button', filter).forEach(btn => btn.addEventListener('click', () => {
+      if (btn.dataset.brand === currentBrand) return;
+      currentBrand = btn.dataset.brand;
+      $$('button', filter).forEach(x => x.setAttribute('aria-pressed', String(x === btn)));
+      moveBg(filter, btn);
+      renderShop(currentBrand);
+    }));
+    requestAnimationFrame(() => moveBg(filter, $('[aria-pressed="true"]', filter)));
+  }
+  renderShop('all');
+
+  /* ---------- Motion Primitives: Morphing Dialog (detalhes do produto) ---------- */
+  const quick = $('[data-quick]');
+  if (quick && typeof quick.showModal === 'function') {
+    const qImg = $('[data-quick-img]', quick);
+    const qMedia = $('.quick-media', quick);
+    const qAdd = $('[data-quick-add]', quick);
+    let opener = null;
+    const fill = p => {
+      qImg.src = p.image; qImg.alt = p.name;
+      qMedia.classList.toggle('is-pack', isPack(p));
+      $('[data-quick-brand]', quick).textContent = p.brand;
+      $('[data-quick-name]', quick).textContent = p.name;
+      $('[data-quick-desc]', quick).textContent = p.description;
+      $('[data-quick-pack]', quick).textContent = p.package || 'Consulte as opções';
+      $('[data-quick-use]', quick).textContent = p.indication || '';
+      qAdd.dataset.add = p.id;
+      syncButtons();
+    };
+    document.addEventListener('click', e => {
+      const b = e.target.closest('[data-quick-open]');
+      if (!b) return;
+      const p = byId.get(b.dataset.quickOpen);
+      if (!p) return;
+      opener = b;
+      const srcImg = $('img', b);
+      if (canMove && document.startViewTransition) {
+        srcImg.style.viewTransitionName = 'produto';
+        document.startViewTransition(() => { srcImg.style.viewTransitionName = ''; fill(p); qImg.style.viewTransitionName = 'produto'; quick.showModal(); })
+          .finished.finally(() => { qImg.style.viewTransitionName = ''; });
+      } else { fill(p); quick.showModal(); }
+    });
+    $('[data-quick-close]', quick).addEventListener('click', () => quick.close());
+    quick.addEventListener('click', e => { if (e.target === quick) quick.close(); });
+    quick.addEventListener('close', () => opener?.focus());
+    // o botão "Adicionar" do diálogo usa o mesmo [data-add]
+    qAdd.classList.remove('add');
+  }
+
+  /* ---------- Ficha de orçamento ---------- */
+  const form = $('[data-builder]');
+  const cartList = $('[data-cart]');
+  const cartEmpty = $('[data-cart-empty]');
+  function renderCart() {
+    if (!cartList) return;
+    cartList.innerHTML = [...cart.entries()].map(([id, q]) => {
+      const p = byId.get(id);
+      return `<li class="cart-item" data-id="${id}"><img src="${p.image}" alt="" loading="lazy">
+        <div><strong>${esc(p.name)}</strong><button class="remove" type="button" data-remove="${id}">Remover</button></div>
+        <div class="stepper" role="group" aria-label="Quantidade de ${esc(p.name)}"><button type="button" data-step-q="-1" aria-label="Diminuir">−</button><output aria-live="polite">${q}</output><button type="button" data-step-q="1" aria-label="Aumentar">+</button></div></li>`;
+    }).join('');
+    cartEmpty.hidden = cart.size > 0;
+    compose();
+  }
+  cartList?.addEventListener('click', e => {
+    const rm = e.target.closest('[data-remove]');
+    if (rm) { remove(rm.dataset.remove); return; }
+    const st = e.target.closest('[data-step-q]');
+    if (!st) return;
+    const li = st.closest('.cart-item'); const id = li.dataset.id;
+    const q = Math.max(1, Math.min(99, (cart.get(id) || 1) + Number(st.dataset.stepQ)));
+    cart.set(id, q); save();
+    const out = $('output', li); out.textContent = String(q);
+    out.classList.remove('is-pop'); void out.offsetWidth; out.classList.add('is-pop');
+    compose(); renderIsland();
+  });
+  function message() {
+    const loja = $('input[name="loja"]:checked', form)?.value || 'Lavras';
+    const receber = $('input[name="receber"]:checked', form)?.value;
+    const detalhes = $('textarea[name="detalhes"]', form)?.value.trim();
+    const lines = ['Olá, vim pelo site da Dekorar e quero um orçamento.'];
+    if (cart.size) { lines.push('', 'Produtos:'); cart.forEach((q, id) => lines.push(`- ${q}x ${byId.get(id).name}`)); lines.push(''); }
+    lines.push(`Loja: ${loja}.`);
+    lines.push(receber === 'retirada' ? `Vou retirar na loja de ${loja}.` : 'Preciso de entrega na obra.');
+    if (detalhes) lines.push(`Detalhes: ${detalhes}`);
+    return lines.join('\n');
+  }
+  function compose() {
+    if (!form) return;
+    const t = message();
+    $('[data-preview]', form).textContent = t;
+    $('[data-text]', form).value = t;
+  }
+  form?.addEventListener('input', compose);
+  form?.addEventListener('change', compose);
+  form?.addEventListener('submit', e => {
+    e.preventDefault();
+    const url = `${WA}?text=${encodeURIComponent(message())}`;
+    const w = window.open(url, '_blank', 'noopener');
+    if (!w) window.location.href = url;
+  });
+  renderCart(); syncButtons(); renderIsland();
+
+  /* ---------- Watermelon UI: Copy Confirm ---------- */
+  const copyText = async text => {
+    try { await navigator.clipboard.writeText(text); return true; } catch {
+      const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.append(ta); ta.select(); let ok = false; try { ok = document.execCommand('copy'); } catch { ok = false; } ta.remove(); return ok;
+    }
+  };
+  const confirmCopy = (btn, ok) => {
+    const label = $('.copy-label', btn); const old = label.dataset.old || label.textContent;
+    label.dataset.old = old;
+    label.textContent = ok ? 'Copiado' : 'Não deu para copiar';
+    btn.classList.remove('is-copied'); void btn.offsetWidth; btn.classList.add('is-copied');
+    clearTimeout(btn._t); btn._t = setTimeout(() => { label.textContent = old; }, 1800);
+  };
+  $$('[data-copy]').forEach(btn => btn.addEventListener('click', async () => confirmCopy(btn, await copyText(btn.dataset.copy))));
+
+  /* ---------- Leitor de cor (Canvas UI: Magnify + Motion Primitives: Text Scramble) ---------- */
+  const reader = $('[data-reader]');
+  if (reader) {
+    const canvas = $('[data-reader-canvas]', reader);
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const loupe = $('[data-loupe]', reader);
+    const lctx = $('canvas', loupe).getContext('2d');
+    const swatch = $('[data-swatch]', reader);
+    const hexEl = $('[data-hex]', reader);
+    const rgbEl = $('[data-rgb]', reader);
+    const nearEl = $('[data-near]', reader);
+    const waBtn = $('[data-reader-wa]', reader);
+    const copyHex = $('[data-copy-hex]', reader);
+    // Tons de referência ilustrativos (não são códigos de fabricante)
+    const TONES = [
+      ['Branco', '#f6f5f1'], ['Gelo', '#e9ebe8'], ['Pérola', '#ece6da'], ['Palha', '#e6d9b8'], ['Areia', '#d8c6a4'], ['Camurça', '#c4a57f'],
+      ['Bege parede', '#d9c4a5'], ['Concreto', '#b9b7b1'], ['Cinza médio', '#8f8d88'], ['Grafite', '#4a4a48'], ['Preto', '#1f1f1f'],
+      ['Laranja', '#e8561f'], ['Terracota', '#b5543a'], ['Telha', '#9c4a32'], ['Amarelo', '#f2c14e'], ['Mostarda', '#c99a2e'],
+      ['Verde oliva', '#7a7d4a'], ['Verde folha', '#4f7a43'], ['Verde água', '#9fd3c7'], ['Azul céu', '#9cc3e4'], ['Azul royal', '#2f4f9a'],
+      ['Azul marinho', '#203255'], ['Vermelho', '#b32025'], ['Vinho', '#6e2232'], ['Rosa claro', '#ecc6c9'], ['Lilás', '#b7a6cf'],
+      ['Marrom', '#6b4a33'], ['Madeira', '#9a6b43'], ['Creme', '#f0e3c4'], ['Salmão', '#f0a383']
+    ];
+    const toLab = hex => {
+      const n = parseInt(hex.slice(1), 16); let r = (n >> 16) / 255, g = (n >> 8 & 255) / 255, b = (n & 255) / 255;
+      [r, g, b] = [r, g, b].map(c => (c > 0.04045 ? ((c + 0.055) / 1.055) ** 2.4 : c / 12.92));
+      let x = (r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047, y = r * 0.2126 + g * 0.7152 + b * 0.0722, z = (r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883;
+      [x, y, z] = [x, y, z].map(c => (c > 0.008856 ? Math.cbrt(c) : 7.787 * c + 16 / 116));
+      return [116 * y - 16, 500 * (x - y), 200 * (y - z)];
+    };
+    const TONES_LAB = TONES.map(([n, h]) => [n, h, toLab(h)]);
+    // hexadecimal da cor (taste-skill-ignore: não é numeração de seção)
+    const hexOf = (r, g, b) => '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
+    const fmt1 = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1, minimumFractionDigits: 1 });
+    let img = null, point = { x: 0, y: 0 }, current = '#000000', scrambleTimer = null;
+
+    const scramble = (el, finalText) => {
+      if (!canMove) { el.textContent = finalText; return; }
+      const chars = '0123456789ABCDEF'; let frame = 0; clearInterval(scrambleTimer);
+      scrambleTimer = setInterval(() => {
+        frame++;
+        el.textContent = finalText.split('').map((c, i) => (i === 0 || i < frame - 1 ? c : chars[Math.floor(Math.random() * 16)])).join('');
+        if (frame > finalText.length + 1) { clearInterval(scrambleTimer); el.textContent = finalText; }
+      }, 32);
+    };
+    const read = (x, y, animate) => {
+      if (!img) return;
+      x = Math.max(2, Math.min(canvas.width - 3, Math.round(x))); y = Math.max(2, Math.min(canvas.height - 3, Math.round(y)));
+      point = { x, y };
+      const d = ctx.getImageData(x - 2, y - 2, 5, 5).data; let r = 0, g = 0, b = 0;
+      for (let i = 0; i < d.length; i += 4) { r += d[i]; g += d[i + 1]; b += d[i + 2]; }
+      r = Math.round(r / 25); g = Math.round(g / 25); b = Math.round(b / 25);
+      const hex = hexOf(r, g, b).toUpperCase();
+      current = hex;
+      swatch.style.backgroundColor = hex;
+      if (animate) scramble(hexEl, hex); else { clearInterval(scrambleTimer); hexEl.textContent = hex; }
+      rgbEl.textContent = `RGB ${r}, ${g}, ${b}`;
+      const lab = toLab(hex);
+      const near = TONES_LAB.map(([n, h, l]) => [n, h, Math.hypot(l[0] - lab[0], l[1] - lab[1], l[2] - lab[2])]).sort((a, b) => a[2] - b[2]).slice(0, 4);
+      nearEl.innerHTML = near.map(([n, h, de]) => `<li><button type="button" data-tone="${h}" aria-label="Copiar ${n}, ${h.toUpperCase()}"><i style="background:${h}"></i><span>${n}</span><small>ΔE ${fmt1.format(de)}</small></button></li>`).join('');
+      waBtn.href = `${WA}?text=${encodeURIComponent(`Olá! Usei o leitor de cor no site da Dekorar e encontrei a cor ${hex} (RGB ${r}, ${g}, ${b}). Quero tinta nesse tom.`)}`;
+    };
+    const drawLoupe = (cx, cy, rect) => {
+      const s = 12; lctx.imageSmoothingEnabled = false;
+      lctx.clearRect(0, 0, 140, 140);
+      lctx.drawImage(canvas, Math.round(cx - s / 2), Math.round(cy - s / 2), s, s, 0, 0, 140, 140);
+      const k = rect.width / canvas.width;
+      loupe.style.left = `${cx * k}px`; loupe.style.top = `${cy * k - 90}px`;
+    };
+    const load = src => new Promise((resolve, reject) => {
+      const im = new Image();
+      im.onload = () => {
+        const max = 900; const k = Math.min(1, max / im.naturalWidth);
+        canvas.width = Math.round(im.naturalWidth * k); canvas.height = Math.round(im.naturalHeight * k);
+        ctx.drawImage(im, 0, 0, canvas.width, canvas.height);
+        img = im; resolve();
+      };
+      im.onerror = reject;
+      im.src = src;
+    });
+    const fromEvent = e => { const r = canvas.getBoundingClientRect(); const k = canvas.width / r.width; return { x: (e.clientX - r.left) * k, y: (e.clientY - r.top) * k, r }; };
+    let dragging = false;
+    canvas.addEventListener('pointerdown', e => { dragging = true; canvas.setPointerCapture(e.pointerId); const p = fromEvent(e); read(p.x, p.y, true); drawLoupe(p.x, p.y, p.r); loupe.classList.add('is-on'); });
+    canvas.addEventListener('pointermove', e => {
+      if (e.pointerType !== 'mouse' && !dragging) return;
+      const p = fromEvent(e); drawLoupe(p.x, p.y, p.r); loupe.classList.add('is-on');
+      if (dragging || e.pointerType === 'mouse') read(p.x, p.y, false);
+    });
+    const end = () => { dragging = false; loupe.classList.remove('is-on'); };
+    canvas.addEventListener('pointerup', e => { end(); const p = fromEvent(e); read(p.x, p.y, true); });
+    canvas.addEventListener('pointerleave', end);
+    canvas.addEventListener('pointercancel', end);
+    canvas.addEventListener('keydown', e => {
+      const step = e.shiftKey ? 40 : 10;
+      const mv = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[e.key];
+      if (!mv) return;
+      e.preventDefault(); read(point.x + mv[0], point.y + mv[1], false);
+      const r = canvas.getBoundingClientRect(); drawLoupe(point.x, point.y, r); loupe.classList.add('is-on');
+      clearTimeout(canvas._t); canvas._t = setTimeout(() => loupe.classList.remove('is-on'), 900);
+    });
+    nearEl.addEventListener('click', async e => {
+      const b = e.target.closest('[data-tone]'); if (!b) return;
+      const ok = await copyText(b.dataset.tone.toUpperCase());
+      showToast(ok ? `Código ${b.dataset.tone.toUpperCase()} copiado` : 'Não deu para copiar');
+    });
+    copyHex.addEventListener('click', async () => confirmCopy(copyHex, await copyText(current)));
+    const sources = $$('[data-src]');
+    const choose = async (btn, xr, yr) => {
+      sources.forEach(s => s.setAttribute('aria-pressed', String(s === btn)));
+      await load(btn.dataset.src);
+      read(canvas.width * xr, canvas.height * yr, true);
+    };
+    const defaults = { 0: [0.42, 0.3], 1: [0.62, 0.3], 2: [0.6, 0.7] };
+    sources.forEach((s, i) => s.addEventListener('click', () => choose(s, ...(defaults[i] || [0.5, 0.5]))));
+    $('[data-reader-file]').addEventListener('change', async e => {
+      const f = e.target.files?.[0]; if (!f) return;
+      const url = URL.createObjectURL(f);
+      sources.forEach(s => s.setAttribute('aria-pressed', 'false'));
+      try { await load(url); read(canvas.width / 2, canvas.height / 2, true); showToast('Foto carregada. Toque na parede para ler a cor.'); }
+      catch { showToast('Não foi possível abrir essa imagem.'); }
+      finally { URL.revokeObjectURL(url); }
+    });
+    // carrega a primeira foto quando a seção chegar perto
+    const start = () => choose(sources[0], ...defaults[0]);
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); start(); } }, { rootMargin: '400px' });
+      io.observe(reader);
+    } else start();
+  }
+
+  /* ---------- Fancy Components: Element Along SVG Path (rota da caminhonete) ---------- */
+  const route = $('[data-route]');
+  if (route) {
+    const path = $('[data-route-path]', route);
+    const done = $('[data-route-done]', route);
+    const truck = $('[data-truck]', route);
+    const cities = $$('.city', route);
+    const L = path.getTotalLength();
+    done.style.strokeDasharray = `${L}`;
+    // posição de cada cidade ao longo da rota
+    const cityAt = cities.map(c => {
+      const m = c.getAttribute('transform').match(/translate\(([\d.]+) ([\d.]+)\)/);
+      const cx = +m[1], cy = +m[2]; let best = 0, bd = Infinity;
+      for (let s = 0; s <= L; s += 4) { const pt = path.getPointAtLength(s); const d = Math.hypot(pt.x - cx, pt.y - cy); if (d < bd) { bd = d; best = s; } }
+      return best;
+    });
+    const place = p => {
+      const s = L * p;
+      done.style.strokeDashoffset = `${L - s}`;
+      const a = path.getPointAtLength(Math.max(0, s - 1)), b = path.getPointAtLength(Math.min(L, s + 1));
+      const pt = path.getPointAtLength(s);
+      let ang = Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI;
+      const flip = Math.abs(ang) > 90;
+      truck.setAttribute('transform', `translate(${pt.x} ${pt.y - 12}) rotate(${flip ? ang + 180 : ang}) scale(${flip ? -1 : 1} 1)`);
+      cities.forEach((c, i) => c.classList.toggle('is-lit', s >= cityAt[i] - 2));
+    };
+    if (canMove) {
+      M.scroll(p => place(Math.min(1, Math.max(0, p))), { target: $('#entrega'), offset: ['start 70%', 'end 80%'] });
+    } else place(1);
+  }
+  $('[data-city-check]')?.addEventListener('submit', e => {
+    e.preventDefault();
+    const c = e.target.cidade.value.trim(); if (!c) return;
+    const url = `${WA}?text=${encodeURIComponent(`Olá! Vocês fazem entrega em ${c}?`)}`;
+    const w = window.open(url, '_blank', 'noopener'); if (!w) window.location.href = url;
+  });
+
+  /* ---------- Galeria ---------- */
   const photos = [
     ['fachada-entardecer', 'Fachada da loja de Lavras ao entardecer.'],
     ['estoque-prateleiras', 'Baldes de 18 e 20 litros separados por marca e linha.'],
@@ -89,51 +559,33 @@
     ['atendimento-suvinil', 'Cartela de cores Suvinil e mesa de atendimento.'],
     ['dkorar-balde', 'Dkorar Tintas Especiais, a marca própria da casa.'],
     ['fachada-entrega', 'Caminhonete de entrega em frente à loja de Lavras.'],
+    ['fachada-tres-coracoes', 'Fachada da loja de Três Corações.'],
     ['totem-noite', 'Totem da loja de Lavras à noite, com as marcas da casa.'],
   ];
   const lb = $('[data-lightbox]');
   if (lb && typeof lb.showModal === 'function') {
-    const img = $('[data-lightbox-img]', lb);
-    const cap = $('[data-lightbox-cap]', lb);
-    const count = $('[data-lightbox-count]', lb);
+    const im = $('[data-lightbox-img]', lb), cap = $('[data-lightbox-cap]', lb), cnt = $('[data-lightbox-count]', lb);
     let index = 0, opener = null;
-    const src = (name, size = 'md') => `assets/img/${name}-${size}.webp`;
+    const size = () => (window.innerWidth > 1100 ? 'lg' : 'md');
     const show = i => {
       index = (i + photos.length) % photos.length;
       const [name, text] = photos[index];
-      if (!reduce.matches) { img.classList.remove('is-swapping'); void img.offsetWidth; img.classList.add('is-swapping'); }
-      img.src = src(name, window.innerWidth > 1100 ? 'lg' : 'md');
-      img.alt = text;
-      cap.textContent = text;
-      count.textContent = `Foto ${index + 1} de ${photos.length}`;
-      new Image().src = src(photos[(index + 1) % photos.length][0], window.innerWidth > 1100 ? 'lg' : 'md');
+      if (!reduce) { im.classList.remove('is-swapping'); void im.offsetWidth; im.classList.add('is-swapping'); }
+      im.src = `assets/img/${name}-${size()}.webp`; im.alt = text; cap.textContent = text;
+      cnt.textContent = `Foto ${index + 1} de ${photos.length}`;
+      new Image().src = `assets/img/${photos[(index + 1) % photos.length][0]}-${size()}.webp`;
     };
-    $$('[data-gallery-open]').forEach(btn => btn.addEventListener('click', () => {
-      opener = btn;
-      show(Number(btn.dataset.galleryOpen) || 0);
-      lb.showModal();
-      $('[data-lightbox-next]', lb).focus();
-    }));
+    $$('[data-gallery-open]').forEach(b => b.addEventListener('click', () => { opener = b; show(Number(b.dataset.galleryOpen) || 0); lb.showModal(); $('[data-lightbox-next]', lb).focus(); }));
     $('[data-lightbox-prev]', lb).addEventListener('click', () => show(index - 1));
     $('[data-lightbox-next]', lb).addEventListener('click', () => show(index + 1));
     $('[data-lightbox-close]', lb).addEventListener('click', () => lb.close());
     lb.addEventListener('close', () => opener?.focus());
-    lb.addEventListener('keydown', e => {
-      if (e.key === 'ArrowRight') show(index + 1);
-      if (e.key === 'ArrowLeft') show(index - 1);
-    });
+    lb.addEventListener('keydown', e => { if (e.key === 'ArrowRight') show(index + 1); if (e.key === 'ArrowLeft') show(index - 1); });
     lb.addEventListener('click', e => { if (e.target === lb || e.target.classList.contains('lightbox-figure')) lb.close(); });
     let sx = null;
     lb.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
-    lb.addEventListener('touchend', e => {
-      if (sx === null) return;
-      const dx = e.changedTouches[0].clientX - sx;
-      if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
-      sx = null;
-    });
-  } else {
-    $$('[data-gallery-open]').forEach(btn => { btn.hidden = true; });
-  }
+    lb.addEventListener('touchend', e => { if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1)); sx = null; });
+  } else $$('[data-gallery-open]').forEach(b => { b.hidden = true; });
 
   $$('[data-year]').forEach(el => { el.textContent = String(new Date().getFullYear()); });
 })();
