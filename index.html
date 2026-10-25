@@ -39,10 +39,10 @@
       <nav class="nav" id="menu" aria-label="Navegação principal">
         <ul class="nav-list">
           <li><a href="#dkorar" data-nav>Dkorar</a></li>
-                    <li><a href="#leitor" data-nav>Leitor de cor</a></li>
+          <li><a href="produtos.html">Loja online</a></li>
           <li><a href="#entrega" data-nav>Entregas</a></li>
           <li><a href="#lojas" data-nav>Lojas</a></li>
-          <li><a href="produtos.html">Loja online</a></li>
+          <li><a href="#leitor" data-nav>Leitor de cor</a></li>
         </ul>
         <div class="nav-extra">
           <a class="btn btn-orange" href="produtos.html">Comprar online</a>
@@ -91,7 +91,7 @@
     <!-- Dkorar -->
     <section class="dkorar" id="dkorar" aria-labelledby="dkorar-title">
       <figure class="dkorar-plate">
-        <picture><source type="image/avif" srcset="assets/img/dkorar-balde-sm.avif 640w, assets/img/dkorar-balde-md.avif 1080w, assets/img/dkorar-balde-lg.avif 1800w" sizes="(max-width: 900px) 100vw, 50vw"><img class="plate-img" src="assets/img/dkorar-balde-md.webp" srcset="assets/img/dkorar-balde-sm.webp 640w, assets/img/dkorar-balde-md.webp 1080w, assets/img/dkorar-balde-lg.webp 1800w" sizes="(max-width: 900px) 100vw, 50vw" width="1800" height="2400" alt="Balde da Dkorar Tintas Especiais no estoque da Dekorar" loading="lazy" decoding="async"></picture>
+        <img class="plate-img dkorar-product" src="assets/source/produtos/product-dkorar.png" width="1132" height="1391" alt="Uma lata da Dkorar Tintas Especiais em fotografia de catálogo" loading="lazy" decoding="async">
       </figure>
       <div class="dkorar-page">
         <h2 id="dkorar-title" class="h2" data-reveal>Dkorar, a marca da casa</h2>
@@ -188,27 +188,6 @@
           </div>
           <a class="btn btn-orange btn-block" data-reader-wa href="https://wa.me/5535984336650" target="_blank" rel="noopener">Mandar essa cor para a loja</a>
         </div>
-      </div>
-    </section>
-
-    <!-- Por etapa -->
-    <section class="etapas" id="etapas" aria-labelledby="etapas-title">
-      <div class="sec-head">
-        <h2 id="etapas-title" class="h2" data-reveal>O que levar em cada etapa</h2>
-        <p data-reveal>Da parede crua ao acabamento. Na dúvida, a equipe vai até a obra para orientar.</p>
-      </div>
-      <div class="tabs tabs-steps" role="tablist" aria-label="Etapas da obra" data-tabs>
-        <span class="tabs-bg" aria-hidden="true"></span>
-        <button role="tab" id="tab-preparar" aria-controls="panel-preparar" aria-selected="true">Preparar</button>
-        <button role="tab" id="tab-tratar" aria-controls="panel-tratar" aria-selected="false" tabindex="-1">Tratar</button>
-        <button role="tab" id="tab-pintar" aria-controls="panel-pintar" aria-selected="false" tabindex="-1">Pintar</button>
-        <button role="tab" id="tab-acabar" aria-controls="panel-acabar" aria-selected="false" tabindex="-1">Acabar</button>
-      </div>
-      <div class="panels">
-        <div class="panel step-panel" role="tabpanel" id="panel-preparar" aria-labelledby="tab-preparar" data-step="massa-coral-25kg massa-dkorar dkorar-fundo-preparador"><p>Massa corrida para nivelar a parede e fundo preparador para a tinta aderir melhor.</p></div>
-        <div class="panel step-panel" role="tabpanel" id="panel-tratar" aria-labelledby="tab-tratar" data-step="mactra-seca-parede dkorar-borracha-liquida" hidden><p>Umidade, mofo, bolhas, salitre e fissuras precisam ser resolvidos antes da pintura.</p></div>
-        <div class="panel step-panel" role="tabpanel" id="panel-pintar" aria-labelledby="tab-pintar" data-step="dkorar-premium suvinil-rende-20l coral-rende-20l" hidden><p>Tinta para áreas internas e externas. A equipe ajuda a calcular quantos litros a obra precisa.</p></div>
-        <div class="panel step-panel" role="tabpanel" id="panel-acabar" aria-labelledby="tab-acabar" data-step="efeito-velvet revestliso-ceramfix dkorar-grafiato" hidden><p>Efeitos decorativos, texturas e revestimentos para o toque final.</p></div>
       </div>
     </section>
 
@@ -336,7 +315,10 @@
         <h2 id="pedido-title" class="h2" data-reveal>Seu orçamento</h2>
         <p data-reveal>Conte o que a obra precisa, escolha a loja e mande pelo WhatsApp. Para comprar direto, use a <a class="text-link" href="produtos.html">loja online</a>.</p>
         <div class="pedido-photo" data-reveal>
-          <picture><source type="image/avif" srcset="assets/img/totem-noite-sm.avif 640w, assets/img/totem-noite-md.avif 1080w, assets/img/totem-noite-lg.avif 1800w" sizes="(max-width: 900px) 100vw, 40vw"><img src="assets/img/totem-noite-md.webp" srcset="assets/img/totem-noite-sm.webp 640w, assets/img/totem-noite-md.webp 1080w, assets/img/totem-noite-lg.webp 1800w" sizes="(max-width: 900px) 100vw, 40vw" width="1800" height="2213" alt="Totem iluminado da Dekorar à noite, com as marcas Suvinil, Anjo, Dkorar, Deca, Ceusa, Leão e Lumavi" loading="lazy" decoding="async"></picture>
+          <picture data-store-picture>
+            <source type="image/avif" srcset="assets/img/fachada-entrega-sm.avif 640w, assets/img/fachada-entrega-md.avif 1080w, assets/img/fachada-entrega-lg.avif 1800w" sizes="(max-width: 900px) 100vw, 40vw" data-store-source>
+            <img src="assets/img/fachada-entrega-md.webp" srcset="assets/img/fachada-entrega-sm.webp 640w, assets/img/fachada-entrega-md.webp 1080w, assets/img/fachada-entrega-lg.webp 1800w" sizes="(max-width: 900px) 100vw, 40vw" width="1800" height="2454" alt="Fachada da loja Dekorar de Lavras, branca com moldura laranja, número 91" loading="lazy" decoding="async" data-store-photo>
+          </picture>
         </div>
       </div>
       <form class="ficha" data-builder action="https://wa.me/5535984336650" method="get" target="_blank">

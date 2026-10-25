@@ -183,6 +183,31 @@
 
   /* ---------- Ficha de orçamento (WhatsApp) ---------- */
   const form = $('[data-builder]');
+  const storePhoto = $('[data-store-photo]');
+  const storeSource = $('[data-store-source]');
+  const storePhotos = {
+    Lavras: {
+      webp: 'assets/img/fachada-entrega',
+      avif: 'assets/img/fachada-entrega',
+      alt: 'Fachada da loja Dekorar de Lavras, branca com moldura laranja, número 91'
+    },
+    'Três Corações': {
+      webp: 'assets/img/fachada-tres-coracoes',
+      avif: 'assets/img/fachada-tres-coracoes',
+      alt: 'Fachada da loja Dekorar de Três Corações, azul com letreiro amarelo da Dekorar e da Coral'
+    }
+  };
+  function updateStorePhoto() {
+    if (!form || !storePhoto) return;
+    const loja = $('input[name="loja"]:checked', form)?.value || 'Lavras';
+    const photo = storePhotos[loja] || storePhotos.Lavras;
+    storePhoto.classList.add('is-changing');
+    if (storeSource) storeSource.srcset = `${photo.avif}-sm.avif 640w, ${photo.avif}-md.avif 1080w, ${photo.avif}-lg.avif 1800w`;
+    storePhoto.src = `${photo.webp}-md.webp`;
+    storePhoto.srcset = `${photo.webp}-sm.webp 640w, ${photo.webp}-md.webp 1080w, ${photo.webp}-lg.webp 1800w`;
+    storePhoto.alt = photo.alt;
+    requestAnimationFrame(() => storePhoto.classList.remove('is-changing'));
+  }
   function message() {
     const loja = $('input[name="loja"]:checked', form)?.value || 'Lavras';
     const receber = $('input[name="receber"]:checked', form)?.value;
@@ -199,7 +224,7 @@
     $('[data-text]', form).value = t;
   }
   form?.addEventListener('input', compose);
-  form?.addEventListener('change', compose);
+  form?.addEventListener('change', () => { compose(); updateStorePhoto(); });
   form?.addEventListener('submit', e => {
     e.preventDefault();
     const url = `${WA}?text=${encodeURIComponent(message())}`;
@@ -207,6 +232,7 @@
     if (!w) window.location.href = url;
   });
   compose();
+  updateStorePhoto();
 
   /* ---------- Watermelon UI: Copy Confirm ---------- */
   const copyText = async text => {

@@ -3,7 +3,7 @@
 .nav-list a[aria-current="page"]::after { transform: scaleX(1); }
 .cart-btn::after { display: none; }
 .cart-btn { display: inline-flex !important; gap: 8px; }
-.cart-badge { display: grid; place-items: center; min-width: 26px; height: 26px; padding: 0 7px; border-radius: 999px; background: var(--ink); color: var(--paper); font-size: .85rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.cart-badge { display: inline; min-width: 0; height: auto; padding: 0; background: transparent; color: currentColor; font-size: .85rem; font-weight: 700; font-variant-numeric: tabular-nums; }
 .cart-badge.is-pop { animation: pop 300ms var(--ease-out); }
 .btn-ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); /* taste-skill-ignore: botão secundário */ }
 .btn-ghost:hover { background: var(--ink); color: var(--paper); }
