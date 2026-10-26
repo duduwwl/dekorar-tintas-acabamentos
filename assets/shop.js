@@ -38,7 +38,8 @@
   const BRANDS = ['Dkorar', 'Coral', 'Suvinil', 'Anjo', 'Ceramfix', 'Mactra'].filter(b => PRODUCTS.some(p => p.brand === b))
     .concat([...new Set(PRODUCTS.map(p => p.brand))].filter(b => !['Dkorar', 'Coral', 'Suvinil', 'Anjo', 'Ceramfix', 'Mactra'].includes(b)));
   const maxPrice = Math.ceil(Math.max(...PRODUCTS.map(p => p.price)) / 10) * 10;
-  const state = { q: '', cat: 'all', brands: new Set(), max: maxPrice, sort: 'relevance' };
+  const params = new URLSearchParams(location.search);
+  const state = { q: params.get('busca')?.trim() || '', cat: 'all', brands: new Set(), max: maxPrice, sort: 'relevance' };
 
   const catsEl = $('[data-cats]'), brandsEl = $('[data-brands]');
   catsEl.innerHTML = [['all', 'Todas', PRODUCTS.length], ...CATS.map(c => [c, c, PRODUCTS.filter(p => p.category === c).length])]
@@ -57,11 +58,13 @@
   });
   brandsEl.addEventListener('change', e => { const v = e.target.value; e.target.checked ? state.brands.add(v) : state.brands.delete(v); render(); });
   range.addEventListener('input', () => { state.max = Number(range.value); fmtMax(); render(); });
-  let qt; $('[data-search]').addEventListener('input', e => { clearTimeout(qt); qt = setTimeout(() => { state.q = e.target.value; render(); }, 120); });
+  const catalogSearch = $('[data-search]');
+  catalogSearch.value = state.q;
+  let qt; catalogSearch.addEventListener('input', e => { clearTimeout(qt); qt = setTimeout(() => { state.q = e.target.value; render(); }, 120); });
   $('[data-sort]').addEventListener('change', e => { state.sort = e.target.value; render(); });
   $$('[data-clear]').forEach(b => b.addEventListener('click', () => {
     Object.assign(state, { q: '', cat: 'all', max: maxPrice, sort: 'relevance' }); state.brands.clear();
-    $('[data-search]').value = ''; $('[data-sort]').value = 'relevance'; range.value = String(maxPrice); fmtMax();
+    catalogSearch.value = ''; $('[data-sort]').value = 'relevance'; range.value = String(maxPrice); fmtMax();
     $$('input', brandsEl).forEach(i => { i.checked = false; });
     $$('[data-cat]', catsEl).forEach(x => x.setAttribute('aria-pressed', String(x.dataset.cat === 'all')));
     render();
@@ -79,7 +82,7 @@
     let list = PRODUCTS.filter(p => (state.cat === 'all' || p.category === state.cat)
       && (!state.brands.size || state.brands.has(p.brand))
       && p.price <= state.max
-      && (!q || norm(`${p.name} ${p.brand} ${p.category} ${p.description} ${p.indication}`).includes(q)));
+      && (!q || norm(`${p.id} ${p.name} ${p.brand} ${p.category} ${p.description} ${p.indication}`).includes(q)));
     if (state.sort === 'price-asc') list.sort((a, b) => a.price - b.price);
     if (state.sort === 'price-desc') list.sort((a, b) => b.price - a.price);
     if (state.sort === 'name') list.sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
@@ -357,6 +360,6 @@
 
   /* ---------- Início ---------- */
   render(); saveCart(); sync();
-  const qp = new URLSearchParams(location.search).get('produto');
+  const qp = params.get('produto');
   if (qp && byId.has(qp)) openProduct(qp);
 })();
