@@ -30,6 +30,9 @@
   const toast = $('[data-toast]'); let tt;
   const showToast = msg => { toast.textContent = msg; toast.classList.add('is-on'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('is-on'), 2800); };
 
+  /* ---------- Filtros (só na página do catálogo) ---------- */
+  let render = () => {};
+  if ($('[data-grid]')) {
   /* ---------- Filtros ---------- */
   const CATS = [...new Set(PRODUCTS.map(p => p.category))];
   const BRANDS = ['Dkorar', 'Coral', 'Suvinil', 'Anjo', 'Ceramfix', 'Mactra'].filter(b => PRODUCTS.some(p => p.brand === b))
@@ -71,7 +74,7 @@
 
   const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   const grid = $('[data-grid]'), countEl = $('[data-count]'), emptyEl = $('[data-empty]');
-  function render() {
+  render = function () {
     const q = norm(state.q.trim());
     let list = PRODUCTS.filter(p => (state.cat === 'all' || p.category === state.cat)
       && (!state.brands.size || state.brands.has(p.brand))
@@ -91,13 +94,19 @@
         <div class="pcard-foot"><p class="price">${money.format(p.price)}<small>ou 6x de ${money.format(p.price / 6)}</small></p>
           <button class="add-cart${cart[p.id] ? ' is-added' : ''}" type="button" data-add="${p.id}">${cart[p.id] ? 'No carrinho' : 'Adicionar'}</button></div>
       </div></li>`).join('');
+  };
   }
 
   /* ---------- Carrinho ---------- */
   let cart = store.get('dekorar-cart', {});
   if (typeof cart !== 'object' || Array.isArray(cart)) cart = {};
-  Object.keys(cart).forEach(id => { if (!byId.has(id) || !(cart[id] > 0)) delete cart[id]; });
-  const items = () => Object.entries(cart).map(([id, qty]) => ({ p: byId.get(id), qty }));
+  // chave do carrinho: "id" ou "id@HEX@Nome da cor" (itens do sistema tintométrico)
+  const parseKey = k => { const [id, hex, name] = String(k).split('@'); return { id, color: hex ? { hex: `#${hex}`, name } : null }; };
+  Object.keys(cart).forEach(k => { if (!byId.has(parseKey(k).id) || !(cart[k] > 0)) delete cart[k]; });
+  const items = () => Object.entries(cart).map(([k, qty]) => {
+    const { id, color } = parseKey(k); const base = byId.get(id);
+    return { qty, color, p: color ? { ...base, id: k, name: `${base.name} · cor ${color.name}` } : base };
+  });
   const subtotal = () => items().reduce((s, { p, qty }) => s + p.price * qty, 0);
   const badge = $('[data-cart-count]');
   const saveCart = () => {
@@ -110,8 +119,10 @@
   const add = (id, qty = 1) => {
     cart[id] = Math.min(99, (cart[id] || 0) + qty); saveCart();
     $$(`[data-add="${id}"]`).forEach(b => { b.classList.add('is-added'); b.textContent = 'No carrinho'; });
-    showToast(`${byId.get(id).name} no carrinho`);
+    const { id: baseId, color } = parseKey(id);
+    showToast(`${byId.get(baseId).name}${color ? ` (${color.name})` : ''} no carrinho`);
   };
+  window.DekorarCart = { add, open: () => { renderCart(); cartDlg.showModal(); } };
   document.addEventListener('click', e => {
     const a = e.target.closest('[data-add]'); if (a) { add(a.dataset.add); return; }
     const o = e.target.closest('[data-open]'); if (o) openProduct(o.dataset.open);
@@ -120,8 +131,8 @@
   const cartDlg = $('[data-cart]'), lines = $('[data-cart-lines]');
   function renderCart() {
     const list = items();
-    lines.innerHTML = list.map(({ p, qty }) => `<li class="cart-line" data-id="${p.id}"><img src="${p.image}" alt="" loading="lazy">
-      <div><strong>${esc(p.name)}</strong><div class="row">
+    lines.innerHTML = list.map(({ p, qty, color }) => `<li class="cart-line" data-id="${esc(p.id)}"><img src="${p.image}" alt="" loading="lazy">
+      <div><strong>${color ? `<i class="cart-chip" style="background:${color.hex}"></i>` : ''}${esc(p.name)}</strong><div class="row">
         <div class="stepper" role="group" aria-label="Quantidade de ${esc(p.name)}"><button type="button" data-q="-1" aria-label="Diminuir">−</button><output>${qty}</output><button type="button" data-q="1" aria-label="Aumentar">+</button></div>
         <span class="price">${money.format(p.price * qty)}</span></div>
         <button class="remove" type="button" data-rm>Remover</button></div></li>`).join('');

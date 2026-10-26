@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="pt-BR" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f2f2f0">
+  <title>Sistema tintométrico | Dekorar Tintas e Acabamentos</title>
+  <meta name="description" content="Sistema tintométrico da Dekorar: escolha a tonalidade, a cor e a base, e receba a tinta preparada na cor que você quer.">
+  <link rel="canonical" href="https://duduwwl.github.io/dekorar-tintas-acabamentos/tintometrico.html">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="preload" href="assets/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/home.css?v=10">
+  <link rel="stylesheet" href="assets/shop.css?v=3">
+  <script>document.documentElement.classList.replace("no-js","js")</script>
+</head>
+<body class="shop-page">
+  <a class="skip-link" href="#tintometrico">Ir para o sistema tintométrico</a>
+
+  <header class="site-header is-scrolled" data-header>
+    <div class="bar">
+      <a class="brand" href="index.html" aria-label="Dekorar Tintas e Acabamentos, página inicial">
+        <img src="assets/img/logo-dekorar-dark.svg" width="576" height="126" alt="Dekorar Tintas e Acabamentos">
+      </a>
+      <nav class="nav" id="menu" aria-label="Navegação principal">
+        <ul class="nav-list">
+          <li><a href="index.html#dkorar">Dkorar</a></li>
+          <li><a href="produtos.html">Produtos</a></li>
+          <li><a href="tintometrico.html" aria-current="page">Tintométrico</a></li>
+          <li><a href="index.html#entrega">Entregas</a></li>
+          <li><a href="index.html#lojas">Lojas</a></li>
+          <li><a href="index.html#leitor">Leitor de cor</a></li>
+        </ul>
+        <div class="nav-extra">
+          <a href="https://wa.me/5535984336650" target="_blank" rel="noopener">WhatsApp (35) 98433-6650</a>
+          <a href="tel:+553521424468">(35) 2142-4468</a>
+        </div>
+      </nav>
+      <button class="btn btn-orange btn-sm header-cta cart-btn" type="button" data-open-cart>Carrinho <span class="cart-badge" data-cart-count>0</span></button>
+      <button class="menu-toggle" type="button" aria-controls="menu" aria-expanded="false"><span>Menu</span></button>
+    </div>
+  </header>
+
+  <main id="tintometrico">
+    <section class="tint" data-tint aria-labelledby="tint-title">
+      <div class="tint-hero">
+        <p class="eyebrow eyebrow-light">Sistema tintométrico</p>
+        <h1 class="h2" id="tint-title" data-tint-title>Escolha a tonalidade desejada</h1>
+        <p class="tint-lead" data-tint-lead>Selecione uma família de cores para encontrar a opção que você procura.</p>
+        <ol class="tint-dots" data-tint-dots aria-label="Etapas">
+          <li aria-current="step"><span>Tonalidade</span></li><li><span>Cor</span></li><li><span>Base</span></li><li><span>Quantidade</span></li>
+        </ol>
+      </div>
+
+      <div class="tint-panel" data-tint-step="0">
+        <ul class="tone-grid" data-tint-families></ul>
+        <p class="form-note tint-note">Cartela de referência. Na loja, a equipe confere a fórmula e mostra a amostra antes de preparar a tinta.</p>
+      </div>
+
+      <div class="tint-panel" data-tint-step="1" hidden>
+        <div class="tint-box">
+          <div class="tint-box-head"><div><p class="eyebrow">Tonalidade selecionada</p><h2 class="h3" data-tint-family-name>Azuis</h2></div><button class="text-link" type="button" data-back="0">Voltar ao início</button></div>
+          <div class="tone-chips" data-tint-chips role="group" aria-label="Trocar tonalidade"></div>
+        </div>
+        <label class="tint-search"><span>Buscar uma cor em todas as tonalidades</span><input type="search" placeholder="Digite o nome ou parte do nome da cor" autocomplete="off" data-tint-search></label>
+        <div class="tint-list-head"><h2 class="h3" data-tint-colors-title>Cores da tonalidade</h2><span class="count-pill" data-tint-count></span></div>
+        <ul class="color-grid" data-tint-colors aria-live="polite"></ul>
+      </div>
+
+      <div class="tint-panel" data-tint-step="2" hidden>
+        <div class="tint-box tint-box-row"><div data-tint-picked></div><button class="text-link" type="button" data-back="1">Escolher outra cor</button></div>
+        <div class="tint-list-head"><h2 class="h3">Bases disponíveis</h2></div>
+        <ul class="base-grid" data-tint-bases></ul>
+      </div>
+
+      <div class="tint-panel" data-tint-step="3" hidden>
+        <div class="tint-box tint-confirm" data-tint-confirm></div>
+        <div class="tint-back-row"><button class="text-link" type="button" data-back="2">Trocar a base</button><button class="text-link" type="button" data-back="1">Trocar a cor</button></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="assets/img/logo-dekorar-light.svg" width="576" height="126" alt="Dekorar Tintas e Acabamentos" loading="lazy">
+        <p>Materiais para pintura e acabamento em Lavras, Três Corações e região.</p>
+      </div>
+      <nav aria-label="Rodapé" class="footer-col">
+        <a href="index.html">Início</a><a href="index.html#dkorar">Dkorar</a><a href="index.html#leitor">Leitor de cor</a><a href="index.html#entrega">Entregas</a>
+      </nav>
+      <div class="footer-col">
+        <a href="https://wa.me/5535984336650" target="_blank" rel="noopener">WhatsApp (35) 98433-6650</a>
+        <a href="tel:+553521424468">(35) 2142-4468</a>
+        <a href="https://www.instagram.com/dekorar.acabamentos/" target="_blank" rel="noopener">@dekorar.acabamentos</a>
+      </div>
+      <div class="footer-col">
+        <a href="index.html#lojas">Lavras</a>
+        <a href="index.html#lojas">Três Corações</a>
+        <a href="gerencia.html">Área da equipe</a>
+      </div>
+    </div>
+    <p class="footer-legal">© <span data-year>2026</span> Dekorar Tintas e Acabamentos. Preços demonstrativos, sujeitos a confirmação.</p>
+  </footer>
+
+  <!-- Detalhe do produto -->
+  <dialog class="sheet product-sheet" data-product aria-labelledby="pd-name">
+    <div class="pd">
+      <div class="pd-media"><img data-pd-img src="assets/img/pack-dkorar.webp" alt="" width="800" height="800"></div>
+      <div class="pd-copy">
+        <p class="pd-brand" data-pd-brand></p>
+        <h2 class="h2" id="pd-name" data-pd-name></h2>
+        <p class="pd-price" data-pd-price></p>
+        <p data-pd-desc></p>
+        <dl class="pd-specs"><div><dt>Categoria</dt><dd data-pd-cat></dd></div><div><dt>Embalagem</dt><dd data-pd-pack></dd></div><div><dt>Indicação</dt><dd data-pd-use></dd></div></dl>
+        <div class="pd-buy">
+          <div class="stepper" role="group" aria-label="Quantidade"><button type="button" data-pd-q="-1" aria-label="Diminuir">−</button><output data-pd-qty>1</output><button type="button" data-pd-q="1" aria-label="Aumentar">+</button></div>
+          <button class="btn btn-orange" type="button" data-pd-add>Adicionar ao carrinho</button>
+        </div>
+      </div>
+      <button class="sheet-close" type="button" data-close aria-label="Fechar">Fechar</button>
+    </div>
+  </dialog>
+
+  <!-- Carrinho -->
+  <dialog class="drawer" data-cart aria-labelledby="cart-title">
+    <div class="drawer-inner">
+      <div class="drawer-head"><h2 id="cart-title" class="h3">Seu carrinho</h2><button class="sheet-close" type="button" data-close>Fechar</button></div>
+      <ul class="cart-lines" data-cart-lines></ul>
+      <div class="cart-empty-state" data-cart-empty><p>O carrinho está vazio.</p><button class="btn btn-ink" type="button" data-close>Ver produtos</button></div>
+      <div class="drawer-foot" data-cart-foot>
+        <div class="sum-line"><span>Subtotal</span><strong data-cart-subtotal>R$ 0,00</strong></div>
+        <p class="form-note">Frete ou retirada você escolhe no próximo passo.</p>
+        <button class="btn btn-orange btn-block" type="button" data-go-checkout>Finalizar compra</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Checkout -->
+  <dialog class="sheet checkout" data-checkout aria-labelledby="co-title">
+    <form class="co" data-co novalidate>
+      <div class="co-head">
+        <h2 id="co-title" class="h3">Finalizar compra</h2>
+        <ol class="co-steps" data-co-steps>
+          <li aria-current="step"><span>Dados</span></li><li><span>Entrega</span></li><li><span>Pagamento</span></li><li><span>Revisão</span></li>
+        </ol>
+        <button class="sheet-close" type="button" data-close>Fechar</button>
+      </div>
+      <div class="co-body">
+        <div class="co-main">
+          <!-- 1. Dados -->
+          <fieldset class="co-step" data-step-panel="0">
+            <legend class="co-legend">Seus dados</legend>
+            <div class="fields">
+              <label class="f f-wide"><span>Nome completo</span><input name="name" autocomplete="name" required minlength="3"></label>
+              <label class="f"><span>CPF</span><input name="cpf" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00" required data-mask="cpf"></label>
+              <label class="f"><span>Celular (WhatsApp)</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="(35) 90000-0000" required data-mask="phone"></label>
+              <label class="f f-wide"><span>E-mail</span><input name="email" type="email" autocomplete="email" required placeholder="voce@email.com"></label>
+            </div>
+          </fieldset>
+
+          <!-- 2. Entrega -->
+          <fieldset class="co-step" data-step-panel="1" hidden>
+            <legend class="co-legend">Como você quer receber?</legend>
+            <div class="choice-grid">
+              <label class="choice"><input type="radio" name="mode" value="pickup" checked><span><strong>Retirar na loja</strong><small>Grátis. Separamos o pedido para você.</small></span></label>
+              <label class="choice"><input type="radio" name="mode" value="delivery"><span><strong>Entrega com a caminhonete</strong><small>Taxa conforme a cidade.</small></span></label>
+            </div>
+            <div data-pickup>
+              <p class="co-sub">Loja para retirada</p>
+              <div class="choice-grid">
+                <label class="choice"><input type="radio" name="store" value="Lavras" checked><span><strong>Lavras</strong><small>Av. Dr. Francisco Martins de Andrade, 91, Ouro Preto</small></span></label>
+                <label class="choice"><input type="radio" name="store" value="Três Corações"><span><strong>Três Corações</strong><small>Av. Rei Pelé, 1265, Nossa Senhora Aparecida</small></span></label>
+              </div>
+            </div>
+            <div data-delivery hidden>
+              <div class="fields">
+                <label class="f"><span>CEP</span><input name="cep" inputmode="numeric" autocomplete="postal-code" placeholder="37200-000" data-mask="cep" data-req></label>
+                <label class="f"><span>Cidade</span>
+                  <select name="city" data-req>
+                    <option value="">Selecione</option>
+                    <option value="Lavras">Lavras (MG)</option>
+                    <option value="Três Corações">Três Corações (MG)</option>
+                    <option value="Varginha">Varginha (MG)</option>
+                    <option value="Outra">Outra cidade da região</option>
+                  </select>
+                </label>
+                <label class="f f-wide"><span>Rua / avenida</span><input name="street" autocomplete="address-line1" data-req></label>
+                <label class="f"><span>Número</span><input name="number" inputmode="numeric" autocomplete="off" data-req></label>
+                <label class="f"><span>Complemento (opcional)</span><input name="complement" autocomplete="address-line2"></label>
+                <label class="f"><span>Bairro</span><input name="district" autocomplete="address-level3" data-req></label>
+                <label class="f"><span>Ponto de referência (opcional)</span><input name="reference" autocomplete="off"></label>
+              </div>
+              <p class="form-note" data-fee-note>Escolha a cidade para ver a taxa de entrega.</p>
+            </div>
+          </fieldset>
+
+          <!-- 3. Pagamento -->
+          <fieldset class="co-step" data-step-panel="2" hidden>
+            <legend class="co-legend">Forma de pagamento</legend>
+            <p class="demo-note"><strong>Demonstração.</strong> Nenhum pagamento é processado e nenhum dado de cartão é enviado ou guardado.</p>
+            <div class="choice-grid pay-grid">
+              <label class="choice"><input type="radio" name="pay" value="pix" checked><span><strong>Pix</strong><small>5% de desconto (demonstrativo)</small></span></label>
+              <label class="choice"><input type="radio" name="pay" value="credit"><span><strong>Cartão de crédito</strong><small>Até 6x sem juros</small></span></label>
+              <label class="choice"><input type="radio" name="pay" value="debit"><span><strong>Cartão de débito</strong><small>À vista</small></span></label>
+              <label class="choice"><input type="radio" name="pay" value="boleto"><span><strong>Boleto</strong><small>Vence em 3 dias úteis</small></span></label>
+              <label class="choice"><input type="radio" name="pay" value="onsite"><span><strong>Pagar ao receber</strong><small>Na retirada ou na entrega</small></span></label>
+            </div>
+            <div class="pay-detail" data-pay="pix">
+              <div class="pix-demo" aria-hidden="true" data-pix-art></div>
+              <p>O QR Code aparece aqui depois da confirmação. Nesta demonstração ele é ilustrativo.</p>
+            </div>
+            <div class="pay-detail" data-pay="card" hidden>
+              <div class="fields">
+                <label class="f f-wide"><span>Número do cartão</span><input name="cc" inputmode="numeric" autocomplete="off" placeholder="0000 0000 0000 0000" data-mask="card" data-card></label>
+                <label class="f f-wide"><span>Nome impresso</span><input name="ccname" autocomplete="off" data-card></label>
+                <label class="f"><span>Validade</span><input name="ccexp" inputmode="numeric" autocomplete="off" placeholder="MM/AA" data-mask="exp" data-card></label>
+                <label class="f"><span>CVV</span><input name="cvv" inputmode="numeric" autocomplete="off" placeholder="123" maxlength="4" data-card></label>
+                <label class="f f-wide" data-installments><span>Parcelas</span><select name="inst" data-inst></select></label>
+              </div>
+            </div>
+            <div class="pay-detail" data-pay="boleto" hidden><p>O boleto é gerado depois da confirmação do pedido pela equipe.</p></div>
+            <div class="pay-detail" data-pay="onsite" hidden><p>Pague com Pix, cartão ou dinheiro na hora de retirar ou receber.</p></div>
+          </fieldset>
+
+          <!-- 4. Revisão -->
+          <div class="co-step" data-step-panel="3" hidden>
+            <p class="co-legend">Confira antes de confirmar</p>
+            <dl class="review" data-review></dl>
+            <label class="consent"><input type="checkbox" name="ok" required> <span>Entendo que esta é uma loja de demonstração e que a equipe vai confirmar preço, estoque e pagamento pelo WhatsApp.</span></label>
+          </div>
+
+          <p class="co-error" role="alert" data-co-error></p>
+          <div class="co-nav">
+            <button class="btn btn-plain btn-ghost" type="button" data-co-back hidden>Voltar</button>
+            <button class="btn btn-orange" type="button" data-co-next>Continuar</button>
+            <button class="btn btn-orange" type="submit" data-co-submit hidden>Confirmar pedido</button>
+          </div>
+        </div>
+
+        <aside class="co-summary" aria-label="Resumo do pedido">
+          <p class="co-sub">Resumo</p>
+          <ul class="sum-items" data-sum-items></ul>
+          <div class="sum-line"><span>Subtotal</span><span data-sum-sub>R$ 0,00</span></div>
+          <div class="sum-line"><span>Entrega</span><span data-sum-fee>Grátis</span></div>
+          <div class="sum-line" data-sum-disc-row hidden><span>Desconto Pix</span><span data-sum-disc>R$ 0,00</span></div>
+          <div class="sum-line sum-total"><span>Total</span><strong data-sum-total>R$ 0,00</strong></div>
+          <p class="form-note" data-sum-inst></p>
+        </aside>
+      </div>
+    </form>
+    <div class="co-done" data-co-done hidden>
+      <p class="done-mark" aria-hidden="true"></p>
+      <h2 class="h2" data-done-title>Pedido recebido</h2>
+      <p data-done-text></p>
+      <div class="actions">
+        <a class="btn btn-orange" data-done-wa href="https://wa.me/5535984336650" target="_blank" rel="noopener">Confirmar no WhatsApp</a>
+        <button class="btn btn-plain btn-ghost" type="button" data-close>Continuar comprando</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+
+  <script src="assets/catalog-data.js?v=3" defer></script>
+  <script src="assets/shop.js?v=2" defer></script>
+  <script src="assets/tint-data.js?v=1" defer></script>
+  <script src="assets/tint.js?v=1" defer></script>
+</body>
+</html>

@@ -480,5 +480,15 @@
     lb.addEventListener('touchend', e => { if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1)); sx = null; });
   } else $$('[data-gallery-open]').forEach(b => { b.hidden = true; });
 
+  /* ---------- Sistema tintométrico: atalhos por tonalidade ---------- */
+  const toneLinks = $('[data-tone-links]');
+  if (toneLinks && Array.isArray(window.TINT_FAMILIES)) {
+    toneLinks.innerHTML = window.TINT_FAMILIES.map(f => {
+      const step = Math.ceil(f.colors.length / 3);
+      const sw = f.colors.filter((_, i) => i % step === 0).slice(0, 3).map(([, h]) => `<i style="background:${h}"></i>`).join('');
+      return `<li><a class="tone-card" href="tintometrico.html?tonalidade=${encodeURIComponent(f.name)}"><span class="tone-swatch" aria-hidden="true">${sw}</span><strong>${esc(f.name)}</strong><small>Explorar cores</small></a></li>`;
+    }).join('');
+  }
+
   $$('[data-year]').forEach(el => { el.textContent = String(new Date().getFullYear()); });
 })();

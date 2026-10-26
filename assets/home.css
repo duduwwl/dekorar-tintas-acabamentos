@@ -123,7 +123,7 @@ p, dd { text-wrap: pretty; }
 .cover-index { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; background: var(--orange); }
 .cover-index a { display: grid; gap: 2px; padding: 16px 18px; min-height: 76px; background: var(--orange); color: var(--ink); text-decoration: none; transition: background-color 200ms ease, color 200ms ease; }
 .cover-index strong { font-weight: 600; font-stretch: 112%; }
-.cover-index span { font-size: var(--fs-small); color: #492014; transition: color 200ms ease; }
+.cover-index span { font-size: var(--fs-small); color: #2b130c; transition: color 200ms ease; }
 .cover-index a:hover { background: var(--ink); color: var(--paper); }
 .cover-index a:hover span { color: var(--on-dark-2); }
 .cover-plate { position: relative; overflow: hidden; background: var(--graphite); }
@@ -525,3 +525,30 @@ a.add { display: inline-flex; align-items: center; color: inherit; text-decorati
 .slider-track.logos { align-items: center; gap: clamp(48px, 6vw, 96px); padding-block: 28px; }
 .slider-track.logos img { width: auto; max-width: none; display: block; }
 @media (max-width: 600px) { .slider-track.logos img { transform: scale(.8); } }
+
+/* Rodada 5: toques da identidade Tintas Beira Rio (faixa em degradê vermelho, rótulos em serifa slab, cartões com sombra suave) */
+@font-face { font-family: "Roboto Slab"; src: url("fonts/roboto-slab-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
+:root { --slab: "Roboto Slab", Georgia, serif; --red: #c8161d; --red-text: #a3121a; --grad: linear-gradient(118deg, #5e0b10 0%, #a3121a 42%, #d7261f 72%, #e8561f 100%); /* taste-skill-ignore: degradê da identidade pedida pelo cliente */ }
+.eyebrow { font-family: var(--slab); font-size: .78rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--red-text); }
+.eyebrow-light { color: rgba(255, 255, 255, .86); }
+.feat-price, .card-price, .row-price { font-family: var(--slab); font-weight: 700; }
+.feat-media { border: 1px solid #ebeae6; box-shadow: 0 8px 24px rgba(30, 30, 29, .06); /* taste-skill-ignore: cartão */ }
+.feat-brand { font-family: var(--slab); letter-spacing: .04em; color: var(--red-text); }
+
+.tint-banner-sec { padding: var(--space) max(var(--m), env(safe-area-inset-left)) 0; }
+.tint-banner { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 32px clamp(32px, 4vw, 64px); align-items: center; padding: clamp(28px, 4vw, 56px); border-radius: 24px; background: var(--grad); color: #fff; overflow: hidden; position: relative; }
+.tint-banner::after { content: ""; position: absolute; right: -120px; top: -120px; width: 360px; height: 360px; border-radius: 50%; border: 48px solid rgba(255, 255, 255, .06); pointer-events: none; }
+.tint-banner-copy { display: grid; gap: 14px; position: relative; z-index: 1; }
+.tint-banner-copy > p:not(.eyebrow) { color: rgba(255, 255, 255, .88); max-width: 40ch; }
+.tint-step { display: inline-flex !important; align-items: center; gap: 10px; margin-top: 6px; font-family: var(--slab); font-size: .9rem; }
+.tint-step strong { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #fff; color: var(--red-text); }
+.tone-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; position: relative; z-index: 1; }
+.tone-card { display: grid; gap: 8px; width: 100%; height: 100%; padding: 12px 12px 14px; border: 0; border-radius: 16px; background: #fff; color: var(--ink); text-align: left; text-decoration: none; font: inherit; cursor: pointer; box-shadow: 0 8px 22px rgba(0, 0, 0, .12); /* taste-skill-ignore: cartão */ transition: transform 220ms var(--ease-out), box-shadow 220ms ease; }
+.tone-card:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(0, 0, 0, .18); /* taste-skill-ignore: cartão */ }
+.tone-card:active { transform: scale(.98); }
+.tone-swatch { display: grid; grid-template-columns: repeat(3, 1fr); height: 54px; border-radius: 10px; overflow: hidden; }
+.tone-swatch i { display: block; }
+.tone-card strong { font-size: .98rem; line-height: 1.2; }
+.tone-card small { font-family: var(--slab); font-size: .78rem; color: var(--red-text); }
+@media (max-width: 1180px) { .tint-banner { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { .tone-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; } .tint-banner { border-radius: 20px; } }
