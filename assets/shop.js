@@ -360,6 +360,6 @@
 
   /* ---------- Início ---------- */
   render(); saveCart(); sync();
-  const qp = params.get('produto');
+  const qp = new URLSearchParams(location.search).get('produto');
   if (qp && byId.has(qp)) openProduct(qp);
 })();

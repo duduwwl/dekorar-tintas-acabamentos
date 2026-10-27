@@ -277,3 +277,14 @@
   .base-card strong { font-size: .92rem; }
   .base-foot { flex-direction: column; align-items: stretch; text-align: center; }
 }
+
+/* Rodada 6: faixas no laranja da Dekorar */
+.shop-hero, .tint-hero { color: var(--ink); }
+.shop-hero .lead, .tint-lead { color: #2b130c; }
+.tint-hero::after { border-color: rgba(255, 255, 255, .14); }
+.tint-dots li { color: #2b130c; }
+.tint-dots li + li::before { background: rgba(30, 30, 29, .35); }
+.tint-dots li span::before { border-color: rgba(30, 30, 29, .45); color: var(--ink); }
+.tint-dots li.is-done span::before { background: rgba(30, 30, 29, .16); border-color: transparent; }
+.tint-dots li[aria-current="step"] { color: var(--ink); }
+.tint-dots li[aria-current="step"] span::before { background: var(--ink); color: #fff; border-color: var(--ink); }

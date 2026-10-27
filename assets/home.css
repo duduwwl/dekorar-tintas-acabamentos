@@ -567,3 +567,11 @@ a.add { display: inline-flex; align-items: center; color: inherit; text-decorati
 .tone-card small { font-family: var(--slab); font-size: .78rem; color: var(--red-text); }
 @media (max-width: 1180px) { .tint-banner { grid-template-columns: 1fr; } }
 @media (max-width: 600px) { .tone-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; } .tint-banner { border-radius: 20px; } }
+
+/* Rodada 6: faixas no laranja da Dekorar (texto escuro para contraste) */
+:root { --grad: var(--orange); --red-text: var(--orange-text); }
+.tint-banner { color: var(--ink); }
+.tint-banner::after { border-color: rgba(255, 255, 255, .14); }
+.tint-banner-copy > p:not(.eyebrow), .eyebrow-light { color: #2b130c; }
+.tint-step strong { background: var(--ink); color: #fff; }
+.tone-card small { color: var(--orange-text); }
