@@ -1,1 +1,367 @@
-@PLACEHOLDER_CSS@
+/* ==========================================================================
+   Camada visual 2026 — direção da referência aprovada pelo cliente (Henlau)
+   Aplicada SOBRE os tokens de home.css: nada aqui substitui a identidade
+   laranja/grafite da Dekorar, só muda forma: raio, sombra, pílula, faixa.
+   ========================================================================== */
+
+:root {
+  --r-lg: 26px;
+  --r-md: 18px;
+  --r-pill: 999px;
+  --shadow-1: 0 10px 30px rgba(30, 30, 29, .055);
+  --shadow-2: 0 20px 54px rgba(30, 30, 29, .13);
+  --soft: #f7f6f3;
+  --line: #e6e4de;
+}
+
+/* ---------- Botões e etiquetas em pílula ---------- */
+.btn {
+  border-radius: var(--r-pill);
+  font-weight: 620;
+  letter-spacing: -.005em;
+  transition: background 220ms var(--ease-out), color 220ms var(--ease-out), transform 180ms var(--ease-out), box-shadow 220ms ease;
+}
+.btn:hover { box-shadow: var(--shadow-2); }
+.btn-lg { border-radius: var(--r-pill); }
+.text-link { text-decoration-thickness: 1px; text-underline-offset: 4px; }
+
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: max-content;
+  max-width: 100%;
+  margin-bottom: 14px;
+  padding: 8px 20px;
+  border-radius: var(--r-pill);
+  background: rgba(232, 86, 31, .10);
+  color: var(--orange-text);
+  font-size: .8rem;
+  font-weight: 640;
+  letter-spacing: .01em;
+}
+.tag-pill::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--orange);
+}
+
+/* ---------- Faixa de categorias (campo cheio, como na referência) ---------- */
+.cat-rail {
+  background: var(--orange);
+  color: #2b130c;
+  padding-block: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.cat-rail::-webkit-scrollbar { display: none; }
+.cat-rail-track {
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 1.2vw, 18px);
+  width: max-content;
+  min-width: 100%;
+  margin: 0;
+  padding: 6px max(var(--m), env(safe-area-inset-left));
+  list-style: none;
+}
+.cat-rail-track a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: var(--r-pill);
+  color: #2b130c;
+  font-size: .92rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 200ms ease, color 200ms ease;
+}
+.cat-rail-track a:hover { background: rgba(255, 255, 255, .9); color: var(--orange-text); }
+.cat-rail-track svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; opacity: .55; transition: transform 200ms var(--ease-out), opacity 200ms ease; }
+.cat-rail-track a:hover svg { transform: translateX(4px); opacity: 1; }
+
+/* ---------- Faixa de marcas ---------- */
+.brands { padding-block: 10px; }
+
+/* ---------- Cartões: raio alto + sombra suave ---------- */
+.feat,
+.card,
+.vitrine-card,
+.tone-card,
+.dk-figure {
+  border-radius: var(--r-md) !important;
+}
+.feat { box-shadow: var(--shadow-1); }
+.feat:hover { box-shadow: var(--shadow-2); }
+.dk-figure {
+  padding: clamp(18px, 2.4vw, 28px);
+  background: var(--white);
+  box-shadow: var(--shadow-1);
+}
+
+/* ---------- Seções com respiro ---------- */
+.sec-head { max-width: 62ch; }
+.sec-head h2 { margin-bottom: 14px; }
+
+/* ==========================================================================
+   Empresas/lojas que confiam na Dkorar
+   ========================================================================== */
+.empresas {
+  padding: var(--space) max(var(--m), env(safe-area-inset-left));
+  background: var(--white);
+  border-block: 1px solid var(--line);
+}
+.empresas-inner { max-width: 1240px; margin: 0 auto; }
+.empresas .sec-head {
+  display: block;
+  margin: 0 auto clamp(34px, 5vw, 64px);
+  text-align: center;
+}
+.empresas .sec-head h2 {
+  font-size: clamp(1.9rem, 3.4vw, 3rem);
+  line-height: 1.06;
+  font-weight: 620;
+  letter-spacing: -.025em;
+}
+.empresas .sec-head h2 em {
+  font-style: normal;
+  color: var(--orange);
+}
+.empresas .sec-head p:not(.tag-pill) {
+  margin: 16px auto 0;
+  max-width: 60ch;
+  color: var(--ink-2);
+  font-size: var(--fs-lead);
+}
+.empresas .tag-pill { margin-inline: auto; }
+
+/* grade das logos — 3 colunas no desktop, 2 no tablet e no celular */
+.logo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: clamp(10px, 1.4vw, 18px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.logo-card {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 14px;
+  min-height: 150px;
+  padding: 22px 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: #fbfaf8;
+  text-align: center;
+  transition: border-color 220ms ease, background 220ms ease, transform 260ms var(--ease-out), box-shadow 260ms ease;
+}
+.logo-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(232, 86, 31, .38);
+  background: var(--white);
+  box-shadow: var(--shadow-2);
+}
+
+/* a logo entra como background: aceita PNG quadrado e wordmark sem distorcer */
+.logo-img {
+  display: block;
+  width: 100%;
+  height: 74px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transition: transform 300ms var(--ease-out);
+}
+.logo-card:hover .logo-img { transform: scale(1.05); }
+
+.logo-sub {
+  display: block;
+  margin-top: 6px;
+  font-size: .72rem;
+  font-weight: 520;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: #8a8781;
+  line-height: 1.35;
+}
+.logo-note {
+  margin: clamp(24px, 3vw, 34px) auto 0;
+  max-width: 68ch;
+  text-align: center;
+  font-size: .9rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.logo-note a { color: var(--orange-text); }
+
+@media (max-width: 1100px) {
+  .logo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .logo-card { min-height: 128px; }
+}
+@media (max-width: 620px) {
+  .logo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .logo-card { min-height: 112px; padding: 18px 12px 16px; gap: 10px; }
+  .logo-img { height: 56px; }
+  .logo-sub { font-size: .62rem; letter-spacing: .04em; }
+  .empresas .sec-head { text-align: left; }
+  .empresas .sec-head p:not(.tag-pill) { margin-inline: 0; }
+  .empresas .tag-pill { margin-inline: 0; }
+}
+
+/* ---------- Faixa de números (referência: 26 estados / 500 pontos) ---------- */
+.numeros {
+  padding: clamp(34px, 4.5vw, 56px) max(var(--m), env(safe-area-inset-left));
+  background: var(--orange);
+  color: #2b130c;
+}
+.numeros-inner {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 48px);
+  max-width: 1180px;
+  margin: 0 auto;
+  text-align: center;
+}
+.numero strong {
+  display: block;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.035em;
+  font-variant-numeric: tabular-nums;
+}
+.numero span {
+  display: block;
+  margin-top: 8px;
+  font-size: .88rem;
+  line-height: 1.35;
+  color: #4a2113;
+}
+.numero + .numero { border-left: 1px solid rgba(255, 255, 255, .34); }
+
+/* ---------- Cards de ação (referência: onde comprar / representantes) ---------- */
+.acao-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 22px);
+  max-width: 1180px;
+  margin: clamp(26px, 3.4vw, 44px) auto 0;
+}
+.acao-card {
+  display: grid;
+  align-content: space-between;
+  gap: 14px;
+  min-height: 172px;
+  padding: clamp(22px, 2.6vw, 32px);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--white);
+  color: inherit;
+  text-decoration: none;
+  box-shadow: var(--shadow-1);
+  transition: transform 260ms var(--ease-out), box-shadow 260ms ease, border-color 220ms ease;
+}
+.acao-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(232, 86, 31, .40);
+  box-shadow: var(--shadow-2);
+}
+.acao-card h3 { font-size: 1.12rem; font-weight: 640; letter-spacing: -.015em; }
+.acao-card p { font-size: .9rem; line-height: 1.5; color: var(--ink-2); }
+.acao-card .mais {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .86rem;
+  font-weight: 640;
+  color: var(--orange-text);
+}
+.acao-card .mais svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.9; transition: transform 220ms var(--ease-out); }
+.acao-card:hover .mais svg { transform: translateX(5px); }
+
+/* ---------- Seção de ação: respiro ---------- */
+.acao-sec {
+  padding: var(--space) max(var(--m), env(safe-area-inset-left));
+  background: var(--soft);
+  border-block: 1px solid var(--line);
+}
+.acao-sec .sec-head { text-align: center; margin-bottom: 0; display: block; }
+
+/* ---------- Depoimento (referência: relatos de clientes) ---------- */
+.relato {
+  padding: var(--space) max(var(--m), env(safe-area-inset-left));
+  background: var(--white);
+}
+.relato-inner { max-width: 1040px; margin: 0 auto; }
+.relato-head { text-align: center; margin-bottom: clamp(28px, 3.6vw, 46px); }
+.relato-head h2 {
+  font-size: clamp(1.75rem, 3vw, 2.6rem);
+  line-height: 1.08;
+  font-weight: 620;
+  letter-spacing: -.025em;
+}
+.relato-head h2 em { font-style: normal; color: var(--orange); }
+.relato-card {
+  display: grid;
+  gap: clamp(20px, 2.4vw, 30px);
+  padding: clamp(26px, 4vw, 52px);
+  border-radius: var(--r-lg);
+  background: var(--soft);
+  border: 1px solid var(--line);
+}
+.relato-card blockquote {
+  margin: 0;
+  font-size: clamp(1.1rem, 1.75vw, 1.5rem);
+  line-height: 1.45;
+  letter-spacing: -.015em;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+.relato-card blockquote::before { content: "\201C"; color: var(--orange); font-weight: 700; }
+.relato-card blockquote::after { content: "\201D"; color: var(--orange); font-weight: 700; }
+.relato-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 24px;
+}
+.relato-autor { display: flex; align-items: center; gap: 14px; }
+.relato-autor .avatar {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--orange);
+  color: #2b130c;
+  font-weight: 700;
+  font-size: .95rem;
+}
+.relato-autor strong { display: block; font-size: .95rem; font-weight: 640; }
+.relato-autor span { display: block; font-size: .84rem; color: var(--ink-2); }
+.relato-stars { display: inline-flex; gap: 3px; color: var(--orange); font-size: 1rem; letter-spacing: .06em; }
+
+@media (max-width: 1000px) {
+  .numeros-inner { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 12px; }
+  .numero + .numero { border-left: 0; }
+  .numero:nth-child(even) { border-left: 1px solid rgba(255, 255, 255, .34); }
+  .acao-cards { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  .acao-card { min-height: 0; }
+  .relato-autor .avatar { width: 40px; height: 40px; font-size: .85rem; }
+  .relato-card blockquote { font-size: 1.05rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-card, .feat, .btn, .logo-img { transition: none; }
+  .logo-card:hover, .logo-card:hover .logo-img { transform: none; }
+}
