@@ -169,14 +169,12 @@
   box-shadow: var(--shadow-2);
 }
 
-/* a logo entra como background: aceita PNG quadrado e wordmark sem distorcer */
+/* a logo entra como imagem: aceita PNG quadrado e wordmark sem distorcer */
 .logo-img {
   display: block;
   width: 100%;
   height: 74px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+  object-fit: contain;
   transition: transform 300ms var(--ease-out);
 }
 .logo-card:hover .logo-img { transform: scale(1.05); }
