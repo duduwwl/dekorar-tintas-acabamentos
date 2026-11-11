@@ -299,6 +299,13 @@
 }
 .relato-inner { max-width: 1040px; margin: 0 auto; }
 .relato-head { text-align: center; margin-bottom: clamp(28px, 3.6vw, 46px); }
+.relato-score { display: inline-flex; align-items: center; gap: 10px; margin-top: 18px; padding: 9px 16px; border-radius: 999px; background: var(--soft); border: 1px solid var(--line); color: var(--ink); text-decoration: none; }
+.relato-score:hover { border-color: var(--orange); }
+.relato-score-num { font-weight: 700; font-size: 1.1rem; }
+.relato-score-label { font-size: .86rem; color: var(--ink-2); }
+.relato-grid { list-style: none; margin: clamp(20px, 2.4vw, 30px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 2vw, 24px); }
+.relato-mini { padding: clamp(20px, 2.6vw, 32px); }
+.relato-mini blockquote { font-size: clamp(1rem, 1.3vw, 1.12rem); line-height: 1.5; }
 .relato-head h2 {
   font-size: clamp(1.75rem, 3vw, 2.6rem);
   line-height: 1.08;
@@ -352,6 +359,9 @@
   .numero + .numero { border-left: 0; }
   .numero:nth-child(even) { border-left: 1px solid rgba(255, 255, 255, .34); }
   .acao-cards { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .relato-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 620px) {
   .acao-card { min-height: 0; }

@@ -291,6 +291,8 @@ figure figcaption { font-size: var(--fs-small); color: var(--ink-2); }
 .route-line-done { fill: none; stroke: var(--orange); stroke-width: 4; stroke-linecap: round; }
 .city circle { fill: var(--ink); stroke: var(--paper); stroke-width: 4; transition: fill 200ms ease; }
 .city-far circle { fill: var(--paper); stroke: var(--ink); stroke-width: 3; }
+.city-mini circle { fill: var(--paper); stroke: #9a948c; stroke-width: 2.5; }
+.city-mini text { font-size: 15px; font-weight: 500; fill: var(--ink-2); font-stretch: 100%; }
 .city text { font-family: var(--font); font-stretch: 125%; font-size: 22px; font-weight: 600; fill: var(--ink); }
 .city.is-lit circle { fill: var(--orange); }
 .truck rect, .truck path { fill: var(--orange); stroke: var(--ink); stroke-width: 2; stroke-linejoin: round; }
