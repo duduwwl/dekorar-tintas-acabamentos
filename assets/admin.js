@@ -1,37 +1,13 @@
-const INVENTORY_KEY = 'dekorar-inventory';
-const ORDERS_KEY = 'dekorar-orders';
 const moneyAdmin = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
 const dateAdmin = new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'short',year:'numeric'});
 const dateShortAdmin = new Intl.DateTimeFormat('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit'});
 
-const defaultInventory = [
-  {id:'suvinil-rende-20l',name:'Suvinil Rende e Cobre Muito 20 L',category:'Tintas',image:'assets/product-suvinil.webp',lavras:18,tres:11,minimum:8},
-  {id:'coral-rende-20l',name:'Coral Rende Muito 20 L',category:'Tintas',image:'assets/product-coral-rende.webp',lavras:7,tres:4,minimum:12},
-  {id:'massa-coral-25kg',name:'Massa Corrida Coral 25 kg',category:'Preparação',image:'assets/product-massa-coral.webp',lavras:22,tres:17,minimum:10},
-  {id:'massa-dkorar',name:'Massa Corrida Dkorar',category:'Preparação',image:'assets/product-dkorar.webp',lavras:34,tres:28,minimum:16},
-  {id:'mactra-seca-parede',name:'Coral Mactra Seca Parede',category:'Tratamento',image:'assets/product-mactra.webp',lavras:3,tres:2,minimum:8},
-  {id:'revestliso-ceramfix',name:'Revestliso Ceramfix 15 kg',category:'Revestimentos',image:'assets/product-revestliso.webp',lavras:0,tres:3,minimum:6},
-  {id:'efeito-velvet',name:'Efeito Velvet Coral 2,1 L',category:'Decorativos',image:'assets/product-velvet.webp',lavras:6,tres:7,minimum:5}
-];
-
-const defaultOrders = [
-  {id:'DK204817',createdAt:'2026-10-14T13:42:00-03:00',customer:{name:'Marcos Almeida',phone:'(35) 98845-2103',city:'Lavras'},items:[{name:'Massa Corrida Coral 25 kg',qty:4,price:79.9},{name:'Suvinil Rende e Cobre Muito 20 L',qty:2,price:319.9}],delivery:'Entrega Dekorar',payment:'Pix',total:959.4,status:'Separação',shipping:{carrier:'Entrega Dekorar',tracking:'',estimate:'2026-10-15',notes:'Entregar no período da tarde.'}},
-  {id:'DK204652',createdAt:'2026-10-14T10:18:00-03:00',customer:{name:'Construtora Horizonte',phone:'(35) 99120-4488',city:'Três Corações'},items:[{name:'Massa Corrida Dkorar',qty:12,price:72.5}],delivery:'Entrega Dekorar',payment:'Cartão de crédito',total:870,status:'Pronto',shipping:{carrier:'Entrega Dekorar',tracking:'',estimate:'2026-10-15',notes:'Obra com acesso pela portaria lateral.'}},
-  {id:'DK203991',createdAt:'2026-10-13T16:06:00-03:00',customer:{name:'Ana Paula Souza',phone:'(35) 98402-7190',city:'Varginha'},items:[{name:'Coral Mactra Seca Parede',qty:2,price:149.9}],delivery:'Correios',payment:'Pix',total:329.7,status:'Enviado',shipping:{carrier:'Correios',tracking:'BR784512963MG',estimate:'2026-10-17',notes:''}},
-  {id:'DK203748',createdAt:'2026-10-13T09:25:00-03:00',customer:{name:'Roberto Mendes',phone:'(35) 99718-3302',city:'Lavras'},items:[{name:'Efeito Velvet Coral 2,1 L',qty:1,price:189.9}],delivery:'Retirada na Loja',payment:'Cartão de débito',total:189.9,status:'Novo',shipping:{carrier:'Retirada na Loja',tracking:'',estimate:'',notes:''}},
-  {id:'DK202964',createdAt:'2026-10-12T11:15:00-03:00',customer:{name:'Fernanda Lima',phone:'(35) 99264-5501',city:'Três Corações'},items:[{name:'Coral Rende Muito 20 L',qty:1,price:329.9}],delivery:'Retirada na Loja',payment:'Pix',total:329.9,status:'Entregue',shipping:{carrier:'Retirada na Loja',tracking:'',estimate:'2026-10-12',notes:''}}
-];
-
-function readStorage(key,fallback) {
-  try { const saved=JSON.parse(localStorage.getItem(key)); return Array.isArray(saved)?saved:fallback; }
-  catch { return fallback; }
-}
-function clone(value) { return JSON.parse(JSON.stringify(value)); }
 function escapeHtml(value) { return String(value??'').replace(/[&<>'"]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char])); }
 function safeNumber(value) { return Math.max(0,Number.parseInt(value,10)||0); }
 
-let inventory=readStorage(INVENTORY_KEY,clone(defaultInventory));
-let orders=readStorage(ORDERS_KEY,clone(defaultOrders));
+let inventory=[];
+let orders=[];
+const DB=window.DekorarDB;
 const statusClasses={'Novo':'new','Separação':'packing','Pronto':'ready','Enviado':'shipping','Entregue':'done','Cancelado':'cancelled'};
 const viewTitles={overview:'Visão Geral',inventory:'Estoque',orders:'Pedidos',shipping:'Envios & Retiradas'};
 const orderDialog=document.querySelector('#orderDialog');
@@ -40,8 +16,11 @@ const orderForm=document.querySelector('[data-order-form]');
 const productForm=document.querySelector('[data-product-form]');
 const toastAdmin=document.querySelector('[data-admin-toast]');
 
-function saveInventory() { localStorage.setItem(INVENTORY_KEY,JSON.stringify(inventory)); renderAll(); }
-function saveOrders() { localStorage.setItem(ORDERS_KEY,JSON.stringify(orders)); renderAll(); }
+// Persistência agora é no banco (ver chamadas DB.adminSetStock / DB.adminUpdateOrder).
+// Estas funções só re-renderizam a partir do estado em memória.
+function saveInventory() { renderAll(); }
+function saveOrders() { renderAll(); }
+function dbFail(e) { if(String(e&&e.message).includes('401')){ requireLogin(); return; } showAdminToast('Erro ao salvar no banco.'); }
 function stockState(product) {
   const total=safeNumber(product.lavras)+safeNumber(product.tres);
   if(total===0) return {key:'out',label:'Sem Estoque'};
@@ -131,13 +110,13 @@ document.querySelectorAll('[data-go-view]').forEach(button=>button.addEventListe
 document.addEventListener('click',event=>{
   const manage=event.target.closest('[data-manage-order]'); if(manage) openOrder(manage.dataset.manageOrder);
   const change=event.target.closest('[data-stock-change]');
-  if(change){ const product=inventory.find(item=>item.id===change.dataset.stockChange); if(product){ const store=change.dataset.store; product[store]=Math.max(0,safeNumber(product[store])+Number(change.dataset.delta)); saveInventory(); showAdminToast('Estoque atualizado.'); } }
+  if(change){ const product=inventory.find(item=>item.id===change.dataset.stockChange); if(product){ const store=change.dataset.store; product[store]=Math.max(0,safeNumber(product[store])+Number(change.dataset.delta)); saveInventory(); DB.adminSetStock(product.id,store,product[store]).then(()=>showAdminToast('Estoque atualizado.')).catch(dbFail); } }
   const reset=event.target.closest('[data-reset-stock]');
-  if(reset){ const product=inventory.find(item=>item.id===reset.dataset.resetStock); if(product&&window.confirm(`Zerar o estoque de ${product.name} nas duas lojas?`)){ product.lavras=0; product.tres=0; saveInventory(); showAdminToast('Estoque zerado.'); } }
+  if(reset){ const product=inventory.find(item=>item.id===reset.dataset.resetStock); if(product&&window.confirm(`Zerar o estoque de ${product.name} nas duas lojas?`)){ product.lavras=0; product.tres=0; saveInventory(); Promise.all([DB.adminSetStock(product.id,'lavras',0),DB.adminSetStock(product.id,'tres',0)]).then(()=>showAdminToast('Estoque zerado.')).catch(dbFail); } }
 });
 document.addEventListener('change',event=>{
   const input=event.target.closest('[data-stock-input]');
-  if(input){ const product=inventory.find(item=>item.id===input.dataset.stockInput); if(product){ product[input.dataset.store]=safeNumber(input.value); saveInventory(); showAdminToast('Estoque atualizado.'); } }
+  if(input){ const product=inventory.find(item=>item.id===input.dataset.stockInput); if(product){ const store=input.dataset.store; product[store]=safeNumber(input.value); saveInventory(); DB.adminSetStock(product.id,store,product[store]).then(()=>showAdminToast('Estoque atualizado.')).catch(dbFail); } }
 });
 document.querySelector('[data-stock-search]').addEventListener('input',renderInventory);
 document.querySelector('[data-stock-filter]').addEventListener('change',renderInventory);
@@ -151,17 +130,48 @@ orderForm.addEventListener('submit',event=>{
   event.preventDefault();
   const data=new FormData(orderForm); const order=orders.find(item=>item.id===data.get('orderId')); if(!order) return;
   order.status=data.get('status'); order.shipping={carrier:data.get('carrier'),tracking:data.get('tracking').trim(),estimate:data.get('estimate'),notes:data.get('notes').trim()};
-  saveOrders(); orderDialog.close(); showAdminToast('Pedido e envio atualizados.');
+  saveOrders(); orderDialog.close();
+  DB.adminUpdateOrder(order._id,order).then(()=>showAdminToast('Pedido e envio atualizados.')).catch(dbFail);
 });
 productForm.addEventListener('submit',event=>{
   event.preventDefault(); if(!productForm.reportValidity()) return;
-  const data=new FormData(productForm); const name=data.get('name').trim();
-  inventory.push({id:`custom-${Date.now()}`,name,category:data.get('category'),image:'assets/product-dkorar.webp',lavras:safeNumber(data.get('lavras')),tres:safeNumber(data.get('tres')),minimum:safeNumber(data.get('minimum'))});
-  saveInventory(); productForm.reset(); productForm.elements.minimum.value='5'; productForm.elements.lavras.value='0'; productForm.elements.tres.value='0'; productDialog.close(); showAdminToast('Produto cadastrado no estoque.');
+  const data=new FormData(productForm);
+  const p={name:data.get('name').trim(),category:data.get('category'),lavras:safeNumber(data.get('lavras')),tres:safeNumber(data.get('tres')),minimum:safeNumber(data.get('minimum'))};
+  DB.adminAddProduct(p).then(id=>{
+    inventory.push({id,name:p.name,category:p.category,image:'assets/img/dkorar-lata-cutout.webp',lavras:p.lavras,tres:p.tres,minimum:p.minimum});
+    saveInventory(); showAdminToast('Produto cadastrado no estoque.');
+  }).catch(dbFail);
+  productForm.reset(); productForm.elements.minimum.value='5'; productForm.elements.lavras.value='0'; productForm.elements.tres.value='0'; productDialog.close();
 });
 
 const now=new Date();
 document.querySelector('[data-admin-date]').textContent=dateAdmin.format(now);
 document.querySelector('[data-admin-time]').textContent=new Intl.DateTimeFormat('pt-BR',{hour:'2-digit',minute:'2-digit'}).format(now);
-setView(location.hash.slice(1)||'overview');
-renderAll();
+
+/* ---------- Login do painel (Supabase Auth) ---------- */
+const loginOverlay=document.querySelector('[data-login-overlay]');
+const loginForm=document.querySelector('[data-login-form]');
+const loginError=document.querySelector('[data-login-error]');
+function requireLogin(){ if(loginOverlay) loginOverlay.hidden=false; }
+async function loadData(){
+  inventory=await DB.adminGetInventory();
+  orders=await DB.adminGetOrders();
+}
+async function start(){
+  if(loginOverlay) loginOverlay.hidden=true;
+  try{ await loadData(); }
+  catch(e){ if(String(e&&e.message).includes('401')){ requireLogin(); return; } showAdminToast('Erro ao carregar do banco.'); }
+  setView(location.hash.slice(1)||'overview');
+  renderAll();
+}
+loginForm?.addEventListener('submit',async event=>{
+  event.preventDefault(); if(loginError) loginError.textContent='';
+  const data=new FormData(loginForm);
+  const btn=loginForm.querySelector('button[type=submit]'); if(btn) btn.disabled=true;
+  try{ await DB.signIn(data.get('email').trim(),data.get('password')); await start(); }
+  catch{ if(loginError) loginError.textContent='E-mail ou senha incorretos.'; }
+  finally{ if(btn) btn.disabled=false; }
+});
+document.querySelector('[data-logout]')?.addEventListener('click',()=>{ DB.signOut(); location.reload(); });
+
+if(DB && DB.isAuthed()) start(); else requireLogin();

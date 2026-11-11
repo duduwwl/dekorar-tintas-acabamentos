@@ -22,6 +22,7 @@
         <a href="produtos.html">Catálogo</a>
         <a href="gerencia.html" aria-current="page">Gerência</a>
         <span class="admin-user"><span aria-hidden="true">D</span> Equipe Dekorar</span>
+        <button class="text-action" type="button" data-logout>Sair</button>
       </div>
     </nav>
   </header>
@@ -36,7 +37,7 @@
           <button type="button" data-admin-tab="orders"><span aria-hidden="true">□</span> Pedidos <span class="nav-badge" data-open-count>0</span></button>
           <button type="button" data-admin-tab="shipping"><span aria-hidden="true">⌁</span> Envios <span class="nav-badge" data-shipping-count>0</span></button>
         </nav>
-        <div class="admin-local-note"><span aria-hidden="true">●</span><div><strong>Modo Local</strong><small>Dados salvos neste navegador.</small></div></div>
+        <div class="admin-local-note"><span aria-hidden="true">●</span><div><strong>Conectado ao banco</strong><small>Estoque e pedidos no Supabase.</small></div></div>
       </aside>
 
       <div class="admin-content">
@@ -111,7 +112,33 @@
   </dialog>
 
   <div class="toast" role="status" aria-live="polite" data-admin-toast></div>
+
+  <!-- Login do painel (Supabase Auth) -->
+  <div class="admin-login" data-login-overlay>
+    <form class="admin-login-card" data-login-form>
+      <img src="assets/img/logo-dekorar-dark.svg" width="576" height="126" alt="Dekorar" style="height:40px;width:auto">
+      <h2>Área da equipe</h2>
+      <p>Entre para gerenciar estoque e pedidos.</p>
+      <label>E-mail<input class="field" type="email" name="email" autocomplete="username" required></label>
+      <label>Senha<input class="field" type="password" name="password" autocomplete="current-password" required></label>
+      <p class="admin-login-error" data-login-error role="alert"></p>
+      <button class="btn btn-primary" type="submit">Entrar</button>
+    </form>
+  </div>
+  <style>
+    .admin-login{position:fixed;inset:0;z-index:999;display:grid;place-items:center;padding:24px;background:var(--paper,#f2f2f0)}
+    .admin-login[hidden]{display:none}
+    .admin-login-card{display:flex;flex-direction:column;gap:12px;width:100%;max-width:360px;padding:28px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.14)}
+    .admin-login-card h2{margin:6px 0 0}
+    .admin-login-card p{margin:0;color:#55534f;font-size:.95rem}
+    .admin-login-card label{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.9rem}
+    .admin-login-card .field{font-weight:400}
+    .admin-login-card .btn{margin-top:4px}
+    .admin-login-error{color:#b13e12;min-height:1.2em;font-weight:600}
+    .admin-login-error:empty{min-height:0}
+  </style>
+  <script src="assets/db.js?v=2"></script>
   <script src="assets/site.js"></script>
-  <script src="assets/admin.js"></script>
+  <script src="assets/admin.js?v=2"></script>
 </body>
 </html>

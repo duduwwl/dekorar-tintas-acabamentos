@@ -57,7 +57,98 @@
     if (!r.ok) throw new Error(`leads ${r.status}`);
   }
 
-  window.DekorarDB = { getProducts, createOrder, createLead };
+  /* ---------- Autenticação do admin (Supabase Auth / GoTrue) ---------- */
+  const TOKEN_KEY = 'dekorar-admin-token';
+  const token = () => { try { return sessionStorage.getItem(TOKEN_KEY) || ''; } catch { return ''; } };
+  const authHeaders = (extra) => headers({ Authorization: `Bearer ${token()}`, ...extra });
+
+  async function signIn(email, password) {
+    const r = await fetch(`${URL}/auth/v1/token?grant_type=password`, {
+      method: 'POST', headers: { apikey: KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const j = await r.json();
+    if (!r.ok || !j.access_token) throw new Error(j.error_description || j.msg || 'login');
+    try { sessionStorage.setItem(TOKEN_KEY, j.access_token); } catch { /* sem sessão */ }
+    return true;
+  }
+  const signOut = () => { try { sessionStorage.removeItem(TOKEN_KEY); } catch { /* */ } };
+  const isAuthed = () => !!token();
+
+  /* ---------- Dados do painel admin (exige login) ---------- */
+  async function adminGetInventory() {
+    const r = await fetch(`${rest}/inventory?select=product_id,store_id,quantity,minimum,products(name,category,image)`, { headers: authHeaders() });
+    if (!r.ok) throw new Error(`inventory ${r.status}`);
+    const rows = await r.json();
+    const map = new Map();
+    rows.forEach(x => {
+      const p = map.get(x.product_id) || { id: x.product_id, name: x.products?.name || x.product_id, category: x.products?.category || '', image: x.products?.image || '', lavras: 0, tres: 0, minimum: x.minimum };
+      p[x.store_id] = x.quantity;
+      p.minimum = x.minimum;
+      map.set(x.product_id, p);
+    });
+    return [...map.values()];
+  }
+
+  async function adminGetOrders() {
+    const cols = 'id,order_number,created_at,customer_name,customer_phone,customer_city,delivery,payment,total,status,shipping_carrier,shipping_tracking,shipping_estimate,shipping_notes,order_items(product_name,qty,unit_price)';
+    const r = await fetch(`${rest}/orders?select=${cols}&order=created_at.desc`, { headers: authHeaders() });
+    if (!r.ok) throw new Error(`orders ${r.status}`);
+    const rows = await r.json();
+    return rows.map(o => ({
+      _id: o.id,
+      id: o.order_number || o.id,
+      createdAt: o.created_at,
+      customer: { name: o.customer_name, phone: o.customer_phone, city: o.customer_city },
+      items: (o.order_items || []).map(it => ({ name: it.product_name, qty: it.qty, price: Number(it.unit_price) })),
+      delivery: o.delivery, payment: o.payment, total: Number(o.total), status: o.status,
+      shipping: { carrier: o.shipping_carrier || '', tracking: o.shipping_tracking || '', estimate: o.shipping_estimate || '', notes: o.shipping_notes || '' }
+    }));
+  }
+
+  async function adminSetStock(productId, store, quantity) {
+    const r = await fetch(`${rest}/inventory?product_id=eq.${encodeURIComponent(productId)}&store_id=eq.${store}`, {
+      method: 'PATCH', headers: authHeaders({ Prefer: 'return=minimal' }),
+      body: JSON.stringify({ quantity, updated_at: new Date().toISOString() })
+    });
+    if (!r.ok) throw new Error(`stock ${r.status}`);
+  }
+
+  async function adminUpdateOrder(uuid, o) {
+    const r = await fetch(`${rest}/orders?id=eq.${uuid}`, {
+      method: 'PATCH', headers: authHeaders({ Prefer: 'return=minimal' }),
+      body: JSON.stringify({
+        status: o.status,
+        shipping_carrier: o.shipping?.carrier || null,
+        shipping_tracking: o.shipping?.tracking || null,
+        shipping_estimate: o.shipping?.estimate || null,
+        shipping_notes: o.shipping?.notes || null
+      })
+    });
+    if (!r.ok) throw new Error(`order ${r.status}`);
+  }
+
+  async function adminAddProduct(p) {
+    const id = `custom-${Date.now()}`;
+    const rp = await fetch(`${rest}/products`, {
+      method: 'POST', headers: authHeaders({ Prefer: 'return=minimal' }),
+      body: JSON.stringify({ id, brand: 'Diversos', name: p.name, category: p.category, price: 0, image: 'assets/img/dkorar-lata-cutout.webp', active: true })
+    });
+    if (!rp.ok) throw new Error(`product ${rp.status}`);
+    const inv = [
+      { product_id: id, store_id: 'lavras', quantity: p.lavras, minimum: p.minimum },
+      { product_id: id, store_id: 'tres', quantity: p.tres, minimum: p.minimum }
+    ];
+    const ri = await fetch(`${rest}/inventory`, { method: 'POST', headers: authHeaders({ Prefer: 'return=minimal' }), body: JSON.stringify(inv) });
+    if (!ri.ok) throw new Error(`product-inv ${ri.status}`);
+    return id;
+  }
+
+  window.DekorarDB = {
+    getProducts, createOrder, createLead,
+    signIn, signOut, isAuthed,
+    adminGetInventory, adminGetOrders, adminSetStock, adminUpdateOrder, adminAddProduct
+  };
 
   /* ---------- Boot: hidrata o catálogo do banco e só então carrega os consumidores ----------
      data-consumer no próprio <script> lista os scripts a injetar depois dos produtos. */
