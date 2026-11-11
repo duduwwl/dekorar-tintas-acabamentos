@@ -11,7 +11,7 @@
   <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
   <link rel="preload" href="assets/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/home.css?v=12">
+  <link rel="stylesheet" href="assets/home.css?v=15">
   <link rel="stylesheet" href="assets/shop.css?v=4">
   <script>document.documentElement.classList.replace("no-js","js")</script>
 </head>
@@ -130,7 +130,7 @@
   <!-- Detalhe do produto -->
   <dialog class="sheet product-sheet" data-product aria-labelledby="pd-name">
     <div class="pd">
-      <div class="pd-media"><img data-pd-img src="assets/img/pack-dkorar.webp" alt="" width="800" height="800"></div>
+      <div class="pd-media"><img data-pd-img src="https://dekorar-site.vercel.app/assets/img/pack-dkorar-balde.webp?v=3" alt="" width="800" height="800"></div>
       <div class="pd-copy">
         <p class="pd-brand" data-pd-brand></p>
         <h2 class="h2" id="pd-name" data-pd-name></h2>
@@ -172,7 +172,6 @@
       </div>
       <div class="co-body">
         <div class="co-main">
-          <!-- 1. Dados -->
           <fieldset class="co-step" data-step-panel="0">
             <legend class="co-legend">Seus dados</legend>
             <div class="fields">
@@ -183,7 +182,6 @@
             </div>
           </fieldset>
 
-          <!-- 2. Entrega -->
           <fieldset class="co-step" data-step-panel="1" hidden>
             <legend class="co-legend">Como você quer receber?</legend>
             <div class="choice-grid">
@@ -219,7 +217,6 @@
             </div>
           </fieldset>
 
-          <!-- 3. Pagamento -->
           <fieldset class="co-step" data-step-panel="2" hidden>
             <legend class="co-legend">Forma de pagamento</legend>
             <p class="demo-note"><strong>Demonstração.</strong> Nenhum pagamento é processado e nenhum dado de cartão é enviado ou guardado.</p>
@@ -247,7 +244,6 @@
             <div class="pay-detail" data-pay="onsite" hidden><p>Pague com Pix, cartão ou dinheiro na hora de retirar ou receber.</p></div>
           </fieldset>
 
-          <!-- 4. Revisão -->
           <div class="co-step" data-step-panel="3" hidden>
             <p class="co-legend">Confira antes de confirmar</p>
             <dl class="review" data-review></dl>
@@ -286,7 +282,7 @@
 
   <div class="toast" role="status" aria-live="polite" data-toast></div>
 
-  <script src="assets/catalog-data.js?v=4" defer></script>
+  <script src="assets/catalog-data.js?v=9" defer></script>
   <script src="assets/nav-search.js?v=1" defer></script>
   <script src="assets/shop.js?v=4" defer></script>
 </body>
