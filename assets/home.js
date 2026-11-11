@@ -227,6 +227,9 @@
   form?.addEventListener('change', () => { compose(); updateStorePhoto(); });
   form?.addEventListener('submit', e => {
     e.preventDefault();
+    // registra o interesse como lead (não bloqueia a abertura do WhatsApp)
+    const loja = $('input[name="loja"]:checked', form)?.value || 'Lavras';
+    window.DekorarDB?.createLead({ message: message(), source: `orcamento-${loja}` }).catch(() => {});
     const url = `${WA}?text=${encodeURIComponent(message())}`;
     const w = window.open(url, '_blank', 'noopener');
     if (!w) window.location.href = url;

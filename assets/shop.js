@@ -346,6 +346,8 @@
     };
     const orders = store.get('dekorar-orders', []);
     store.set('dekorar-orders', [order, ...(Array.isArray(orders) ? orders : [])]);
+    // grava o pedido no banco (não bloqueia o fluxo se o banco falhar)
+    window.DekorarDB?.createOrder(order).catch(() => {});
     // o resumo enviado não leva dados de cartão nem CPF
     const msg = [`Olá! Fiz o pedido ${id} na loja online da Dekorar.`, '', ...list.map(({ p, qty }) => `- ${qty}x ${p.name}: ${money.format(p.price * qty)}`), '',
       `Recebimento: ${recvLabel()}`, `Pagamento: ${payLabel()}`, `Total (demonstrativo): ${money.format(total())}`, '', `Cliente: ${val('name')} · ${val('phone')}`].join('\n');
