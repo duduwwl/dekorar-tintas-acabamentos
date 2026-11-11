@@ -405,3 +405,38 @@
   .logo-card, .feat, .btn, .logo-img { transition: none; }
   .logo-card:hover, .logo-card:hover .logo-img { transform: none; }
 }
+
+/* Carrossel de marcas no topo */
+.ad-rail { position: relative; overflow: hidden; height: 132px; background: #1c1c1b; }
+.ad-track { display: flex; width: 400%; height: 100%; animation: ad-slide 24s infinite; }
+.ad-rail:hover .ad-track, .ad-rail:focus-within .ad-track { animation-play-state: paused; }
+.ad-slide { position: relative; flex: 0 0 25%; width: 25%; height: 100%; display: flex; align-items: center; gap: 24px; padding: 0 clamp(20px, 6vw, 96px); overflow: hidden; text-decoration: none; color: #fff; }
+.ad-copy { position: relative; z-index: 2; max-width: 58%; }
+.ad-kicker { margin: 0; font-size: clamp(1.1rem, 2.6vw, 1.9rem); font-weight: 700; line-height: 1.12; letter-spacing: -.01em; }
+.ad-sub { margin: 6px 0 0; font-size: clamp(.82rem, 1.6vw, 1rem); font-weight: 600; opacity: .9; }
+.ad-logo { position: relative; z-index: 2; height: 40px; width: auto; margin-left: auto; filter: drop-shadow(0 2px 6px rgba(0,0,0,.25)); }
+.ad-pack { position: absolute; right: clamp(-10px, 2vw, 40px); bottom: -8px; height: 150px; width: auto; z-index: 1; object-fit: contain; filter: drop-shadow(0 8px 18px rgba(0,0,0,.3)); opacity: .96; pointer-events: none; }
+.ad-suvinil { background: linear-gradient(100deg, #e8561f 0%, #f07a2e 60%, #ffb060 100%); }
+.ad-coral { background: linear-gradient(100deg, #c8102e 0%, #e23744 62%, #ff6b5a 100%); }
+.ad-dkorar { background: linear-gradient(100deg, #15223f 0%, #23395e 62%, #3a5b8c 100%); }
+.ad-anjo { background: linear-gradient(100deg, #0a5c57 0%, #0f8f82 62%, #35c0a8 100%); }
+.ad-dkorar .ad-logo { height: 46px; }
+
+@keyframes ad-slide {
+  0%, 21% { transform: translateX(0); }
+  25%, 46% { transform: translateX(-25%); }
+  50%, 71% { transform: translateX(-50%); }
+  75%, 96% { transform: translateX(-75%); }
+  100% { transform: translateX(0); }
+}
+
+@media (max-width: 720px) {
+  .ad-rail { height: 108px; }
+  .ad-logo { height: 30px; }
+  .ad-pack { height: 112px; }
+  .ad-copy { max-width: 64%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ad-track { animation: none; }
+}
