@@ -448,10 +448,12 @@
 }
 
 /* Selo Inmetro (reutilizável) */
-.inmetro-seal { display: grid; place-items: center; width: 148px; height: 148px; border-radius: 50%; background: #141414; border: 3px solid var(--orange); color: #fff; text-align: center; box-shadow: 0 14px 34px rgba(0,0,0,.4); padding: 12px; }
-.inmetro-seal small { font-size: .6rem; letter-spacing: .13em; text-transform: uppercase; color: #cfcecb; line-height: 1.2; }
-.inmetro-seal strong { font-size: 1.5rem; font-weight: 800; letter-spacing: .02em; line-height: 1; margin: 3px 0; }
-.inmetro-seal .seal-mark { display: block; width: 26px; height: 26px; margin: 2px auto 4px; border: 2px solid var(--orange); border-radius: 5px; color: var(--orange); font-size: 1rem; font-weight: 800; line-height: 22px; }
+.inmetro-seal { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 132px; height: 132px; border-radius: 50%; background: #141414; border: 3px solid var(--orange); color: #fff; text-align: center; box-shadow: 0 14px 34px rgba(0,0,0,.4); padding: 0 14px; }
+.inmetro-seal.big { width: 148px; height: 148px; }
+.inmetro-seal .seal-top { font-size: .56rem; letter-spacing: .1em; text-transform: uppercase; color: #cfcecb; }
+.inmetro-seal .seal-mark { width: 22px; height: 22px; margin: 3px 0; border: 2px solid var(--orange); border-radius: 4px; color: var(--orange); font-size: .85rem; font-weight: 800; line-height: 18px; }
+.inmetro-seal strong { font-size: 1.4rem; font-weight: 800; line-height: 1; margin: 1px 0; }
+.inmetro-seal .seal-bot { font-size: .54rem; letter-spacing: .05em; text-transform: uppercase; color: #b6b5b1; line-height: 1.3; margin-top: 2px; }
 
 /* Seção construtoras / obras prediais */
 .obras { background: var(--ink); color: #fff; padding: clamp(48px, 7vw, 92px) 0; }
@@ -477,7 +479,9 @@
   .obras-side { flex-direction: row; justify-content: center; flex-wrap: wrap; }
 }
 
-/* Selo Inmetro flutuando na seção da marca própria */
-.dkorar-plate { position: relative; }
-.inmetro-float { position: absolute; right: clamp(4px, 3vw, 28px); bottom: clamp(4px, 3vw, 24px); width: 118px; height: 118px; }
-@media (max-width: 720px) { .inmetro-float { width: 92px; height: 92px; } .inmetro-float strong { font-size: 1.15rem; } }
+/* Selo Inmetro no conteúdo da marca própria */
+.dk-seal { display: flex; align-items: center; gap: 18px; }
+.dk-seal .inmetro-seal { flex: none; }
+.dk-seal p { margin: 0; max-width: 34ch; color: var(--ink); }
+.dk-seal p strong { font-weight: 700; }
+@media (max-width: 520px) { .dk-seal { flex-direction: column; align-items: flex-start; } }
