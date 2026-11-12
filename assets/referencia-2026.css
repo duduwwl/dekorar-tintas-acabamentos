@@ -407,17 +407,20 @@
 }
 
 /* Carrossel de marcas no topo */
-.ad-rail { position: relative; overflow: hidden; height: 128px; background: #1c1c1b; }
+.ad-rail { position: relative; overflow: hidden; height: 140px; background: #1c1c1b; }
 .ad-track { display: flex; width: 400%; height: 100%; animation: ad-slide 24s infinite; }
 .ad-rail:hover .ad-track, .ad-rail:focus-within .ad-track { animation-play-state: paused; }
 .ad-slide { flex: 0 0 25%; width: 25%; height: 100%; display: flex; align-items: center; justify-content: space-between; gap: clamp(16px, 3vw, 40px); padding: 0 clamp(20px, 5vw, 80px); overflow: hidden; text-decoration: none; color: #fff; }
-.ad-copy { min-width: 0; }
-.ad-kicker { margin: 0; font-size: clamp(1.05rem, 2.3vw, 1.7rem); font-weight: 700; line-height: 1.16; letter-spacing: -.01em; }
-.ad-sub { margin: 7px 0 0; font-size: clamp(.8rem, 1.5vw, .98rem); font-weight: 600; opacity: .92; }
-.ad-media { flex: none; display: flex; align-items: center; gap: clamp(14px, 2vw, 28px); height: 100%; }
-.ad-logo { height: 30px; width: auto; padding: 9px 14px; background: #fff; border-radius: 9px; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
-.ad-dkorar .ad-logo { height: 34px; }
-.ad-pack { height: 96px; width: auto; object-fit: contain; align-self: center; background: #fff; border-radius: 10px; padding: 6px 10px; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
+.ad-copy { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.ad-eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
+.ad-kicker { margin: 0; font-size: clamp(1.05rem, 2.2vw, 1.55rem); font-weight: 700; line-height: 1.14; letter-spacing: -.01em; }
+.ad-sub { margin: 0; font-size: clamp(.8rem, 1.4vw, .95rem); font-weight: 500; opacity: .92; }
+.ad-cta { margin-top: 4px; align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; padding: 5px 13px; border-radius: 999px; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.35); font-size: .8rem; font-weight: 600; transition: background-color 160ms ease; }
+.ad-slide:hover .ad-cta { background: rgba(255,255,255,.28); }
+.ad-media { flex: none; display: flex; align-items: center; gap: clamp(16px, 2.2vw, 32px); height: 100%; }
+.ad-logo { height: 40px; width: auto; filter: drop-shadow(0 2px 6px rgba(0,0,0,.35)); }
+.ad-dkorar .ad-logo { height: 44px; filter: brightness(0) invert(1) drop-shadow(0 2px 6px rgba(0,0,0,.35)); }
+.ad-pack { height: 120px; width: auto; object-fit: contain; align-self: flex-end; filter: drop-shadow(0 10px 18px rgba(0,0,0,.4)); }
 .ad-suvinil { background: linear-gradient(100deg, #e8561f 0%, #f07a2e 60%, #ffb060 100%); }
 .ad-coral { background: linear-gradient(100deg, #c8102e 0%, #e23744 62%, #ff6b5a 100%); }
 .ad-dkorar { background: linear-gradient(100deg, #15223f 0%, #23395e 62%, #3a5b8c 100%); }
@@ -432,9 +435,12 @@
 }
 
 @media (max-width: 720px) {
-  .ad-rail { height: 96px; }
+  .ad-rail { height: 108px; }
   .ad-pack { display: none; }
-  .ad-logo { height: 24px; padding: 7px 11px; }
+  .ad-logo { height: 28px; }
+  .ad-dkorar .ad-logo { height: 30px; }
+  .ad-cta { display: none; }
+  .ad-eyebrow { font-size: .66rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
