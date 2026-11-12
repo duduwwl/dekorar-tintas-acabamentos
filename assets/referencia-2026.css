@@ -446,3 +446,38 @@
 @media (prefers-reduced-motion: reduce) {
   .ad-track { animation: none; }
 }
+
+/* Selo Inmetro (reutilizável) */
+.inmetro-seal { display: grid; place-items: center; width: 148px; height: 148px; border-radius: 50%; background: #141414; border: 3px solid var(--orange); color: #fff; text-align: center; box-shadow: 0 14px 34px rgba(0,0,0,.4); padding: 12px; }
+.inmetro-seal small { font-size: .6rem; letter-spacing: .13em; text-transform: uppercase; color: #cfcecb; line-height: 1.2; }
+.inmetro-seal strong { font-size: 1.5rem; font-weight: 800; letter-spacing: .02em; line-height: 1; margin: 3px 0; }
+.inmetro-seal .seal-mark { display: block; width: 26px; height: 26px; margin: 2px auto 4px; border: 2px solid var(--orange); border-radius: 5px; color: var(--orange); font-size: 1rem; font-weight: 800; line-height: 22px; }
+
+/* Seção construtoras / obras prediais */
+.obras { background: var(--ink); color: #fff; padding: clamp(48px, 7vw, 92px) 0; }
+.obras-inner { width: min(1120px, 92vw); margin: 0 auto; display: grid; grid-template-columns: 1.45fr .85fr; gap: clamp(28px, 5vw, 60px); align-items: center; }
+.obras-copy .tag-pill { background: var(--orange); color: var(--ink); }
+.obras-copy h2 { font-size: clamp(1.9rem, 4.4vw, 3rem); line-height: 1.05; margin: 14px 0 0; }
+.obras-copy h2 em { color: var(--orange); font-style: normal; }
+.obras-copy .lead { color: #d8d7d3; margin: 16px 0 0; max-width: 48ch; }
+.obras-copy .lead strong { color: #fff; }
+.obras-feats { list-style: none; margin: 26px 0 0; padding: 0; display: grid; gap: 15px; }
+.obras-feats li { display: flex; gap: 14px; align-items: flex-start; }
+.obras-feats .selo-ic { flex: none; }
+.obras-feats strong { display: block; font-size: 1.05rem; }
+.obras-feats span { color: #b6b5b1; font-size: .93rem; }
+.obras .actions { margin-top: 28px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+.obras .text-link { color: #fff; }
+.obras-side { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+.obras-stat { text-align: center; }
+.obras-stat strong { display: block; font-size: clamp(3.4rem, 8vw, 5rem); font-weight: 800; line-height: 1; color: var(--orange); }
+.obras-stat span { color: #d8d7d3; max-width: 18ch; display: inline-block; }
+@media (max-width: 860px) {
+  .obras-inner { grid-template-columns: 1fr; }
+  .obras-side { flex-direction: row; justify-content: center; flex-wrap: wrap; }
+}
+
+/* Selo Inmetro flutuando na seção da marca própria */
+.dkorar-plate { position: relative; }
+.inmetro-float { position: absolute; right: clamp(4px, 3vw, 28px); bottom: clamp(4px, 3vw, 24px); width: 118px; height: 118px; }
+@media (max-width: 720px) { .inmetro-float { width: 92px; height: 92px; } .inmetro-float strong { font-size: 1.15rem; } }
