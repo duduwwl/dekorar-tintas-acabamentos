@@ -453,7 +453,7 @@
     ['coralit-galoes', 'Galões de esmalte Coralit empilhados.'],
     ['atendimento-mesas', 'Mesas de atendimento da equipe Dekorar.'],
     ['atendimento-suvinil', 'Cartela de cores Suvinil e mesa de atendimento.'],
-    ['dkorar-balde', 'Dkorar Tintas Especiais, a marca própria da casa.'],
+    ['dkorar-lata-galeria', 'A lata Dkorar 18L, marca própria da casa.'],
     ['fachada-entrega', 'Caminhonete de entrega em frente à loja de Lavras.'],
     ['fachada-tres-coracoes', 'Fachada da loja de Três Corações.'],
     ['totem-noite', 'Totem da loja de Lavras à noite, com as marcas da casa.'],
@@ -467,7 +467,7 @@
       index = (i + photos.length) % photos.length;
       const [name, text] = photos[index];
       if (!reduce) { im.classList.remove('is-swapping'); void im.offsetWidth; im.classList.add('is-swapping'); }
-      im.src = `assets/img/${name}-${size()}.webp`; im.alt = text; cap.textContent = text;
+      im.src = (name==='dkorar-lata-galeria' ? `https://dekorar-site.vercel.app/assets/img/${name}-${size()}.webp` : `assets/img/${name}-${size()}.webp`); im.alt = text; cap.textContent = text;
       cnt.textContent = `Foto ${index + 1} de ${photos.length}`;
       new Image().src = `assets/img/${photos[(index + 1) % photos.length][0]}-${size()}.webp`;
     };
