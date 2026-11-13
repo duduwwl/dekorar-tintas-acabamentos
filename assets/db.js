@@ -132,7 +132,7 @@
     const id = `custom-${Date.now()}`;
     const rp = await fetch(`${rest}/products`, {
       method: 'POST', headers: authHeaders({ Prefer: 'return=minimal' }),
-      body: JSON.stringify({ id, brand: 'Diversos', name: p.name, category: p.category, price: 0, image: 'assets/img/dkorar-lata-cutout.webp', active: true })
+      body: JSON.stringify({ id, brand: 'Diversos', name: p.name, category: p.category, price: 0, image: 'https://dekorar-site.vercel.app/assets/img/dkorar-lata-cutout-v2.webp', active: true })
     });
     if (!rp.ok) throw new Error(`product ${rp.status}`);
     const inv = [
