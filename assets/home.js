@@ -12,7 +12,6 @@
   if (!canMove) doc.classList.remove('motion');
   const EASE = [0.16, 1, 0.3, 1];
   const WA = 'https://wa.me/5535984336650';
-  const fmtInt = new Intl.NumberFormat('pt-BR');
   const PRODUCTS = Array.isArray(window.PRODUCTS) ? window.PRODUCTS : [];
   const byId = new Map(PRODUCTS.map(p => [p.id, p]));
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -84,14 +83,6 @@
   $$('[data-highlight]').forEach(el => {
     if (!canMove) { el.classList.add('is-on'); return; }
     M.inView(el, () => { setTimeout(() => el.classList.add('is-on'), 300); }, { amount: 1 });
-  });
-
-  /* ---------- Motion Primitives: Animated Number ---------- */
-  $$('[data-count]').forEach(el => {
-    const target = Number(el.dataset.count);
-    if (!canMove) { el.textContent = fmtInt.format(target); return; }
-    el.textContent = '0';
-    M.inView(el, () => { M.animate(0, target, { duration: 1.6, ease: EASE, onUpdate: v => { el.textContent = fmtInt.format(Math.round(v)); } }); }, { amount: 1 });
   });
 
   /* ---------- Motion Primitives: Infinite Slider (marcas) ---------- */
