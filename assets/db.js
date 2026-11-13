@@ -10,19 +10,12 @@
   const uuid = () => (crypto.randomUUID ? crypto.randomUUID()
     : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16); }));
 
-  // Normaliza a imagem da lata Dkorar (recorte v2) e absolutiza no espelho Pages.
-  const fixImage = (img) => {
-    let u = String(img || '').replace('dkorar-lata-cutout.webp', 'dkorar-lata-cutout-v2.webp');
-    if (u.startsWith('assets/') && !location.host.includes('vercel.app')) u = 'https://dekorar-site.vercel.app/' + u;
-    return u;
-  };
-
   async function getProducts() {
     const cols = 'id,brand,name,category,price,image,description,package,indication';
     const r = await fetch(`${rest}/products?select=${cols}&active=eq.true`, { headers: headers() });
     if (!r.ok) throw new Error(`products ${r.status}`);
     const rows = await r.json();
-    return rows.map(p => ({ ...p, price: Number(p.price), image: fixImage(p.image) }));
+    return rows.map(p => ({ ...p, price: Number(p.price) }));
   }
 
   // Grava pedido + itens. Gera o id do pedido no cliente (anon não lê de volta).
@@ -89,7 +82,7 @@
     const rows = await r.json();
     const map = new Map();
     rows.forEach(x => {
-      const p = map.get(x.product_id) || { id: x.product_id, name: x.products?.name || x.product_id, category: x.products?.category || '', image: fixImage(x.products?.image), lavras: 0, tres: 0, minimum: x.minimum };
+      const p = map.get(x.product_id) || { id: x.product_id, name: x.products?.name || x.product_id, category: x.products?.category || '', image: x.products?.image || '', lavras: 0, tres: 0, minimum: x.minimum };
       p[x.store_id] = x.quantity;
       p.minimum = x.minimum;
       map.set(x.product_id, p);
@@ -139,7 +132,7 @@
     const id = `custom-${Date.now()}`;
     const rp = await fetch(`${rest}/products`, {
       method: 'POST', headers: authHeaders({ Prefer: 'return=minimal' }),
-      body: JSON.stringify({ id, brand: 'Diversos', name: p.name, category: p.category, price: 0, image: 'https://dekorar-site.vercel.app/assets/img/dkorar-lata-cutout-v2.webp', active: true })
+      body: JSON.stringify({ id, brand: 'Diversos', name: p.name, category: p.category, price: 0, image: 'assets/img/dkorar-lata-cutout.webp', active: true })
     });
     if (!rp.ok) throw new Error(`product ${rp.status}`);
     const inv = [

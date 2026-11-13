@@ -138,7 +138,7 @@ productForm.addEventListener('submit',event=>{
   const data=new FormData(productForm);
   const p={name:data.get('name').trim(),category:data.get('category'),lavras:safeNumber(data.get('lavras')),tres:safeNumber(data.get('tres')),minimum:safeNumber(data.get('minimum'))};
   DB.adminAddProduct(p).then(id=>{
-    inventory.push({id,name:p.name,category:p.category,image:'https://dekorar-site.vercel.app/assets/img/dkorar-lata-cutout-v2.webp',lavras:p.lavras,tres:p.tres,minimum:p.minimum});
+    inventory.push({id,name:p.name,category:p.category,image:'assets/img/dkorar-lata-cutout.webp',lavras:p.lavras,tres:p.tres,minimum:p.minimum});
     saveInventory(); showAdminToast('Produto cadastrado no estoque.');
   }).catch(dbFail);
   productForm.reset(); productForm.elements.minimum.value='5'; productForm.elements.lavras.value='0'; productForm.elements.tres.value='0'; productDialog.close();

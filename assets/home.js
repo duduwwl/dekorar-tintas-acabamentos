@@ -12,7 +12,6 @@
   if (!canMove) doc.classList.remove('motion');
   const EASE = [0.16, 1, 0.3, 1];
   const WA = 'https://wa.me/5535984336650';
-  const fmtInt = new Intl.NumberFormat('pt-BR');
   const PRODUCTS = Array.isArray(window.PRODUCTS) ? window.PRODUCTS : [];
   const byId = new Map(PRODUCTS.map(p => [p.id, p]));
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -84,14 +83,6 @@
   $$('[data-highlight]').forEach(el => {
     if (!canMove) { el.classList.add('is-on'); return; }
     M.inView(el, () => { setTimeout(() => el.classList.add('is-on'), 300); }, { amount: 1 });
-  });
-
-  /* ---------- Motion Primitives: Animated Number ---------- */
-  $$('[data-count]').forEach(el => {
-    const target = Number(el.dataset.count);
-    if (!canMove) { el.textContent = fmtInt.format(target); return; }
-    el.textContent = '0';
-    M.inView(el, () => { M.animate(0, target, { duration: 1.6, ease: EASE, onUpdate: v => { el.textContent = fmtInt.format(Math.round(v)); } }); }, { amount: 1 });
   });
 
   /* ---------- Motion Primitives: Infinite Slider (marcas) ---------- */
@@ -453,7 +444,7 @@
     ['coralit-galoes', 'Galões de esmalte Coralit empilhados.'],
     ['atendimento-mesas', 'Mesas de atendimento da equipe Dekorar.'],
     ['atendimento-suvinil', 'Cartela de cores Suvinil e mesa de atendimento.'],
-    ['dkorar-lata-galeria', 'A lata Dkorar 18L, marca própria da casa.'],
+    ['dkorar-balde', 'Dkorar Tintas Especiais, a marca própria da casa.'],
     ['fachada-entrega', 'Caminhonete de entrega em frente à loja de Lavras.'],
     ['fachada-tres-coracoes', 'Fachada da loja de Três Corações.'],
     ['totem-noite', 'Totem da loja de Lavras à noite, com as marcas da casa.'],
@@ -467,7 +458,7 @@
       index = (i + photos.length) % photos.length;
       const [name, text] = photos[index];
       if (!reduce) { im.classList.remove('is-swapping'); void im.offsetWidth; im.classList.add('is-swapping'); }
-      im.src = (name==='dkorar-lata-galeria' ? `https://dekorar-site.vercel.app/assets/img/${name}-${size()}.webp` : `assets/img/${name}-${size()}.webp`); im.alt = text; cap.textContent = text;
+      im.src = `assets/img/${name}-${size()}.webp`; im.alt = text; cap.textContent = text;
       cnt.textContent = `Foto ${index + 1} de ${photos.length}`;
       new Image().src = `assets/img/${photos[(index + 1) % photos.length][0]}-${size()}.webp`;
     };
