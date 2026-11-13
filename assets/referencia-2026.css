@@ -408,9 +408,9 @@
 
 /* Carrossel de marcas no topo */
 .ad-rail { position: relative; overflow: hidden; height: 140px; background: #1c1c1b; }
-.ad-track { display: flex; width: 400%; height: 100%; animation: ad-slide 24s infinite; }
+.ad-track { display: flex; width: 300%; height: 100%; animation: ad-slide 18s infinite; }
 .ad-rail:hover .ad-track, .ad-rail:focus-within .ad-track { animation-play-state: paused; }
-.ad-slide { flex: 0 0 25%; width: 25%; height: 100%; display: flex; align-items: center; justify-content: space-between; gap: clamp(16px, 3vw, 40px); padding: 0 clamp(20px, 5vw, 80px); overflow: hidden; text-decoration: none; color: #fff; }
+.ad-slide { flex: 0 0 33.3333%; width: 33.3333%; height: 100%; display: flex; align-items: center; justify-content: space-between; gap: clamp(16px, 3vw, 40px); padding: 0 clamp(20px, 5vw, 80px); overflow: hidden; text-decoration: none; color: #fff; }
 .ad-copy { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
 .ad-eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
 .ad-kicker { margin: 0; font-size: clamp(1.05rem, 2.2vw, 1.55rem); font-weight: 700; line-height: 1.14; letter-spacing: -.01em; }
@@ -427,10 +427,9 @@
 .ad-anjo { background: linear-gradient(100deg, #0a5c57 0%, #0f8f82 62%, #35c0a8 100%); }
 
 @keyframes ad-slide {
-  0%, 21% { transform: translateX(0); }
-  25%, 46% { transform: translateX(-25%); }
-  50%, 71% { transform: translateX(-50%); }
-  75%, 96% { transform: translateX(-75%); }
+  0%, 28% { transform: translateX(0); }
+  33%, 61% { transform: translateX(-33.3333%); }
+  66%, 94% { transform: translateX(-66.6666%); }
   100% { transform: translateX(0); }
 }
 
