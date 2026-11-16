@@ -270,8 +270,8 @@ figure figcaption { font-size: var(--fs-small); color: var(--ink-2); }
 .loja-text { grid-column: 1 / span 4; align-self: start; }
 .loja-text .lead { margin-top: 24px; }
 .services { display: grid; gap: 22px; margin-top: 40px; }
-.services dt, .obras dt { font-weight: 600; }
-.services dd, .obras dd { margin-top: 2px; color: var(--ink-2); }
+.services dt { font-weight: 600; }
+.services dd { margin-top: 2px; color: var(--ink-2); }
 .loja-main { grid-column: 5 / -1; }
 .loja-row { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: inherit; margin-top: 16px; }
 .loja figure { position: relative; }
@@ -312,7 +312,11 @@ figure figcaption { font-size: var(--fs-small); color: var(--ink-2); }
 .city-row input { flex: 1; min-width: 0; min-height: 52px; padding: 0 20px; border: 2px solid var(--concrete); border-radius: 999px; background: var(--paper); transition: border-color 150ms ease; }
 .city-row input:focus { outline: none; border-color: var(--ink); }
 .city-row input::placeholder { color: #6e6c67; }
-.obras { display: grid; gap: 18px; }
+.obras-recentes { display: grid; gap: 12px; }
+.obras-recentes > div { display: grid; gap: 4px; padding: 16px 20px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--soft); box-shadow: var(--shadow-1); }
+.obras-recentes dt { display: flex; align-items: center; gap: 10px; font-weight: 640; letter-spacing: -.01em; }
+.obras-recentes dt::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--orange); flex: none; }
+.obras-recentes dd { color: var(--ink-2); font-size: var(--fs-small); line-height: 1.5; }
 
 /* Lojas */
 .lojas { padding-top: var(--space); }
