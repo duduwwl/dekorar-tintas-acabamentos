@@ -89,7 +89,7 @@
     countEl.textContent = list.length === 1 ? '1 produto' : `${list.length} produtos`;
     emptyEl.hidden = list.length > 0;
     grid.innerHTML = list.map((p, i) => `<li class="pcard" style="--i:${reduce ? 0 : Math.min(i, 12)}">
-      <button class="pcard-media" type="button" data-open="${p.id}" tabindex="-1" aria-hidden="true"><img src="${p.image}" alt="" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async" width="400" height="400"></button>
+      <button class="pcard-media" type="button" data-open="${p.id}" tabindex="-1" aria-hidden="true"><img src="${esc(p.image)}" alt="" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async" width="400" height="400"></button>
       <div class="pcard-body">
         <p class="pcard-meta"><span class="b" translate="no">${esc(p.brand)}</span><span class="c">${esc(p.category)}</span></p>
         <h3><button type="button" data-open="${p.id}">${esc(p.name)}</button></h3>
@@ -134,7 +134,7 @@
   const cartDlg = $('[data-cart]'), lines = $('[data-cart-lines]');
   function renderCart() {
     const list = items();
-    lines.innerHTML = list.map(({ p, qty, color }) => `<li class="cart-line" data-id="${esc(p.id)}"><img src="${p.image}" alt="" loading="lazy">
+    lines.innerHTML = list.map(({ p, qty, color }) => `<li class="cart-line" data-id="${esc(p.id)}"><img src="${esc(p.image)}" alt="" loading="lazy">
       <div><strong>${color ? `<i class="cart-chip" style="background:${color.hex}"></i>` : ''}${esc(p.name)}</strong><div class="row">
         <div class="stepper" role="group" aria-label="Quantidade de ${esc(p.name)}"><button type="button" data-q="-1" aria-label="Diminuir">−</button><output>${qty}</output><button type="button" data-q="1" aria-label="Aumentar">+</button></div>
         <span class="price">${money.format(p.price * qty)}</span></div>
@@ -241,7 +241,7 @@
     syncPayUI(); summary();
   }
   function summary() {
-    $('[data-sum-items]', co).innerHTML = items().map(({ p, qty }) => `<li><img src="${p.image}" alt=""><span>${qty}× ${esc(p.name)}</span><span>${money.format(p.price * qty)}</span></li>`).join('');
+    $('[data-sum-items]', co).innerHTML = items().map(({ p, qty }) => `<li><img src="${esc(p.image)}" alt=""><span>${qty}× ${esc(p.name)}</span><span>${money.format(p.price * qty)}</span></li>`).join('');
     $('[data-sum-sub]', co).textContent = money.format(subtotal());
     $('[data-sum-fee]', co).textContent = mode() === 'delivery' ? (val('city') ? money.format(fee()) : 'Escolha a cidade') : 'Grátis (retirada)';
     $('[data-sum-disc-row]', co).hidden = !discount();
