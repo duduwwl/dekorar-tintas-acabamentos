@@ -115,8 +115,10 @@
       });
       moveBg(list, tab);
       if (focus) tab.focus();
-      tab.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
+      if (!list.hasAttribute('data-servicos')) tab.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
+      list.dispatchEvent(new CustomEvent('tabchange', { detail: document.getElementById(tab.getAttribute('aria-controls')) }));
     };
+    list.selectTab = select;
     tabs.forEach((t, i) => {
       t.addEventListener('click', () => select(t));
       t.addEventListener('keydown', e => {
@@ -131,6 +133,37 @@
   window.addEventListener('resize', () => {
     $$('[data-tabs], [data-filter]').forEach(g => moveBg(g, $('[aria-selected="true"], [aria-pressed="true"]', g)));
   });
+
+  /* ---------- Especialidades: abas ligadas aos links #obras, #residencial e #industrial ---------- */
+  const servicos = $('[data-servicos]');
+  if (servicos?.selectTab) {
+    const sTabs = $$('[role="tab"]', servicos);
+    const tabFor = id => sTabs.find(t => t.getAttribute('aria-controls') === id);
+    let ready = false;
+    servicos.addEventListener('tabchange', e => {
+      if (!ready || !canMove || !e.detail) return;
+      M.animate($$('.stage-can, .stage-stat, .stage-seal, .stage-weg, .stage-surfaces li', e.detail),
+        { opacity: [0, 1], transform: ['translateY(28px)', 'translateY(0px)'] }, { duration: 0.6, ease: EASE, delay: M.stagger(0.06) });
+    });
+    const open = (id, scroll) => {
+      const t = tabFor(id);
+      if (!t) return false;
+      servicos.selectTab(t);
+      if (scroll) document.getElementById(id)?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      return true;
+    };
+    if (!open(location.hash.slice(1), true)) servicos.selectTab(sTabs.find(t => t.getAttribute('aria-selected') === 'true') || sTabs[0]);
+    ready = true;
+    document.addEventListener('click', e => {
+      const a = e.target.closest('a[href^="#"]');
+      const id = a?.getAttribute('href').slice(1);
+      if (!id || !tabFor(id)) return;
+      e.preventDefault();
+      open(id, true);
+      history.replaceState(null, '', `#${id}`);
+    });
+    window.addEventListener('hashchange', () => open(location.hash.slice(1), true));
+  }
 
   /* ---------- Aviso curto ---------- */
   const toast = $('[data-toast]');

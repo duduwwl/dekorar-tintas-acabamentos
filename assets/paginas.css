@@ -93,3 +93,25 @@
 @media (prefers-reduced-motion: reduce) {
   .fan-blade, .tone-btn { transition: none; animation: none; }
 }
+
+/* Leque com as cartelas oficiais: contagem, tiras de 8 tons e navegação entre famílias */
+.leque-brandbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 8px; }
+.leque-brandbar .leque-brands { margin-top: 0; }
+.leque-count { font-weight: 620; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.blade-head .h3 { margin: 0 0 6px; }
+.blade-nav { display: flex; gap: 8px; }
+.blade-step { display: grid; place-items: center; width: 44px; height: 44px; border: 1.5px solid var(--line); border-radius: 50%; background: var(--white); font-size: 1.4rem; line-height: 1; color: var(--ink); transition: border-color 180ms ease, transform 160ms var(--ease-out); }
+.blade-step:hover { border-color: var(--ink); }
+.blade-step:active { transform: scale(.94); }
+.blade-step:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+.blade-strips { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 10px; max-height: min(78vh, 980px); overflow-y: auto; padding: 4px 4px 8px; margin: -4px; overscroll-behavior: contain; }
+.blade-strips .blade-col { align-content: start; animation: strip-in 420ms var(--ease-expo) both; animation-delay: calc(var(--k, 0) * 18ms); }
+@keyframes strip-in { from { opacity: 0; transform: translateY(10px); } }
+.blade-strips .tone-btn { min-height: 58px; padding: 8px 10px; }
+.blade-strips .tone-btn span { font-size: .78rem; }
+.blade-strips .tone-btn small { font-size: .68rem; }
+@media (max-width: 620px) {
+  .blade-strips { grid-template-columns: repeat(2, minmax(0, 1fr)); max-height: none; overflow: visible; }
+  .blade-strips .tone-btn small { display: block; }
+}
+@media (prefers-reduced-motion: reduce) { .blade-strips .blade-col { animation: none; } }
