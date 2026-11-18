@@ -708,3 +708,8 @@
   .stage-clip { height: auto; width: min(320px, 78vw); }
 }
 @media (max-width: 620px) { .stage-video .stage-seal { width: 84px; height: 84px; } }
+
+/* Capa: destaques com borda fina laranja */
+.cover-index { border: 1px solid var(--orange); }
+.cover-index li + li a { border-left: 1px solid var(--orange); }
+@media (max-width: 600px) { .cover-index li + li a { border-left: 0; border-top: 1px solid var(--orange); } }
