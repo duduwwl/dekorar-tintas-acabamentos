@@ -624,3 +624,18 @@
 @media (prefers-reduced-motion: reduce) { .promo-can { transition: none; } }
 .promo .btn { white-space: nowrap; }
 .promo-sub { max-width: 30ch; }
+
+/* Ajustes nov/2026 (3): selo dentro do círculo, cartão WEG azul claro, três latas inteiras */
+.inmetro-seal { padding: 0 10px; overflow: hidden; }
+.inmetro-seal strong { font-size: 1.12rem; font-stretch: 100%; letter-spacing: 0; }
+.dk-inmetro .inmetro-seal strong, .stage-seal strong { font-size: .96rem; }
+.dk-inmetro .inmetro-seal .seal-bot, .stage-seal .seal-bot { font-size: .5rem; }
+.stage-weg { background: #dcebf8; box-shadow: 0 24px 50px rgba(11, 37, 69, .28); }
+.stage-weg p { color: #0b2545; font-weight: 560; }
+.servico-res .stage-cans { gap: 2%; padding-inline: 5%; }
+.servico-res .stage-can { height: auto; max-height: 76%; max-width: 29%; margin: 0; }
+.servico-res .stage-can-hero { max-height: 96%; max-width: 34%; }
+@media (max-width: 620px) {
+  .stage-seal strong { font-size: .8rem; }
+  .stage-seal .seal-top, .stage-seal .seal-bot { font-size: .44rem; }
+}
