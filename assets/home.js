@@ -79,6 +79,58 @@
     });
   }
 
+  /* ---------- Rolagem: títulos se formam palavra a palavra, textos e imagens aparecem ---------- */
+  if (canMove) {
+    const SKIP = '[data-reveal],[data-stagger],[data-fade],[data-text-effect],.cover,.slider,.servico-stage,.ad-rail,[data-blade],[data-pick-card],.toast';
+    const free = el => !el.closest(SKIP);
+    const BASE = '[data-text-effect],.cover,.slider,.servico-stage,.ad-rail,[data-blade],[data-pick-card],.toast';
+    const freeH = el => !el.closest(BASE);
+    const freeImg = el => !el.closest(BASE + ',[data-stagger]');
+    const view = { margin: '0px 0px -10% 0px' };
+    // títulos: cada palavra vira um span, preservando <em>, <br>, <strong>
+    $$('main h1, main h2, main h3').filter(h => freeH(h) && !h.querySelector('[data-count-to]')).forEach(h => {
+      const walk = node => [...node.childNodes].forEach(n => {
+        if (n.nodeType === 3 && n.textContent.trim()) {
+          const frag = document.createDocumentFragment();
+          n.textContent.split(/(\s+)/).forEach(part => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.append(part); return; }
+            const s = document.createElement('span'); s.className = 'w'; s.textContent = part; frag.append(s);
+          });
+          n.replaceWith(frag);
+        } else if (n.nodeType === 1) walk(n);
+      });
+      walk(h);
+      h.classList.add('rv-words');
+      M.inView(h, () => {
+        M.animate($$('.w', h), { opacity: [0, 1], filter: ['blur(8px)', 'blur(0px)'], transform: ['translateY(0.45em)', 'translateY(0em)'] },
+          { duration: 0.7, ease: EASE, delay: M.stagger(0.055) });
+      }, view);
+    });
+    // textos, listas e botões: sobem e desfocam para o nítido
+    $$('main p, main dl, main .actions, main .tabs, main .route-map, main .numeros-line').filter(free).forEach(el => {
+      if (el.closest('.rv-words') || el.parentElement?.closest('.rv')) return;
+      el.classList.add('rv');
+      M.inView(el, () => {
+        M.animate(el, { opacity: [0, 1], filter: ['blur(6px)', 'blur(0px)'], transform: ['translateY(18px)', 'translateY(0px)'] }, { duration: 0.8, ease: EASE, delay: 0.12 })
+          .then(() => { el.style.filter = ''; el.style.transform = ''; });
+      }, view);
+    });
+    // imagens: fotos abrem como uma cortina; recortes (com sombra) sobem e entram em foco
+    $$('main img').filter(freeImg).forEach(img => {
+      if (img.closest('.rv')) return;
+      img.classList.add('rv');
+      const f = getComputedStyle(img).filter;
+      const cut = f !== 'none';
+      M.inView(img, () => {
+        const a = cut
+          ? M.animate(img, { opacity: [0, 1], filter: [`blur(10px) ${f}`, `blur(0px) ${f}`], transform: ['translateY(30px) scale(.96)', 'translateY(0px) scale(1)'] }, { duration: 0.9, ease: EASE })
+          : M.animate(img, { opacity: [0, 1], clipPath: ['inset(100% 0% 0% 0%)', 'inset(0% 0% 0% 0%)'], transform: ['scale(1.08)', 'scale(1)'] }, { duration: 1.1, ease: EASE });
+        a.then(() => { img.style.clipPath = ''; img.style.filter = ''; img.style.transform = ''; });
+      }, view);
+    });
+  }
+
   /* ---------- Fancy Components: Text Highlighter ---------- */
   $$('[data-highlight]').forEach(el => {
     if (!canMove) { el.classList.add('is-on'); return; }

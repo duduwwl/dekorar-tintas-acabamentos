@@ -438,7 +438,8 @@ figure figcaption { font-size: var(--fs-small); color: var(--ink-2); }
   @keyframes unveil { from { clip-path: inset(0 0 0 100%); } to { clip-path: inset(0 0 0 0); } }
   @keyframes settle { from { transform: scale(1.12); } to { transform: none; } }
   @keyframes fade-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-  .motion [data-reveal], .motion [data-stagger] > * { opacity: 0; }
+  .motion [data-reveal], .motion [data-stagger] > *, .motion .rv, .motion .rv-words .w { opacity: 0; }
+  .rv-words .w { display: inline-block; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
