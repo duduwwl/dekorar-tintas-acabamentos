@@ -492,8 +492,6 @@
 /* Categorias centralizadas */
 .cat-rail-track { justify-content: center; }
 
-/* Marcas: wordmarks claros sobre a faixa grafite */
-.logos .logo-on-dark { filter: brightness(0) invert(1); }
 .ad-weg { background: linear-gradient(100deg, #003b6f 0%, #00579d 62%, #2a7cc4 100%); }
 .ad-logo-box { height: 56px; }
 @media (max-width: 720px) { .ad-logo-box { height: 38px; } }
@@ -577,15 +575,18 @@
 .espec-brands img { height: 34px; width: auto; max-width: 100%; justify-self: center; }
 .espec-brands span { font-size: .92rem; color: var(--ink-2); line-height: 1.35; }
 
-.espec-ind { background: #10273d; color: #eef2f6; }
-.espec-ind .lead { color: #c8d3de; }
-.espec-ind .lead strong { color: #fff; }
-.espec-ind .espec-list li { border-top-color: rgba(255, 255, 255, .14); }
-.espec-ind .espec-list span { color: #a9b8c6; }
-.espec-weg { display: grid; justify-items: center; gap: 18px; padding: clamp(28px, 4vw, 48px); border-radius: var(--r-lg); background: #0b1d2e; border: 1px solid rgba(255, 255, 255, .1); text-align: center; }
+.espec-ind { background: var(--orange); color: var(--ink); }
+.espec-ind .espec-copy h2 em { color: #fff; }
+.espec-ind .lead { color: #3a180d; }
+.espec-ind .lead strong { color: var(--ink); }
+.espec-ind .espec-list li { border-top-color: rgba(43, 19, 12, .28); }
+.espec-ind .espec-list span { color: #3f1c11; }
+.espec-ind .btn-orange { background: var(--ink); color: #fff; }
+.espec-ind .btn-orange:hover { background: #fff; color: var(--ink); }
+.espec-weg { display: grid; justify-items: center; gap: 18px; padding: clamp(28px, 4vw, 48px); border-radius: var(--r-lg); background: var(--ink); text-align: center; box-shadow: 0 18px 40px rgba(43, 19, 12, .3); }
 .espec-weg img { width: min(220px, 70%); height: auto; }
-.espec-weg p { color: #c8d3de; }
-.espec-weg strong { color: #fff; }
+.espec-weg p { color: #cfcdc8; }
+.espec-weg strong { color: var(--orange); }
 @media (max-width: 860px) { .espec-inner { grid-template-columns: 1fr; } }
 @media (max-width: 420px) { .espec-brands li { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 8px; } }
 
@@ -604,3 +605,4 @@
 .route .city-mini circle { stroke: #fff; fill: #8a857d; }
 .route .route-line { stroke: #6e6b65; }
 .route-note .text-link { white-space: nowrap; }
+

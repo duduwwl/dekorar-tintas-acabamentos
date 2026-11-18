@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="18 40 410 220" role="img" aria-label="Coral">
+  <defs>
+    <linearGradient id="cr-swirl" x1="40" y1="0" x2="390" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#c8102e"/>
+      <stop offset=".16" stop-color="#e5352b"/>
+      <stop offset=".32" stop-color="#f47b20"/>
+      <stop offset=".46" stop-color="#fdc20f"/>
+      <stop offset=".6" stop-color="#8dc63f"/>
+      <stop offset=".74" stop-color="#00a79d"/>
+      <stop offset=".88" stop-color="#29a8e0"/>
+      <stop offset="1" stop-color="#7fd0f2"/>
+    </linearGradient>
+  </defs>
+  <!-- pincelada -->
+  <path fill="url(#cr-swirl)" d="M44 132 C 58 92, 92 66, 138 60 C 186 54, 222 78, 258 92 C 296 107, 330 106, 356 96 C 372 90, 388 92, 400 106 C 382 106, 364 116, 346 126 C 318 140, 284 136, 248 122 C 214 108, 186 92, 150 94 C 112 96, 82 112, 60 140 C 54 146, 46 142, 44 132 Z"/>
+  <path fill="#c8102e" d="M50 120 C 38 112, 30 100, 34 88 C 40 98, 48 104, 58 106 Z"/>
+  <circle cx="34" cy="76" r="5" fill="#c8102e"/>
+  <circle cx="26" cy="96" r="3.5" fill="#e5352b"/>
+  <circle cx="44" cy="70" r="3" fill="#c8102e"/>
+  <!-- boneco segurando a pincelada -->
+  <g fill="#29a8e0" stroke="#29a8e0" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="400" cy="148" r="8.5" stroke="none"/>
+    <path fill="none" stroke-width="8.5" d="M396 160 L388 194 M394 166 L401 112 M392 170 L414 160 M388 194 L378 224 M388 194 L406 220"/>
+  </g>
+  <!-- palavra Coral -->
+  <g fill="none" stroke="#1b3a7c">
+    <path stroke-width="24" d="M126 166 A 46 46 0 1 0 126 234"/>
+    <circle cx="180" cy="216" r="27" stroke-width="20"/>
+    <path stroke-width="20" d="M232 188 V 252 M232 214 C 236 196, 248 190, 266 190"/>
+    <circle cx="295" cy="219" r="24" stroke-width="19"/>
+    <path stroke-width="19" d="M321 190 V 252"/>
+    <path stroke-width="20" d="M352 138 V 252"/>
+  </g>
+</svg>
