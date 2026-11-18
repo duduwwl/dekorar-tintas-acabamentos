@@ -679,3 +679,17 @@
 @media (max-width: 620px) { .dk-pedras-cores { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (prefers-reduced-motion: reduce) { .dk-pedras-cores img { transition: none; } }
 .ad-chips img { width: 30px; height: 70px; }
+
+/* Capa sem foto: texto e destaques centralizados */
+.cover { display: block; min-height: 0; }
+.cover-page { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(40px, 6vh, 64px); min-height: calc(82svh - var(--hh)); padding: clamp(56px, 10vh, 120px) max(var(--m), env(safe-area-inset-left)) clamp(40px, 7vh, 72px); text-align: center; }
+.cover-copy { display: flex; flex-direction: column; align-items: center; max-width: 860px; }
+.cover-copy .display { max-width: 15ch; text-wrap: balance; }
+.cover-copy .lead { max-width: 56ch; }
+.cover-copy .actions { justify-content: center; }
+.cover-index { width: min(720px, 100%); text-align: left; }
+@media (max-width: 900px) {
+  .cover-page { display: flex; min-height: 0; padding: 48px var(--m) 40px; }
+  .cover-copy { padding: 0; }
+  .cover-index { padding: 0; }
+}
