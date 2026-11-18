@@ -693,3 +693,18 @@
   .cover-copy { padding: 0; }
   .cover-index { padding: 0; }
 }
+
+/* Obras prediais: vídeo vertical de antes e depois no painel escuro */
+.stage-video { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(16px, 2vw, 28px); align-items: stretch; padding: clamp(24px, 3vw, 40px); }
+.stage-side { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; min-width: 0; }
+.stage-video .stage-stat, .stage-video .stage-seal { position: static; }
+.stage-video .stage-stat strong { font-size: clamp(3rem, 5vw, 4.6rem); }
+.stage-clip { position: relative; align-self: center; margin: 0; height: clamp(440px, 40vw, 580px); aspect-ratio: 9 / 16; border-radius: 22px; overflow: hidden; background: #000; box-shadow: 0 0 0 1px rgba(255, 255, 255, .14), 0 26px 50px rgba(0, 0, 0, .5); }
+.stage-clip video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.stage-clip figcaption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 960px) {
+  .stage-video { min-height: 0; grid-template-columns: 1fr; justify-items: center; }
+  .stage-side { flex-direction: row; align-items: center; width: 100%; }
+  .stage-clip { height: auto; width: min(320px, 78vw); }
+}
+@media (max-width: 620px) { .stage-video .stage-seal { width: 84px; height: 84px; } }

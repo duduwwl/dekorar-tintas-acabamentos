@@ -131,6 +131,14 @@
     });
   }
 
+  /* ---------- Vídeos curtos (antes e depois): tocam só quando aparecem na tela ---------- */
+  $$('video[data-autoplay]').forEach(v => {
+    if (reduce || !('IntersectionObserver' in window)) { v.controls = true; v.preload = 'metadata'; return; }
+    new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { v.play().catch(() => { v.controls = true; }); } else v.pause();
+    }, { threshold: 0.35 }).observe(v);
+  });
+
   /* ---------- Fancy Components: Text Highlighter ---------- */
   $$('[data-highlight]').forEach(el => {
     if (!canMove) { el.classList.add('is-on'); return; }
@@ -194,7 +202,7 @@
     let ready = false;
     servicos.addEventListener('tabchange', e => {
       if (!ready || !canMove || !e.detail) return;
-      M.animate($$('.stage-can, .stage-stat, .stage-seal, .stage-weg, .stage-surfaces li', e.detail),
+      M.animate($$('.stage-can, .stage-stat, .stage-seal, .stage-clip, .stage-weg, .stage-surfaces li', e.detail),
         { opacity: [0, 1], transform: ['translateY(28px)', 'translateY(0px)'] }, { duration: 0.6, ease: EASE, delay: M.stagger(0.06) });
     });
     const open = (id, scroll) => {
