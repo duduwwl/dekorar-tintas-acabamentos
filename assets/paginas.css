@@ -1,0 +1,94 @@
+/* Páginas separadas: leitor de cor, orçamento e leque de cores (usa os tokens de home.css) */
+
+.page-main > .leitor,
+.page-main > .pedido { margin-top: 0; }
+.page-main > .leitor { padding-top: clamp(48px, 7vw, 104px); }
+.page-main > .pedido { padding-top: clamp(48px, 7vw, 104px); padding-bottom: clamp(56px, 8vw, 120px); }
+.page-next { padding: clamp(28px, 4vw, 44px) max(var(--m), env(safe-area-inset-left)); background: var(--white); border-top: 1px solid var(--line); text-align: center; }
+.page-next p { max-width: 70ch; margin: 0 auto; color: var(--ink-2); }
+
+/* ---------- Leque de cores ---------- */
+.leque { padding: clamp(40px, 6vw, 88px) max(var(--m), env(safe-area-inset-left)) clamp(56px, 8vw, 112px); }
+.leque-head { max-width: 1240px; margin: 0 auto; display: grid; gap: 16px; }
+.leque-head .lead { max-width: 60ch; color: var(--ink-2); }
+.leque-brands { justify-self: start; margin-top: 8px; }
+.leque-brands button { min-width: 120px; font-size: 1.05rem; }
+
+.leque-body { max-width: 1240px; margin: clamp(28px, 4vw, 48px) auto 0; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 4vw, 56px); align-items: start; }
+.leque-stage { position: sticky; top: calc(var(--hh) + 20px); display: grid; gap: 20px; padding: clamp(18px, 2.4vw, 28px); border-radius: var(--r-lg); background: var(--white); border: 1px solid var(--line); container-type: inline-size; }
+
+/* O leque: lâminas presas num pino, abertas em arco */
+.fan { --blade: min(260px, 58cqw); position: relative; height: calc(var(--blade) + 40px); overflow: hidden; }
+.fan-blade {
+  position: absolute; left: 50%; margin-left: calc(clamp(26px, 9cqw, 40px) / -2); bottom: 18px;
+  display: flex; flex-direction: column; width: clamp(26px, 9cqw, 40px); height: var(--blade);
+  padding: 0; border: 2px solid #fff; border-radius: 10px 10px 22px 22px; overflow: hidden;
+  background: #fff; box-shadow: 0 6px 16px rgba(30, 30, 29, .16);
+  transform-origin: 50% calc(100% - 18px);
+  transform: rotate(0deg);
+  transition: transform 700ms var(--ease-expo), box-shadow 200ms ease, translate 260ms var(--ease-out);
+  transition-delay: calc(var(--i) * 28ms);
+  z-index: var(--i);
+}
+.fan.is-open .fan-blade { transform: rotate(var(--a)); }
+.fan-blade i { flex: 1; display: block; }
+.fan-blade .fan-label { position: absolute; left: 50%; top: 8px; translate: -50% 0; writing-mode: vertical-rl; transform: rotate(180deg); font-size: .66rem; font-weight: 700; letter-spacing: .04em; color: #1e1e1d; background: rgba(255, 255, 255, .86); padding: 6px 2px; border-radius: 6px; white-space: nowrap; max-height: 46%; overflow: hidden; }
+@media (hover: hover) { .fan-blade:hover { translate: 0 -10px; box-shadow: 0 14px 28px rgba(30, 30, 29, .22); transition-delay: 0ms; } }
+.fan-blade[aria-pressed="true"] { translate: 0 -18px; border-color: var(--ink); box-shadow: 0 16px 30px rgba(30, 30, 29, .28); }
+.fan-blade:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+.fan-pin { position: absolute; left: calc(50% - 9px); bottom: 26px; width: 18px; height: 18px; border-radius: 50%; background: var(--ink); border: 3px solid var(--orange); z-index: 40; }
+
+.leque-search span { display: block; margin-bottom: 8px; font-weight: 600; font-size: .95rem; }
+.leque-search input { width: 100%; min-height: 48px; padding: 0 18px; border: 2px solid var(--concrete); border-radius: 999px; background: var(--paper); }
+.leque-search input:focus { outline: none; border-color: var(--ink); }
+
+/* Família aberta */
+.leque-detail { display: grid; gap: 22px; }
+.blade-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; margin-bottom: 14px; }
+.count-pill { display: inline-flex; padding: 4px 12px; border-radius: 999px; background: var(--concrete); font-size: .82rem; font-weight: 600; color: var(--ink-2); }
+.blade-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.blade-col, .blade-grid { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; border-radius: 14px; overflow: hidden; box-shadow: 0 6px 18px rgba(30, 30, 29, .08); }
+.blade-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; box-shadow: none; overflow: visible; }
+.blade-grid .tone-btn { border-radius: 10px; }
+.tone-btn { display: grid; align-content: end; gap: 0; width: 100%; min-height: 64px; padding: 10px 12px; border: 0; background: var(--c); color: var(--on); text-align: left; transition: transform 200ms var(--ease-out), box-shadow 200ms ease; }
+.tone-btn span { font-size: .86rem; font-weight: 640; line-height: 1.2; }
+.tone-btn small { font-size: .72rem; opacity: .8; font-variant-numeric: tabular-nums; }
+@media (hover: hover) { .tone-btn:hover { transform: scale(1.03); position: relative; z-index: 1; box-shadow: 0 8px 18px rgba(30, 30, 29, .2); } }
+.tone-btn[aria-pressed="true"] { position: relative; z-index: 2; box-shadow: inset 0 0 0 3px var(--on); }
+.tone-btn:focus-visible { outline: 3px solid var(--orange); outline-offset: -3px; }
+.blade-empty { color: var(--ink-2); padding: 12px 0; }
+
+/* Cartão da cor escolhida */
+.pick-card { display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 18px 22px; padding: clamp(18px, 2.4vw, 28px); border-radius: var(--r-lg); background: var(--white); border: 1px solid var(--line); box-shadow: var(--shadow-1); }
+.pick-swatch { width: 132px; height: 132px; border-radius: 16px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .08); }
+.pick-info { align-self: center; }
+.pick-brand { font-size: .85rem; font-weight: 600; color: var(--orange-text); }
+.pick-code { margin-top: 4px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.pick-products { grid-column: 1 / -1; border: 0; padding: 0; margin: 0; min-width: 0; }
+.pick-products legend { margin-bottom: 10px; font-weight: 600; }
+.pick-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.pick-prod { display: grid; grid-template-columns: auto 56px minmax(0, 1fr); align-items: center; gap: 10px; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 14px; cursor: pointer; transition: border-color 160ms ease, background 160ms ease; }
+.pick-prod:has(input:checked) { border-color: var(--orange); background: rgba(232, 86, 31, .06); }
+.pick-prod input { accent-color: var(--orange); width: 18px; height: 18px; }
+.pick-prod img { width: 56px; height: 56px; object-fit: contain; }
+.pick-prod strong { display: block; font-size: .9rem; line-height: 1.25; }
+.pick-prod small { color: var(--ink-2); font-size: .8rem; }
+.pick-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; }
+.leque-note { max-width: 1240px; margin: clamp(28px, 4vw, 44px) auto 0; font-size: .88rem; color: var(--ink-2); }
+
+@media (max-width: 900px) {
+  .leque-body { grid-template-columns: 1fr; }
+  .leque-stage { position: relative; top: auto; }
+}
+@media (max-width: 560px) {
+  .fan-blade .fan-label { display: none; }
+  .blade-cols { gap: 6px; }
+  .tone-btn { min-height: 56px; padding: 8px; }
+  .tone-btn small { display: none; }
+  .pick-card { grid-template-columns: 88px minmax(0, 1fr); }
+  .pick-swatch { width: 88px; height: 88px; }
+  .pick-list { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fan-blade, .tone-btn { transition: none; }
+}

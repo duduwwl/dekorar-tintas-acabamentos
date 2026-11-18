@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="pt-BR" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f2f2f0">
+  <title>Leitor de cor | Dekorar Tintas e Acabamentos</title>
+  <meta name="description" content="Leitor de cor da Dekorar: descubra o tom de uma parede pela foto e mande a cor para a loja pelo WhatsApp.">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="preload" href="assets/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/home.css?v=18">
+  <link rel="stylesheet" href="assets/referencia-2026.css?v=11">
+  <link rel="stylesheet" href="assets/paginas.css?v=1">
+  <script>(function(d){d.classList.replace("no-js","js");if(!matchMedia("(prefers-reduced-motion: reduce)").matches)d.classList.add("motion");setTimeout(function(){if(!window.Motion)d.classList.remove("motion")},3000)})(document.documentElement)</script>
+</head>
+<body class="sub-page">
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+  <div class="progress" aria-hidden="true"><span data-progress></span></div>
+
+  <header class="site-header is-scrolled" data-header>
+    <div class="bar">
+      <a class="brand" href="index.html" aria-label="Dekorar Tintas e Acabamentos, página inicial">
+        <img src="assets/img/logo-dekorar-dark.svg" width="576" height="126" alt="Dekorar Tintas e Acabamentos">
+      </a>
+      <nav class="nav" id="menu" aria-label="Navegação principal">
+        <ul class="nav-list">
+          <li><a href="produtos.html">Produtos</a></li>
+          <li><a href="tintometrico.html">Tintométrico</a></li>
+          <li><a href="leque-de-cores.html">Leque de cores</a></li>
+          <li><a href="leitor-de-cor.html" aria-current="page">Leitor de cor</a></li>
+          <li><a href="orcamento.html">Orçamento</a></li>
+          <li><a href="index.html#entrega">Entregas</a></li>
+          <li><a href="index.html#lojas">Lojas</a></li>
+        </ul>
+        <div class="nav-extra">
+          <a class="btn btn-orange" href="produtos.html">Comprar online</a>
+          <a href="tel:+5535984336650">(35) 98433-6650</a>
+          <a href="https://www.instagram.com/dekorar.acabamentos/" target="_blank" rel="noopener">Instagram da Dekorar</a>
+        </div>
+      </nav>
+      <a class="btn btn-orange btn-sm header-cta" href="produtos.html">Comprar online</a>
+      <button class="menu-toggle" type="button" aria-controls="menu" aria-expanded="false"><span>Menu</span></button>
+    </div>
+  </header>
+
+  <main id="conteudo" class="page-main">
+    <!-- Leitor de cor -->
+    <section class="leitor" id="leitor" aria-labelledby="leitor-title">
+      <div class="leitor-copy">
+        <h1 id="leitor-title" class="h2">Leitor de cor</h1>
+        <p class="lead">Na loja, a Dekorar usa um leitor que identifica a cor direto na parede e busca os tons mais próximos nas cartelas. Assim você acerta a cor sem precisar levar um pedaço de reboco.</p>
+        <p>Experimente uma versão simplificada aqui: passe o dedo ou o mouse sobre a foto, ou use uma foto sua. A leitura acontece no seu aparelho; nenhuma imagem é enviada.</p>
+        <div class="reader-sources" role="group" aria-label="Escolher foto" data-reader-sources>
+          <button type="button" aria-pressed="true" data-src="assets/img/fachada-tres-coracoes-md.webp">Fachada azul</button>
+          <button type="button" aria-pressed="false" data-src="assets/img/fachada-entrega-md.webp">Fachada</button>
+          <button type="button" aria-pressed="false" data-src="assets/img/estoque-prateleiras-md.webp">Prateleira</button>
+          <label class="upload">Usar minha foto<input type="file" accept="image/*" data-reader-file></label>
+        </div>
+      </div>
+      <div class="reader" data-reader>
+        <div class="reader-stage">
+          <canvas class="reader-canvas" width="900" height="1100" data-reader-canvas aria-label="Foto para leitura de cor. Use as setas para mover o ponto de leitura." tabindex="0" role="img"></canvas>
+          <div class="loupe" aria-hidden="true" data-loupe><canvas width="140" height="140"></canvas></div>
+          <div class="pick" aria-hidden="true" data-pick><i data-pick-swatch></i><span><strong data-pick-name>Cor</strong><small data-pick-hex>#000000</small></span></div>
+        </div>
+        <div class="reader-result" aria-live="polite">
+          <div class="swatch" data-swatch></div>
+          <div class="reader-values">
+            <p class="reader-name" data-name>Cor</p>
+            <p class="reader-hex" data-hex>#000000</p>
+            <p class="reader-rgb" data-rgb>RGB 0, 0, 0</p>
+            <button class="copy text-link" type="button" data-copy-hex><span class="copy-label">Copiar código</span></button>
+          </div>
+          <div class="near">
+            <p class="near-title">Tons próximos neste exemplo</p>
+            <ul class="near-list" data-near></ul>
+            <p class="near-note">Tons de referência ilustrativos, não são códigos de fabricante. Na loja a leitura é feita com o aparelho e as cartelas reais.</p>
+          </div>
+          <a class="btn btn-orange btn-block" data-reader-wa href="https://wa.me/5535984336650" target="_blank" rel="noopener">Mandar essa cor para a loja</a>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="page-next" aria-label="Próximo passo">
+      <p>Achou o tom? Veja as cores no <a class="text-link" href="leque-de-cores.html">leque de cores Coral e Suvinil</a> ou monte a tinta no <a class="text-link" href="tintometrico.html">sistema tintométrico</a>.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="assets/img/logo-dekorar-light.svg" width="576" height="126" alt="Dekorar Tintas e Acabamentos" loading="lazy">
+        <p>Materiais para pintura e acabamento em Lavras, Três Corações e região.</p>
+      </div>
+      <nav aria-label="Rodapé" class="footer-col">
+        <a href="index.html">Início</a><a href="produtos.html">Loja online</a><a href="leque-de-cores.html">Leque de cores</a><a href="leitor-de-cor.html">Leitor de cor</a><a href="orcamento.html">Orçamento</a>
+      </nav>
+      <div class="footer-col">
+        <a href="https://wa.me/5535984336650" target="_blank" rel="noopener">WhatsApp (35) 98433-6650</a>
+        <a href="tel:+553521424468">(35) 2142-4468</a>
+        <a href="https://www.instagram.com/dekorar.acabamentos/" target="_blank" rel="noopener">@dekorar.acabamentos</a>
+        <a href="https://www.instagram.com/dkorartintas/" target="_blank" rel="noopener">@dkorartintas</a>
+      </div>
+      <div class="footer-col">
+        <a href="index.html#lojas">Lavras</a>
+        <a href="index.html#lojas">Três Corações</a>
+        <a href="gerencia.html">Área da equipe</a>
+      </div>
+    </div>
+    <p class="footer-legal">© <span data-year>2026</span> Dekorar Tintas e Acabamentos. Preços e disponibilidade sujeitos a confirmação.</p>
+  </footer>
+
+  <div class="toast" role="status" aria-live="polite" data-toast></div>
+
+  <script src="assets/vendor/motion-12.23.12.min.js" defer></script>
+  <script src="assets/db.js?v=3" defer></script>
+  <script src="assets/home.js?v=12" defer></script>
+</body>
+</html>

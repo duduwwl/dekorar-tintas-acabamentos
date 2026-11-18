@@ -163,12 +163,16 @@
     document.body.appendChild(s);
   }
 
+  // marcas que saíram da loja: escondidas no site mesmo que ainda estejam ativas no banco
+  const REMOVED_BRANDS = ['Anjo', 'Deca', 'Ceusa', 'Lumavi'];
+
   function reorderToLocal(dbRows) {
     const local = Array.isArray(window.PRODUCTS) ? window.PRODUCTS : [];
     if (!local.length) return dbRows;
     const byId = new Map(dbRows.map(p => [p.id, p]));
     const ordered = [];
-    local.forEach(p => { const row = byId.get(p.id); if (row) { ordered.push(row); byId.delete(p.id); } });
+    // marca e nome seguem o catálogo local (ex.: Mactra deixou de aparecer como Coral)
+    local.forEach(p => { const row = byId.get(p.id); if (row) { ordered.push({ ...row, brand: p.brand, name: p.name }); byId.delete(p.id); } });
     byId.forEach(row => ordered.push(row));  // produtos novos no banco vão para o fim
     return ordered;
   }
@@ -180,7 +184,7 @@
           getProducts(),
           new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 3000))
         ]);
-        if (Array.isArray(rows) && rows.length) window.PRODUCTS = reorderToLocal(rows);
+        if (Array.isArray(rows) && rows.length) window.PRODUCTS = reorderToLocal(rows.filter(p => !REMOVED_BRANDS.includes(p.brand)));
       } catch { /* banco indisponível: segue com o catálogo local (catalog-data.js) */ }
       loadNext(consumers, 0);
     }

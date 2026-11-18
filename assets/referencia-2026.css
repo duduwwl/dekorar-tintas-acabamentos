@@ -424,7 +424,6 @@
 .ad-suvinil { background: linear-gradient(100deg, #e8561f 0%, #f07a2e 60%, #ffb060 100%); }
 .ad-coral { background: linear-gradient(100deg, #c8102e 0%, #e23744 62%, #ff6b5a 100%); }
 .ad-dkorar { background: linear-gradient(100deg, #15223f 0%, #23395e 62%, #3a5b8c 100%); }
-.ad-anjo { background: linear-gradient(100deg, #0a5c57 0%, #0f8f82 62%, #35c0a8 100%); }
 
 @keyframes ad-slide {
   0%, 21% { transform: translateX(0); }
@@ -485,3 +484,123 @@
 .dk-seal p { margin: 0; max-width: 34ch; color: var(--ink); }
 .dk-seal p strong { font-weight: 700; }
 @media (max-width: 520px) { .dk-seal { flex-direction: column; align-items: flex-start; } }
+
+/* ==========================================================================
+   Atualização nov/2026: faixa de clientes, Dkorar, especialidades, mapa real
+   ========================================================================== */
+
+/* Categorias centralizadas */
+.cat-rail-track { justify-content: center; }
+
+/* Marcas: wordmarks claros sobre a faixa grafite */
+.logos .logo-on-dark { filter: brightness(0) invert(1); }
+.ad-weg { background: linear-gradient(100deg, #003b6f 0%, #00579d 62%, #2a7cc4 100%); }
+.ad-logo-box { height: 56px; }
+@media (max-width: 720px) { .ad-logo-box { height: 38px; } }
+
+/* Faixa de clientes atendidos */
+.numeros { text-align: center; }
+.numeros-line {
+  max-width: 1100px;
+  margin: 0 auto;
+  font-size: clamp(1.35rem, 3.2vw, 2.6rem);
+  font-weight: 620;
+  font-stretch: 112%;
+  line-height: 1.12;
+  letter-spacing: -.02em;
+  text-wrap: balance;
+}
+.numeros-count {
+  display: inline-block;
+  min-width: 4.6ch;
+  font-size: 1.7em;
+  font-weight: 800;
+  letter-spacing: -.035em;
+  font-variant-numeric: tabular-nums;
+  vertical-align: -.08em;
+}
+.numeros-line span { color: #3a180d; }
+
+/* Dkorar: selo Inmetro em destaque e benefícios em lista */
+.dkorar-page { gap: clamp(22px, 2.6vw, 32px); }
+.dk-inmetro {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2vw, 24px);
+  max-width: 680px;
+  padding: clamp(16px, 2vw, 22px);
+  border-radius: 16px;
+  background: #1e1e1d;
+  color: #f2f2f0;
+  box-shadow: 0 16px 36px rgba(43, 19, 12, .28);
+}
+.dk-inmetro .inmetro-seal { flex: none; width: 112px; height: 112px; box-shadow: none; }
+.dk-inmetro p { margin: 0; font-size: 1rem; line-height: 1.5; color: #cfcdc8; }
+.dk-inmetro p strong { display: block; margin-bottom: 4px; font-size: clamp(1.05rem, 1.4vw, 1.22rem); line-height: 1.3; color: #fff; }
+.dk-benefits { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; max-width: 680px; margin: 0; background: none; border: 0; border-top: 1px solid rgba(43, 19, 12, .28); }
+.dk-benefits div { padding: 18px 18px 4px 0; }
+.dk-benefits div + div { padding-left: 18px; border-left: 1px solid rgba(43, 19, 12, .28); }
+.dk-benefits dt { font-weight: 680; font-size: 1.02rem; line-height: 1.25; }
+.dk-benefits dd { margin: 6px 0 0; color: #3f1c11; font-size: .95rem; line-height: 1.45; }
+@media (max-width: 620px) {
+  .dk-inmetro { flex-direction: column; align-items: flex-start; }
+  .dk-benefits { grid-template-columns: 1fr; }
+  .dk-benefits div, .dk-benefits div + div { padding: 14px 0; border-left: 0; }
+  .dk-benefits div + div { border-top: 1px solid rgba(43, 19, 12, .2); }
+}
+
+/* Marcas usadas (obras prediais, fundo escuro) */
+.marcas-uso { margin-top: 26px; padding-top: 22px; border-top: 1px solid rgba(255, 255, 255, .14); }
+.marcas-uso p { color: #d8d7d3; font-size: .95rem; }
+.marcas-uso p strong { color: #fff; }
+.marcas-uso-list { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 0; padding: 0; list-style: none; }
+.marcas-uso-list li { display: grid; place-items: center; height: 58px; padding: 0 20px; border-radius: 12px; background: #fff; }
+.marcas-uso-list img { height: 30px; width: auto; }
+
+/* Especialidades: residencial e industrial */
+.espec { padding: clamp(56px, 8vw, 112px) max(var(--m), env(safe-area-inset-left)); }
+.espec-inner { width: min(1120px, 100%); margin: 0 auto; display: grid; grid-template-columns: 1.3fr .9fr; gap: clamp(28px, 5vw, 64px); align-items: center; }
+.espec-copy h2 { font-size: clamp(1.9rem, 4.4vw, 3rem); line-height: 1.05; font-weight: 640; letter-spacing: -.025em; text-wrap: balance; }
+.espec-copy h2 em { font-style: normal; color: var(--orange); }
+.espec-copy .lead { margin-top: 16px; max-width: 52ch; }
+.espec-list { display: grid; gap: 0; margin: 28px 0 0; padding: 0; list-style: none; max-width: 560px; }
+.espec-list li { display: grid; gap: 2px; padding: 14px 0; border-top: 1px solid var(--line); }
+.espec-list strong { font-size: 1.05rem; font-weight: 660; }
+.espec-list span { color: var(--ink-2); font-size: .95rem; }
+.espec .actions { margin-top: 28px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+
+.espec-res { background: var(--white); }
+.espec-brands { padding: clamp(22px, 3vw, 34px); border-radius: var(--r-lg); background: var(--soft); border: 1px solid var(--line); }
+.espec-brands-title { font-weight: 660; font-size: .95rem; color: var(--ink-2); }
+.espec-brands ul { display: grid; gap: 10px; margin: 16px 0 0; padding: 0; list-style: none; }
+.espec-brands li { display: grid; grid-template-columns: 130px minmax(0, 1fr); align-items: center; gap: 16px; padding: 14px 16px; border-radius: 14px; background: #fff; }
+.espec-brands img { height: 34px; width: auto; max-width: 100%; justify-self: center; }
+.espec-brands span { font-size: .92rem; color: var(--ink-2); line-height: 1.35; }
+
+.espec-ind { background: #10273d; color: #eef2f6; }
+.espec-ind .lead { color: #c8d3de; }
+.espec-ind .lead strong { color: #fff; }
+.espec-ind .espec-list li { border-top-color: rgba(255, 255, 255, .14); }
+.espec-ind .espec-list span { color: #a9b8c6; }
+.espec-weg { display: grid; justify-items: center; gap: 18px; padding: clamp(28px, 4vw, 48px); border-radius: var(--r-lg); background: #0b1d2e; border: 1px solid rgba(255, 255, 255, .1); text-align: center; }
+.espec-weg img { width: min(220px, 70%); height: auto; }
+.espec-weg p { color: #c8d3de; }
+.espec-weg strong { color: #fff; }
+@media (max-width: 860px) { .espec-inner { grid-template-columns: 1fr; } }
+@media (max-width: 420px) { .espec-brands li { grid-template-columns: 1fr; justify-items: center; text-align: center; gap: 8px; } }
+
+/* Empresas: cartão de nome quando não há logo */
+.logo-word { display: grid; place-items: center; height: 74px; font-size: .82rem; font-weight: 560; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); line-height: 1.2; text-align: center; }
+.logo-word b { display: block; margin-top: 4px; font-size: 1.32rem; font-weight: 760; font-stretch: 112%; letter-spacing: -.01em; text-transform: none; color: var(--ink); }
+@media (max-width: 620px) { .logo-word { height: 56px; } .logo-word b { font-size: 1.05rem; } }
+
+/* Mapa real (Google Maps) com a rota por cima */
+.route-map { position: relative; width: 100%; aspect-ratio: 640 / 520; overflow: hidden; border-radius: 14px; background: #e8e6e0; }
+.route-gmap { position: absolute; top: 0; left: 0; width: 640px; height: 520px; border: 0; transform-origin: 0 0; transform: scale(var(--map-k, 1)); pointer-events: none; }
+.route-map svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.route .city text { paint-order: stroke; stroke: #fff; stroke-width: 5px; stroke-linejoin: round; font-size: 20px; }
+.route .city-mini text { font-size: 14px; font-weight: 600; fill: #3d3b37; }
+.route .city:not(.is-lit) text { fill: #55534f; }
+.route .city-mini circle { stroke: #fff; fill: #8a857d; }
+.route .route-line { stroke: #6e6b65; }
+.route-note .text-link { white-space: nowrap; }

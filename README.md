@@ -5,7 +5,11 @@ https://duduwwl.github.io/dekorar-tintas-acabamentos/
 
 ## Páginas
 
-- `index.html`: landing page em formato de catálogo de showroom: capa, faixa de marcas, Dkorar e a linha completa em abas, tintas na prateleira com filtro por marca e orçamento, leitor de cor interativo, produtos por etapa, a loja por dentro (galeria), entregas com mapa da rota, as duas lojas com fachada e a ficha de orçamento para o WhatsApp.
+- `index.html`: landing page: capa, marcas, clientes atendidos, Dkorar, obras prediais, residenciais e pintura industrial (WEG), loja online, tintométrico, empresas que confiam, entregas com mapa real (Google Maps) e rota animada, lojas e depoimentos.
+- `leque-de-cores.html`: leque interativo Coral e Suvinil (cartela de referência em `assets/leque-data.js`) com escolha do produto e pedido pelo WhatsApp.
+- `leitor-de-cor.html`: leitor de cor por foto.
+- `orcamento.html`: ficha de orçamento para o WhatsApp.
+- `tintometrico.html`: sistema tintométrico.
 - `produtos.html`: catálogo com busca, filtros e carrinho demonstrativo (pedido enviado pelo WhatsApp).
 - `gerencia.html`: área da equipe (estoque, pedidos e envios guardados no `localStorage` do navegador).
 

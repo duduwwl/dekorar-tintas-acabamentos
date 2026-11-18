@@ -376,12 +376,8 @@
       catch { showToast('Não foi possível abrir essa imagem.'); }
       finally { URL.revokeObjectURL(url); }
     });
-    // carrega a primeira foto quando a seção chegar perto
-    const start = () => choose(sources[0], ...defaults[0]);
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); start(); } }, { rootMargin: '400px' });
-      io.observe(reader);
-    } else start();
+    // o leitor tem página própria: carrega a primeira foto logo de cara
+    choose(sources[0], ...defaults[0]);
   }
 
   /* ---------- Fancy Components: Element Along SVG Path (rota da caminhonete) ---------- */
@@ -433,46 +429,26 @@
     const w = window.open(url, '_blank', 'noopener'); if (!w) window.location.href = url;
   });
 
-  /* ---------- Galeria ---------- */
-  const photos = [
-    ['fachada-entardecer', 'Fachada da loja de Lavras ao entardecer.'],
-    ['estoque-prateleiras', 'Baldes de 18 e 20 litros separados por marca e linha.'],
-    ['estoque-galpao', 'Galpão de estoque, pronto para separar pedidos de obra.'],
-    ['coralit-prateleira', 'Esmaltes Coral Coralit em várias cores.'],
-    ['prateleira-acotone', 'Prateleiras com produtos Coral e complementos.'],
-    ['prateleira-coral-anjo', 'Coral e Anjo lado a lado, do galão ao balde.'],
-    ['coralit-galoes', 'Galões de esmalte Coralit empilhados.'],
-    ['atendimento-mesas', 'Mesas de atendimento da equipe Dekorar.'],
-    ['atendimento-suvinil', 'Cartela de cores Suvinil e mesa de atendimento.'],
-    ['dkorar-balde', 'Dkorar Tintas Especiais, a marca própria da casa.'],
-    ['fachada-entrega', 'Caminhonete de entrega em frente à loja de Lavras.'],
-    ['fachada-tres-coracoes', 'Fachada da loja de Três Corações.'],
-    ['totem-noite', 'Totem da loja de Lavras à noite, com as marcas da casa.'],
-  ];
-  const lb = $('[data-lightbox]');
-  if (lb && typeof lb.showModal === 'function') {
-    const im = $('[data-lightbox-img]', lb), cap = $('[data-lightbox-cap]', lb), cnt = $('[data-lightbox-count]', lb);
-    let index = 0, opener = null;
-    const size = () => (window.innerWidth > 1100 ? 'lg' : 'md');
-    const show = i => {
-      index = (i + photos.length) % photos.length;
-      const [name, text] = photos[index];
-      if (!reduce) { im.classList.remove('is-swapping'); void im.offsetWidth; im.classList.add('is-swapping'); }
-      im.src = `assets/img/${name}-${size()}.webp`; im.alt = text; cap.textContent = text;
-      cnt.textContent = `Foto ${index + 1} de ${photos.length}`;
-      new Image().src = `assets/img/${photos[(index + 1) % photos.length][0]}-${size()}.webp`;
-    };
-    $$('[data-gallery-open]').forEach(b => b.addEventListener('click', () => { opener = b; show(Number(b.dataset.galleryOpen) || 0); lb.showModal(); $('[data-lightbox-next]', lb).focus(); }));
-    $('[data-lightbox-prev]', lb).addEventListener('click', () => show(index - 1));
-    $('[data-lightbox-next]', lb).addEventListener('click', () => show(index + 1));
-    $('[data-lightbox-close]', lb).addEventListener('click', () => lb.close());
-    lb.addEventListener('close', () => opener?.focus());
-    lb.addEventListener('keydown', e => { if (e.key === 'ArrowRight') show(index + 1); if (e.key === 'ArrowLeft') show(index - 1); });
-    lb.addEventListener('click', e => { if (e.target === lb || e.target.classList.contains('lightbox-figure')) lb.close(); });
-    let sx = null;
-    lb.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
-    lb.addEventListener('touchend', e => { if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1)); sx = null; });
-  } else $$('[data-gallery-open]').forEach(b => { b.hidden = true; });
+  /* ---------- Motion Primitives: Animated Number (clientes atendidos) ---------- */
+  const fmtInt = new Intl.NumberFormat('pt-BR');
+  $$('[data-count-to]').forEach(el => {
+    const to = Number(el.dataset.countTo) || 0, pre = el.dataset.countPrefix || '';
+    const set = v => { el.textContent = pre + fmtInt.format(Math.round(v)); };
+    if (!canMove || !('IntersectionObserver' in window)) { set(to); return; }
+    set(0);
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      M.animate(0, to, { duration: 2.2, ease: EASE, onUpdate: set });
+    }, { threshold: 0.6 });
+    io.observe(el);
+  });
+
+  /* ---------- Mapa real: o iframe tem tamanho fixo (640x520) para a rota bater com as cidades ---------- */
+  const gmap = $('.route-map');
+  if (gmap && 'ResizeObserver' in window) {
+    new ResizeObserver(([e]) => gmap.style.setProperty('--map-k', String(e.contentRect.width / 640))).observe(gmap);
+  }
 
   /* ---------- Sistema tintométrico: atalhos por tonalidade ---------- */
   const toneLinks = $('[data-tone-links]');

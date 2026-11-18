@@ -10,7 +10,7 @@
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=()" },
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'sha256-49Zp53kG0Zrh6H8xFeUtCiEwEbQbB937L506Opz8Xhs=' 'sha256-vyD0tDLKSgU2naTnaXTz2+x9ZDwIx28ZDvB62usV+EQ='; font-src 'self'; connect-src 'self' https://nweqwzicallwafkkcauc.supabase.co https://wa.me https://api.whatsapp.com https://viacep.com.br; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://wa.me https://api.whatsapp.com" }
+        { "key": "Content-Security-Policy", "value": "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'sha256-49Zp53kG0Zrh6H8xFeUtCiEwEbQbB937L506Opz8Xhs=' 'sha256-vyD0tDLKSgU2naTnaXTz2+x9ZDwIx28ZDvB62usV+EQ='; font-src 'self'; frame-src https://www.google.com https://maps.google.com; connect-src 'self' https://nweqwzicallwafkkcauc.supabase.co https://wa.me https://api.whatsapp.com https://viacep.com.br; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://wa.me https://api.whatsapp.com" }
       ]
     }
   ]

@@ -16,8 +16,6 @@ window.PRODUCTS = [
   {id:'coral-master',brand:'Coral',name:'Coral Master',category:'Tintas',price:299.90,image:'assets/img/pack-coral-master.webp',description:'Tinta acrílica Coral de boa cobertura para o dia a dia da obra, em lata e balde.',package:'Lata de 18 L e balde',indication:'Paredes internas e externas'},
   {id:'suvinil-rende-20l',brand:'Suvinil',name:'Suvinil Rende e Cobre Muito 20 L',category:'Tintas',price:319.90,image:'assets/img/pack-suvinil.webp',description:'Tinta para áreas internas e externas, na cor Neve, com proposta de bom rendimento e cobertura.',package:'20 litros',indication:'Pintura de paredes internas e externas'},
   {id:'suvinil-toque-seda',brand:'Suvinil',name:'Suvinil Toque de Seda',category:'Tintas',price:429.90,image:'assets/img/pack-suvinil-toque-seda.webp',description:'Tinta acrílica premium Suvinil com acabamento acetinado, para paredes internas.',package:'Lata de 16 L',indication:'Paredes internas'},
-  {id:'anjo-fosco-total',brand:'Anjo',name:'Anjo Acrílica Premium Fosco Total',category:'Tintas',price:349.90,image:'assets/img/pack-anjo-fosco-total.webp',description:'Tinta acrílica premium Anjo para paredes e gesso, acabamento fosco.',package:'Lata',indication:'Paredes e gesso'},
-  {id:'anjo-anjomais',brand:'Anjo',name:'Anjo AnjoMais',category:'Tintas',price:259.90,image:'assets/img/pack-anjomais.jpg',description:'Tinta acrílica Anjo para paredes e gesso, com bom rendimento, para áreas internas e externas.',package:'Lata de 18 L',indication:'Paredes e gesso, áreas internas e externas'},
 
   /* ---------- Esmaltes ---------- */
   {id:'coralit-ultra',brand:'Coral',name:'Esmalte Coralit UltraResistência',category:'Esmaltes',price:129.90,image:'assets/img/pack-coralit-ultra.webp',description:'Esmalte sintético Coral para madeira e metal, nos acabamentos brilhante, acetinado e fosco.',package:'Galão e quarto de galão',indication:'Madeira e metal'},
@@ -43,8 +41,7 @@ window.PRODUCTS = [
 
   /* ---------- Impermeabilização ---------- */
   {id:'dkorar-borracha-liquida',brand:'Dkorar',name:'Borracha Líquida Dkorar',category:'Impermeabilização',price:219.90,image:'assets/img/dkorar-lata-cutout.webp',description:'Impermeabilização que veda fissuras e protege lajes, muros e outras superfícies.',package:'Consulte as opções',indication:'Impermeabilização'},
-  {id:'mactra-seca-parede',brand:'Coral',name:'Coral Mactra Seca Parede',category:'Impermeabilização',price:129.90,image:'assets/img/pack-mactra.webp',description:'Sistema de spray e massa para tratar paredes com umidade de rodapé, mofo, bolhas e salitre.',package:'Spray 0,75 L e massa 4,5 kg',indication:'Tratamento de paredes com umidade'},
-  {id:'anjo-emborrachada',brand:'Anjo',name:'Tinta Emborrachada Anjo',category:'Impermeabilização',price:399.90,image:'assets/img/pack-anjo-emborrachada.webp',description:'Tinta elástica e impermeável para paredes e lajes, com conforto térmico e acústico.',package:'Lata de 3,6 L e balde de 18 L',indication:'Paredes e lajes, áreas externas e internas'},
+  {id:'mactra-seca-parede',brand:'Mactra',name:'Mactra Seca Parede',category:'Impermeabilização',price:129.90,image:'assets/img/pack-mactra.webp',description:'Sistema de spray e massa para tratar paredes com umidade de rodapé, mofo, bolhas e salitre.',package:'Spray 0,75 L e massa 4,5 kg',indication:'Tratamento de paredes com umidade'},
 
   /* ---------- Revestimentos ---------- */
   {id:'revestliso-ceramfix',brand:'Ceramfix',name:'Massa Revestliso Camada Fina Ceramfix 15 kg',category:'Revestimentos',price:89.90,image:'assets/img/pack-revestliso.webp',description:'Argamassa mineral de camada fina para acabamento liso em paredes e tetos, interno ou externo.',package:'15 kg',indication:'Revestimento liso de paredes e tetos'},

@@ -35,8 +35,8 @@
   if ($('[data-grid]')) {
   /* ---------- Filtros ---------- */
   const CATS = [...new Set(PRODUCTS.map(p => p.category))];
-  const BRANDS = ['Dkorar', 'Coral', 'Suvinil', 'Anjo', 'Ceramfix', 'Mactra'].filter(b => PRODUCTS.some(p => p.brand === b))
-    .concat([...new Set(PRODUCTS.map(p => p.brand))].filter(b => !['Dkorar', 'Coral', 'Suvinil', 'Anjo', 'Ceramfix', 'Mactra'].includes(b)));
+  const BRANDS = ['Dkorar', 'Coral', 'Suvinil', 'Ceramfix', 'Mactra'].filter(b => PRODUCTS.some(p => p.brand === b))
+    .concat([...new Set(PRODUCTS.map(p => p.brand))].filter(b => !['Dkorar', 'Coral', 'Suvinil', 'Ceramfix', 'Mactra'].includes(b)));
   const maxPrice = Math.ceil(Math.max(...PRODUCTS.map(p => p.price)) / 10) * 10;
   const params = new URLSearchParams(location.search);
   const state = { q: params.get('busca')?.trim() || '', cat: 'all', brands: new Set(), max: maxPrice, sort: 'relevance' };

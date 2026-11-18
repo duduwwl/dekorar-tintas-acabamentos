@@ -51,7 +51,8 @@ Site institucional da Dekorar Tintas e Acabamentos: mostrar o que a loja vende, 
   - Leitor de cor: identifica a cor na parede e busca os tons mais próximos ("primeira da região" e "sem custo" não foram reconfirmados; não citar).
   - Obras atendidas: 10ª obra no Shopping Cidade da Serra (com @leandro.pinturas10), Residencial Jacarandá, nova casa da Taboca Tapiocaria.
   - Marcas no totem: Suvinil, Anjo, Dkorar, Deca, Ceusa, Leão, Lumavi; Coral nas prateleiras; Ceramfix em post.
-- Não existem: depoimentos escritos, números de clientes, anos de mercado, preços atuais confirmados. Laudo do Inmetro da massa corrida Dkorar: o usuário autorizou citar. Selo ESG não é citado.
+- Atualização nov/2026 (pedido do usuário): saíram as marcas Anjo, Deca, Ceusa e Lumavi; entraram WEG (pintura industrial) e Mactra impermeabilizantes. Obras prediais e residenciais usam Coral, Suvinil e Dkorar. Mais de 3.000 clientes atendidos na região (número informado pelo usuário). Todos os produtos Dkorar têm selo Inmetro (afirmação do usuário). Shopping Cidade da Serra e Shopping de Três Corações entram em "empresas que confiam".
+- Não existem: depoimentos escritos, anos de mercado, preços atuais confirmados. Laudo do Inmetro da massa corrida Dkorar: o usuário autorizou citar. Selo ESG não é citado.
 
 ## Product Principles
 
