@@ -639,3 +639,12 @@
   .stage-seal strong { font-size: .8rem; }
   .stage-seal .seal-top, .stage-seal .seal-bot { font-size: .44rem; }
 }
+
+/* Cards de linha: lata enquadrada acima da faixa do botão, sem ficar atrás dele */
+.promo { --pp: clamp(26px, 2.6vw, 42px); --btn-row: 66px; padding: var(--pp); }
+.promo-can {
+  top: clamp(18px, 1.8vw, 28px); bottom: auto; right: clamp(14px, 1.6vw, 26px);
+  width: 40%; max-width: none; height: calc(100% - clamp(18px, 1.8vw, 28px) - var(--pp) - var(--btn-row));
+  object-fit: contain; object-position: center bottom;
+}
+@media (max-width: 680px) { .promo-can { width: 36%; max-width: none; height: calc(100% - clamp(18px, 1.8vw, 28px) - var(--pp) - var(--btn-row)); } }
