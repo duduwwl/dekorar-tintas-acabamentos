@@ -649,63 +649,6 @@
 }
 @media (max-width: 680px) { .promo-can { width: 36%; max-width: none; height: calc(100% - clamp(18px, 1.8vw, 28px) - var(--pp) - var(--btn-row)); } }
 
-/* ==========================================================================
-   Dkorar Pedras Especiais: vitrine com 12 cores, ficha técnica e obras
-   ========================================================================== */
-.pedras { padding: var(--space) max(var(--m), env(safe-area-inset-left)); background: radial-gradient(120% 80% at 85% 0%, #34312d 0%, var(--ink) 60%); color: var(--on-dark); }
-.pedras-inner { max-width: 1280px; margin: 0 auto; }
-.pedras-head { max-width: 60ch; }
-.pedras-kicker { margin: 0 0 10px; font-size: .95rem; font-weight: 640; color: #ff9466; }
-.pedras-head .h2 { margin: 0; color: var(--white); }
-.pedras-head .lead { margin: 18px 0 0; color: var(--on-dark-2); }
-
-.pedras-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: clamp(28px, 4vw, 64px); margin-top: clamp(36px, 4.5vw, 64px); align-items: start; }
-.pedras-viewer { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(16px, 2vw, 28px); align-items: start; }
-.pedras-stage { position: relative; margin: 0; aspect-ratio: 3 / 4; border-radius: var(--r-lg); overflow: hidden; background: #2b2926; isolation: isolate; }
-.pedras-tex { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity 260ms ease, transform 700ms var(--ease-expo); }
-.pedras-tex.is-swap { opacity: .25; transform: scale(1.04); }
-.pedras-balde { position: absolute; z-index: 1; right: -6%; bottom: -4%; width: 62%; height: auto; filter: drop-shadow(0 18px 30px rgba(0, 0, 0, .45)); }
-.pedras-stage figcaption { position: absolute; z-index: 2; left: 0; top: 0; padding: 18px 22px; border-bottom-right-radius: var(--r-lg); background: rgba(30, 30, 29, .82); backdrop-filter: blur(6px); }
-.pedras-stage figcaption span { display: block; font-size: .8rem; font-weight: 600; color: var(--on-dark-2); }
-.pedras-stage figcaption strong { display: block; font-size: clamp(1.5rem, 2.4vw, 2.2rem); font-weight: 700; line-height: 1.05; letter-spacing: -.02em; color: var(--white); }
-
-.pedras-cores { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.pedras-cores button { display: grid; gap: 6px; padding: 6px 6px 8px; border: 1px solid rgba(255, 255, 255, .12); border-radius: 12px; background: rgba(255, 255, 255, .04); color: var(--on-dark); font: inherit; font-size: .86rem; font-weight: 560; text-align: center; cursor: pointer; transition: border-color 160ms ease, background-color 160ms ease, transform 160ms var(--ease-out); }
-.pedras-cores img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; }
-@media (hover: hover) { .pedras-cores button:hover { border-color: rgba(255, 255, 255, .4); background: rgba(255, 255, 255, .08); } }
-.pedras-cores button:active { transform: scale(.97); }
-.pedras-cores button[aria-pressed="true"] { border-color: var(--orange); background: rgba(232, 86, 31, .16); box-shadow: inset 0 0 0 1px var(--orange); }
-.pedras-cores button:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
-
-.pedras-info { display: grid; gap: 22px; }
-.pedras-ficha { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; margin: 0; }
-.pedras-ficha div { padding: 14px 0 12px; border-top: 1px solid rgba(255, 255, 255, .18); }
-.pedras-ficha dt { font-size: .85rem; font-weight: 600; color: var(--on-dark-2); }
-.pedras-ficha dd { margin: 4px 0 0; font-size: 1.05rem; font-weight: 600; line-height: 1.35; color: var(--white); }
-.pedras-nota { margin: 0; padding: 16px 18px; border-left: 3px solid var(--orange); border-radius: 0 12px 12px 0; background: rgba(255, 255, 255, .05); font-size: .95rem; line-height: 1.5; color: var(--on-dark-2); }
-.pedras-nota strong { display: block; margin-bottom: 2px; color: var(--white); }
-.pedras .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; }
-.pedras .text-link { color: var(--white); }
-
-.pedras-obras { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(14px, 1.6vw, 22px); margin-top: clamp(36px, 4.5vw, 64px); }
-.pedras-obras figure { position: relative; margin: 0; aspect-ratio: 4 / 3; border-radius: var(--r-lg); overflow: hidden; background: #2b2926; }
-.pedras-obras img { width: 100%; height: 100%; object-fit: cover; }
-.pedras-obras .pedras-ceu { background: linear-gradient(180deg, #9cc0de 0%, #d9e6ef 70%); }
-.pedras-obras .pedras-ceu img { object-position: 50% 38%; }
-.pedras-obras figcaption { position: absolute; left: 14px; bottom: 14px; padding: 6px 12px; border-radius: 999px; background: rgba(30, 30, 29, .78); color: var(--white); font-size: .85rem; font-weight: 560; }
-
-@media (max-width: 1100px) { .pedras-grid { grid-template-columns: 1fr; } }
-@media (max-width: 620px) {
-  .pedras-viewer { grid-template-columns: 1fr; }
-  .pedras-stage { aspect-ratio: 4 / 3; }
-  .pedras-balde { width: 40%; }
-  .pedras-cores { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-  .pedras-cores button { font-size: .74rem; padding: 4px 4px 6px; }
-  .pedras-ficha { grid-template-columns: 1fr; }
-  .pedras-obras { grid-template-columns: 1fr; }
-}
-@media (prefers-reduced-motion: reduce) { .pedras-tex, .pedras-cores button { transition: none; } }
-
 /* Anúncio do topo: agora com 5 peças (Pedras Especiais) */
 .ad-track { width: 500%; animation: ad-slide-5 30s infinite; }
 .ad-slide { flex-basis: 20%; width: 20%; }
@@ -723,3 +666,16 @@
 }
 @media (max-width: 720px) { .ad-chips { display: none; } }
 @media (prefers-reduced-motion: reduce) { .ad-track { animation: none; } }
+
+/* Seção Dkorar: linha Pedras Especiais com as 12 cores */
+.dk-pedras { max-width: 680px; padding-top: 22px; border-top: 1px solid rgba(43, 19, 12, .28); }
+.dk-pedras-head h3 { margin: 0; font-size: clamp(1.15rem, 1.5vw, 1.35rem); font-weight: 700; line-height: 1.2; color: var(--ink); }
+.dk-pedras-head p { max-width: 60ch; margin: 6px 0 0; font-size: .95rem; line-height: 1.5; color: #2b130c; }
+.dk-pedras-cores { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px 10px; margin: 16px 0 0; padding: 0; list-style: none; }
+.dk-pedras-cores a { display: grid; gap: 6px; justify-items: center; color: #2b130c; font-size: .82rem; font-weight: 620; text-decoration: none; }
+.dk-pedras-cores img { width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 10px; box-shadow: 0 0 0 2px rgba(255, 255, 255, .55), 0 8px 18px rgba(43, 19, 12, .28); transition: transform 220ms var(--ease-out), box-shadow 220ms ease; }
+@media (hover: hover) { .dk-pedras-cores a:hover img { transform: translateY(-4px); box-shadow: 0 0 0 2px var(--ink), 0 12px 22px rgba(43, 19, 12, .34); } }
+.dk-pedras-cores a:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 10px; }
+@media (max-width: 620px) { .dk-pedras-cores { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (prefers-reduced-motion: reduce) { .dk-pedras-cores img { transition: none; } }
+.ad-chips img { width: 30px; height: 70px; }
