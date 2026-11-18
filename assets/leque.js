@@ -31,8 +31,6 @@
         ${tones.map(t => `<i style="background:${t.hex}"></i>`).join('')}
         <span class="fan-label">${esc(f.name)}</span></button>`;
     }).join('') + '<span class="fan-pin" aria-hidden="true"></span>';
-    if (!reduce) { fan.classList.remove('is-open'); void fan.offsetWidth; }
-    requestAnimationFrame(() => fan.classList.add('is-open'));
   };
 
   /* ---------- Família aberta: as três lâminas com os sete tons ---------- */

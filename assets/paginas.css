@@ -25,12 +25,13 @@
   padding: 0; border: 2px solid #fff; border-radius: 10px 10px 22px 22px; overflow: hidden;
   background: #fff; box-shadow: 0 6px 16px rgba(30, 30, 29, .16);
   transform-origin: 50% calc(100% - 18px);
-  transform: rotate(0deg);
-  transition: transform 700ms var(--ease-expo), box-shadow 200ms ease, translate 260ms var(--ease-out);
-  transition-delay: calc(var(--i) * 28ms);
+  transform: rotate(var(--a));
+  animation: fan-open 760ms var(--ease-expo) both;
+  animation-delay: calc(var(--i) * 28ms);
+  transition: box-shadow 200ms ease, translate 260ms var(--ease-out);
   z-index: var(--i);
 }
-.fan.is-open .fan-blade { transform: rotate(var(--a)); }
+@keyframes fan-open { from { transform: rotate(0deg); } }
 .fan-blade i { flex: 1; display: block; }
 .fan-blade .fan-label { position: absolute; left: 50%; top: 8px; translate: -50% 0; writing-mode: vertical-rl; transform: rotate(180deg); font-size: .66rem; font-weight: 700; letter-spacing: .04em; color: #1e1e1d; background: rgba(255, 255, 255, .86); padding: 6px 2px; border-radius: 6px; white-space: nowrap; max-height: 46%; overflow: hidden; }
 @media (hover: hover) { .fan-blade:hover { translate: 0 -10px; box-shadow: 0 14px 28px rgba(30, 30, 29, .22); transition-delay: 0ms; } }
@@ -90,5 +91,5 @@
   .pick-list { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .fan-blade, .tone-btn { transition: none; }
+  .fan-blade, .tone-btn { transition: none; animation: none; }
 }
