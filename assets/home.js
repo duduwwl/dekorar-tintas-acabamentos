@@ -131,6 +131,22 @@
     });
   }
 
+  /* ---------- Pedras Especiais: trocar a cor da amostra ---------- */
+  const pedras = $('[data-pedras]');
+  if (pedras) {
+    const img = $('[data-pedras-img]', pedras), name = $('[data-pedras-name]', pedras), wa = $('[data-pedras-wa]', pedras);
+    $$('[data-cor]', pedras).forEach(btn => btn.addEventListener('click', () => {
+      const cor = btn.dataset.cor, nome = btn.textContent.trim();
+      $$('[data-cor]', pedras).forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+      img.classList.add('is-swap');
+      const next = new Image(); next.src = `assets/img/pedras/sw-${cor}.webp`;
+      next.decode().catch(() => {}).then(() => { img.src = next.src; img.alt = `Amostra da textura Pedras Especiais na cor ${nome}`; img.classList.remove('is-swap'); });
+      name.textContent = nome;
+      wa.textContent = `Pedir a cor ${nome}`;
+      wa.href = `${WA}?text=${encodeURIComponent(`Olá, quero Dkorar Pedras Especiais na cor ${nome}.`)}`;
+    }));
+  }
+
   /* ---------- Fancy Components: Text Highlighter ---------- */
   $$('[data-highlight]').forEach(el => {
     if (!canMove) { el.classList.add('is-on'); return; }

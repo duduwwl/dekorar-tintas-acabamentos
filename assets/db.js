@@ -10,6 +10,8 @@
   const uuid = () => (crypto.randomUUID ? crypto.randomUUID()
     : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16); }));
 
+  const dbIds = new Set();  // ids de produto que existem no banco (preenchido no boot)
+
   async function getProducts() {
     const cols = 'id,brand,name,category,price,image,description,package,indication';
     const r = await fetch(`${rest}/products?select=${cols}&active=eq.true`, { headers: headers() });
@@ -39,7 +41,8 @@
     if (!ro.ok) throw new Error(`orders ${ro.status}`);
     const items = (order.items || []).map(it => ({
       order_id: oid,
-      product_id: /@/.test(it.id) ? null : it.id,  // itens do tintométrico têm id composto: sem FK
+      // itens do tintométrico (id composto) e produtos só do catálogo local não têm linha no banco: sem FK
+      product_id: /@/.test(it.id) || (dbIds.size && !dbIds.has(it.id)) ? null : it.id,
       product_name: it.name,
       qty: it.qty,
       unit_price: it.price
@@ -165,6 +168,8 @@
 
   // marcas que saíram da loja: escondidas no site mesmo que ainda estejam ativas no banco
   const REMOVED_BRANDS = ['Anjo', 'Deca', 'Ceusa', 'Lumavi'];
+  // produtos substituídos: "Pedras Naturais Dkorar" virou a linha Pedras Especiais (12 cores)
+  const REMOVED_IDS = ['dkorar-pedras-naturais'];
 
   function reorderToLocal(dbRows) {
     const local = Array.isArray(window.PRODUCTS) ? window.PRODUCTS : [];
@@ -172,8 +177,9 @@
     const byId = new Map(dbRows.map(p => [p.id, p]));
     const ordered = [];
     // marca e nome seguem o catálogo local (ex.: Mactra deixou de aparecer como Coral)
-    local.forEach(p => { const row = byId.get(p.id); if (row) { ordered.push({ ...row, brand: p.brand, name: p.name }); byId.delete(p.id); } });
-    byId.forEach(row => ordered.push(row));  // produtos novos no banco vão para o fim
+    // produtos que só existem no catálogo local (ainda sem linha no banco) entram na posição do catálogo
+    local.forEach(p => { const row = byId.get(p.id); if (row) { ordered.push({ ...row, brand: p.brand, name: p.name }); byId.delete(p.id); } else ordered.push(p); });
+    byId.forEach(row => { if (!REMOVED_IDS.includes(row.id)) ordered.push(row); });  // produtos novos no banco vão para o fim
     return ordered;
   }
 
@@ -184,7 +190,10 @@
           getProducts(),
           new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 3000))
         ]);
-        if (Array.isArray(rows) && rows.length) window.PRODUCTS = reorderToLocal(rows.filter(p => !REMOVED_BRANDS.includes(p.brand)));
+        if (Array.isArray(rows) && rows.length) {
+          rows.forEach(p => dbIds.add(p.id));
+          window.PRODUCTS = reorderToLocal(rows.filter(p => !REMOVED_BRANDS.includes(p.brand)));
+        }
       } catch { /* banco indisponível: segue com o catálogo local (catalog-data.js) */ }
       loadNext(consumers, 0);
     }
