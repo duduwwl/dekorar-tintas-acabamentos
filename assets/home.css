@@ -588,3 +588,8 @@ a.add { display: inline-flex; align-items: center; color: inherit; text-decorati
 .tint-banner-copy > p:not(.eyebrow), .eyebrow-light { color: #2b130c; }
 .tint-step strong { background: var(--ink); color: #fff; }
 .tone-card small { color: var(--orange-text); }
+
+/* Link discreto da área da equipe, abaixo do aviso legal */
+.footer-staff { margin: 6px 0 0; font-size: .68rem; line-height: 1.4; }
+.footer-staff a { color: inherit; opacity: .55; text-decoration: none; }
+.footer-staff a:hover, .footer-staff a:focus-visible { opacity: .9; text-decoration: underline; }
