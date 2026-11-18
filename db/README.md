@@ -1,13 +1,13 @@
 # Banco de dados — Dekorar Tintas (Supabase)
 
-Projeto Supabase `dekorar-site` (org MarketingOS AI). Esquema completo do site:
+Projeto Supabase na região São Paulo (sa-east-1). Antes de usar um projeto novo, rodar `schema.sql`, `permissoes.sql`, `seed.sql` e `pedras-especiais.sql`. Esquema completo do site:
 catálogo, estoque por loja, pedidos, itens de pedido e leads/orçamentos.
 
 ## Conexão (front público)
 
-- **URL:** `https://nweqwzicallwafkkcauc.supabase.co`
+- **URL:** `https://thigiczpwmyugwlynfwy.supabase.co`
 - **Publishable key** (segura no navegador porque o RLS está ligado):
-  `sb_publishable_i2zhF0Wc6qaqSaQy1fXEoA_pxOPMxOs`
+  `sb_publishable_Z6T93Bsb3a7l3tJ0T0Qchw_xSW8Xybw`
 
 A **secret key** e a **senha do Postgres** ficam em `db/.env.local`
 (fora do Git). Nunca coloque essas duas no front.

@@ -3,8 +3,8 @@
    Lê o catálogo do banco e grava pedidos e leads. */
 (() => {
   'use strict';
-  const URL = 'https://nweqwzicallwafkkcauc.supabase.co';
-  const KEY = 'sb_publishable_i2zhF0Wc6qaqSaQy1fXEoA_pxOPMxOs';
+  const URL = 'https://thigiczpwmyugwlynfwy.supabase.co';
+  const KEY = 'sb_publishable_Z6T93Bsb3a7l3tJ0T0Qchw_xSW8Xybw';
   const rest = `${URL}/rest/v1`;
   const headers = (extra) => ({ apikey: KEY, Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json', ...extra });
   const uuid = () => (crypto.randomUUID ? crypto.randomUUID()
