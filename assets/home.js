@@ -449,6 +449,15 @@
   if (gmap && 'ResizeObserver' in window) {
     new ResizeObserver(([e]) => gmap.style.setProperty('--map-k', String(e.contentRect.width / 640))).observe(gmap);
   }
+  // o embed do Google às vezes fica em branco se carrega fora da tela: só define o src quando o mapa aparece
+  const gframe = $('.route-gmap[data-src]');
+  if (gframe) {
+    const loadMap = () => { gframe.src = gframe.dataset.src; };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); loadMap(); } }, { rootMargin: '200px' });
+      io.observe(gframe.parentElement);
+    } else loadMap();
+  }
 
   /* ---------- Sistema tintométrico: atalhos por tonalidade ---------- */
   const toneLinks = $('[data-tone-links]');
