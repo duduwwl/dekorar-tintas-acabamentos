@@ -684,7 +684,7 @@
 .cover { display: block; min-height: 0; }
 .cover-page { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(40px, 6vh, 64px); min-height: calc(82svh - var(--hh)); padding: clamp(56px, 10vh, 120px) max(var(--m), env(safe-area-inset-left)) clamp(40px, 7vh, 72px); text-align: center; }
 .cover-copy { display: flex; flex-direction: column; align-items: center; max-width: 860px; }
-.cover-copy .display { max-width: 15ch; text-wrap: balance; }
+.cover-copy .display { max-width: 24ch; text-wrap: balance; }
 .cover-copy .lead { max-width: 56ch; }
 .cover-copy .actions { justify-content: center; }
 .cover-index { width: min(720px, 100%); text-align: left; }

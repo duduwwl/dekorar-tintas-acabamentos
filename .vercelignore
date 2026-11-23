@@ -1,0 +1,13 @@
+# Só o site vai para o ar: nada de SQL, documentação, fontes originais ou configuração local
+db/
+.claude/
+.vercel/
+assets/source/
+*.md
+*.sql
+.nojekyll
+.gitignore
+.vercelignore
+.taste-skill/
+.impeccable/
+graphify-out/

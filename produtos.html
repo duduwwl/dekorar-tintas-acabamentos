@@ -174,10 +174,9 @@
           <fieldset class="co-step" data-step-panel="0">
             <legend class="co-legend">Seus dados</legend>
             <div class="fields">
-              <label class="f f-wide"><span>Nome completo</span><input name="name" autocomplete="name" required minlength="3"></label>
-              <label class="f"><span>CPF</span><input name="cpf" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00" required data-mask="cpf"></label>
-              <label class="f"><span>Celular (WhatsApp)</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="(35) 90000-0000" required data-mask="phone"></label>
-              <label class="f f-wide"><span>E-mail</span><input name="email" type="email" autocomplete="email" required placeholder="voce@email.com"></label>
+              <label class="f f-wide"><span>Nome completo</span><input name="name" autocomplete="name" required minlength="3" maxlength="80"></label>
+              <label class="f"><span>Celular (WhatsApp)</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="(35) 90000-0000" required maxlength="16" data-mask="phone"></label>
+              <label class="f"><span>E-mail</span><input name="email" type="email" autocomplete="email" required maxlength="120" placeholder="voce@email.com"></label>
             </div>
           </fieldset>
 
@@ -206,11 +205,11 @@
                     <option value="Outra">Outra cidade da região</option>
                   </select>
                 </label>
-                <label class="f f-wide"><span>Rua / avenida</span><input name="street" autocomplete="address-line1" data-req></label>
-                <label class="f"><span>Número</span><input name="number" inputmode="numeric" autocomplete="off" data-req></label>
-                <label class="f"><span>Complemento (opcional)</span><input name="complement" autocomplete="address-line2"></label>
-                <label class="f"><span>Bairro</span><input name="district" autocomplete="address-level3" data-req></label>
-                <label class="f"><span>Ponto de referência (opcional)</span><input name="reference" autocomplete="off"></label>
+                <label class="f f-wide"><span>Rua / avenida</span><input name="street" autocomplete="address-line1" maxlength="120" data-req></label>
+                <label class="f"><span>Número</span><input name="number" inputmode="numeric" autocomplete="off" maxlength="10" data-req></label>
+                <label class="f"><span>Complemento (opcional)</span><input name="complement" autocomplete="address-line2" maxlength="60"></label>
+                <label class="f"><span>Bairro</span><input name="district" autocomplete="address-level3" maxlength="60" data-req></label>
+                <label class="f"><span>Ponto de referência (opcional)</span><input name="reference" autocomplete="off" maxlength="80"></label>
               </div>
               <p class="form-note" data-fee-note>Escolha a cidade para ver a taxa de entrega.</p>
             </div>
@@ -218,7 +217,7 @@
 
           <fieldset class="co-step" data-step-panel="2" hidden>
             <legend class="co-legend">Forma de pagamento</legend>
-            <p class="demo-note"><strong>Demonstração.</strong> Nenhum pagamento é processado e nenhum dado de cartão é enviado ou guardado.</p>
+            <p class="demo-note"><strong>Demonstração.</strong> Nenhum pagamento é processado pelo site e nenhum dado de cartão é pedido.</p>
             <div class="choice-grid pay-grid">
               <label class="choice"><input type="radio" name="pay" value="pix" checked><span><strong>Pix</strong><small>5% de desconto (demonstrativo)</small></span></label>
               <label class="choice"><input type="radio" name="pay" value="credit"><span><strong>Cartão de crédito</strong><small>Até 6x sem juros</small></span></label>
@@ -231,11 +230,8 @@
               <p>O QR Code aparece aqui depois da confirmação. Nesta demonstração ele é ilustrativo.</p>
             </div>
             <div class="pay-detail" data-pay="card" hidden>
+              <p>O cartão é passado na maquininha, na retirada ou na entrega. O site não pede os dados do cartão.</p>
               <div class="fields">
-                <label class="f f-wide"><span>Número do cartão</span><input name="cc" inputmode="numeric" autocomplete="off" placeholder="0000 0000 0000 0000" data-mask="card" data-card></label>
-                <label class="f f-wide"><span>Nome impresso</span><input name="ccname" autocomplete="off" data-card></label>
-                <label class="f"><span>Validade</span><input name="ccexp" inputmode="numeric" autocomplete="off" placeholder="MM/AA" data-mask="exp" data-card></label>
-                <label class="f"><span>CVV</span><input name="cvv" inputmode="numeric" autocomplete="off" placeholder="123" maxlength="4" data-card></label>
                 <label class="f f-wide" data-installments><span>Parcelas</span><select name="inst" data-inst></select></label>
               </div>
             </div>
@@ -283,6 +279,6 @@
 
   <script src="assets/catalog-data.js?v=13" defer></script>
   <script src="assets/nav-search.js?v=1" defer></script>
-  <script src="assets/db.js?v=5" data-consumer="assets/shop.js?v=7" defer></script>
+  <script src="assets/db.js?v=6" data-consumer="assets/shop.js?v=8" defer></script>
 </body>
 </html>

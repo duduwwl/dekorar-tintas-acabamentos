@@ -80,8 +80,8 @@
   const colorBadge = c => `<span class="picked"><i style="background:${c.hex}"></i><span><small>Cor selecionada</small><strong>${esc(c.name)}</strong><em>${esc(c.family)} · ${c.hex.toUpperCase()}</em></span></span>`;
   function renderBases() {
     $('[data-tint-picked]').innerHTML = colorBadge(st.color);
-    $('[data-tint-bases]').innerHTML = BASES.map(p => `<li><button class="base-card" type="button" data-base="${p.id}">
-        <span class="base-media"><img src="${p.image}" alt="" loading="lazy" width="400" height="400"><i style="background:${st.color.hex}"></i></span>
+    $('[data-tint-bases]').innerHTML = BASES.map(p => `<li><button class="base-card" type="button" data-base="${esc(p.id)}">
+        <span class="base-media"><img src="${esc(p.image)}" alt="" loading="lazy" width="400" height="400"><i style="background:${st.color.hex}"></i></span>
         <span class="base-brand" translate="no">${esc(p.brand)}</span><strong>${esc(p.name)}</strong>
         <span class="base-foot"><span class="base-price">${money.format(p.price)}</span><span class="base-go">Escolher</span></span></button></li>`).join('');
   }

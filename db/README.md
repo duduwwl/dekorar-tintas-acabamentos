@@ -1,6 +1,6 @@
 # Banco de dados — Dekorar Tintas (Supabase)
 
-Projeto Supabase na região São Paulo (sa-east-1). Antes de usar um projeto novo, rodar `schema.sql`, `permissoes.sql`, `seed.sql` e `pedras-especiais.sql`. Esquema completo do site:
+Projeto Supabase na região São Paulo (sa-east-1). Antes de usar um projeto novo, rodar `schema.sql`, `permissoes.sql`, `seguranca.sql`, `seed.sql` e `pedras-especiais.sql`. Depois, cadastrar o e-mail da gerência em `public.admins` (instruções no topo de `seguranca.sql`). Esquema completo do site:
 catálogo, estoque por loja, pedidos, itens de pedido e leads/orçamentos.
 
 ## Conexão (front público)

@@ -60,9 +60,11 @@
   /* ---------- Motion Primitives: Text Effect (título da capa) ---------- */
   const title = $('[data-text-effect]');
   if (title) {
-    const words = title.textContent.trim().split(/\s+/);
+    // cada <br> do HTML vira uma linha; as palavras de cada linha entram uma a uma
+    const lines = title.innerHTML.split(/<br\s*\/?>/i).map(h => { const d = document.createElement('div'); d.innerHTML = h; return d.textContent.trim().split(/\s+/).filter(Boolean); });
+    const words = lines.flat();
     title.setAttribute('aria-label', words.join(' '));
-    title.innerHTML = words.map(w => `<span class="w" aria-hidden="true">${esc(w)}</span>`).join(' ');
+    title.innerHTML = lines.map(ws => ws.map(w => `<span class="w" aria-hidden="true">${esc(w)}</span>`).join(' ')).join('<br>');
     if (canMove) {
       M.animate($$('.w', title), { opacity: [0, 1], filter: ['blur(10px)', 'blur(0px)'], transform: ['translateY(18px)', 'translateY(0px)'] },
         { duration: 0.8, ease: EASE, delay: M.stagger(0.07, { startDelay: 0.2 }) });
@@ -246,7 +248,7 @@
       <div class="row-side"><span class="row-price">${money.format(p.price)}</span><a class="add" href="${shopUrl(p.id)}">Comprar</a></div></li>`).join('')}</ul>`;
   });
   const cardHTML = p => `<li class="card">
-      <a class="card-media is-pack" href="${shopUrl(p.id)}" tabindex="-1" aria-hidden="true"><img src="${p.image}" alt="" loading="lazy" decoding="async"></a>
+      <a class="card-media is-pack" href="${shopUrl(p.id)}" tabindex="-1" aria-hidden="true"><img src="${esc(p.image)}" alt="" loading="lazy" decoding="async"></a>
       <p class="card-brand" translate="no">${esc(p.brand)}</p>
       <h3>${esc(p.name)}</h3>
       <p>${esc(p.description)}</p>
@@ -259,7 +261,7 @@
   $$('[data-featured]').forEach(list => {
     const items = list.dataset.featured.split(' ').map(id => byId.get(id)).filter(Boolean);
     list.innerHTML = items.map(p => `<li><a class="feat" href="${shopUrl(p.id)}">
-      <span class="feat-media"><img src="${p.image}" alt="" loading="lazy" decoding="async"></span>
+      <span class="feat-media"><img src="${esc(p.image)}" alt="" loading="lazy" decoding="async"></span>
       <span class="feat-brand" translate="no">${esc(p.brand)}</span>
       <h3>${esc(p.name)}</h3>
       <span class="feat-price">${money.format(p.price)}</span></a></li>`).join('');

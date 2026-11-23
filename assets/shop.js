@@ -89,13 +89,13 @@
     countEl.textContent = list.length === 1 ? '1 produto' : `${list.length} produtos`;
     emptyEl.hidden = list.length > 0;
     grid.innerHTML = list.map((p, i) => `<li class="pcard" style="--i:${reduce ? 0 : Math.min(i, 12)}">
-      <button class="pcard-media" type="button" data-open="${p.id}" tabindex="-1" aria-hidden="true"><img src="${esc(p.image)}" alt="" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async" width="400" height="400"></button>
+      <button class="pcard-media" type="button" data-open="${esc(p.id)}" tabindex="-1" aria-hidden="true"><img src="${esc(p.image)}" alt="" loading="${i < 6 ? 'eager' : 'lazy'}" decoding="async" width="400" height="400"></button>
       <div class="pcard-body">
         <p class="pcard-meta"><span class="b" translate="no">${esc(p.brand)}</span><span class="c">${esc(p.category)}</span></p>
-        <h3><button type="button" data-open="${p.id}">${esc(p.name)}</button></h3>
+        <h3><button type="button" data-open="${esc(p.id)}">${esc(p.name)}</button></h3>
         <p>${esc(p.description)}</p>
         <div class="pcard-foot"><p class="price">${money.format(p.price)}<small>ou 6x de ${money.format(p.price / 6)}</small></p>
-          <button class="add-cart${cart[p.id] ? ' is-added' : ''}" type="button" data-add="${p.id}">${cart[p.id] ? 'No carrinho' : 'Adicionar'}</button></div>
+          <button class="add-cart${cart[p.id] ? ' is-added' : ''}" type="button" data-add="${esc(p.id)}">${cart[p.id] ? 'No carrinho' : 'Adicionar'}</button></div>
       </div></li>`).join('');
   };
   }
@@ -193,21 +193,10 @@
 
   // máscaras
   const masks = {
-    cpf: v => v.replace(/\D/g, '').slice(0, 11).replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2'),
     phone: v => { const d = v.replace(/\D/g, '').slice(0, 11); return d.length > 10 ? d.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3') : d.replace(/(\d{2})(\d{0,4})(\d{0,4})/, (m, a, b, c) => (b ? `(${a}) ${b}${c ? '-' + c : ''}` : a)); },
-    cep: v => v.replace(/\D/g, '').slice(0, 8).replace(/(\d{5})(\d)/, '$1-$2'),
-    card: v => v.replace(/\D/g, '').slice(0, 16).replace(/(\d{4})(?=\d)/g, '$1 '),
-    exp: v => v.replace(/\D/g, '').slice(0, 4).replace(/(\d{2})(\d)/, '$1/$2')
+    cep: v => v.replace(/\D/g, '').slice(0, 8).replace(/(\d{5})(\d)/, '$1-$2')
   };
   $$('[data-mask]', form).forEach(i => i.addEventListener('input', () => { i.value = masks[i.dataset.mask](i.value); }));
-  form.elements.cvv.addEventListener('input', e => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4); });
-
-  const cpfOk = c => {
-    c = c.replace(/\D/g, ''); if (c.length !== 11 || /^(\d)\1+$/.test(c)) return false;
-    for (const t of [9, 10]) { let s = 0; for (let i = 0; i < t; i++) s += Number(c[i]) * (t + 1 - i); if (((s * 10) % 11) % 10 !== Number(c[t])) return false; }
-    return true;
-  };
-  const luhn = n => { n = n.replace(/\D/g, ''); if (n.length < 13) return false; let s = 0; [...n].reverse().forEach((d, i) => { let x = Number(d); if (i % 2) { x *= 2; if (x > 9) x -= 9; } s += x; }); return s % 10 === 0; };
 
   // CEP: preenche o endereço (ViaCEP), quando disponível
   form.elements.cep.addEventListener('input', async e => {
@@ -257,23 +246,14 @@
     const mark = (name, ok) => { const el = form.elements[name]; el.setAttribute('aria-invalid', String(!ok)); if (!ok) bad.push(el); };
     if (i === 0) {
       mark('name', val('name').split(/\s+/).length >= 2);
-      mark('cpf', cpfOk(val('cpf')));
       mark('phone', val('phone').replace(/\D/g, '').length >= 10);
       mark('email', /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val('email')));
-      if (bad.length) return [bad, 'Confira os campos destacados: nome e sobrenome, CPF válido, celular com DDD e e-mail.'];
+      if (bad.length) return [bad, 'Confira os campos destacados: nome e sobrenome, celular com DDD e e-mail.'];
     }
     if (i === 1 && mode() === 'delivery') {
       mark('cep', val('cep').replace(/\D/g, '').length === 8);
       ['city', 'street', 'number', 'district'].forEach(n => mark(n, !!val(n)));
       if (bad.length) return [bad, 'Preencha o endereço de entrega: CEP, cidade, rua, número e bairro.'];
-    }
-    if (i === 2 && (pay() === 'credit' || pay() === 'debit')) {
-      mark('cc', luhn(val('cc')));
-      mark('ccname', val('ccname').length >= 3);
-      const [mm, yy] = val('ccexp').split('/').map(Number); const now = new Date();
-      mark('ccexp', mm >= 1 && mm <= 12 && yy >= 0 && (2000 + yy > now.getFullYear() || (2000 + yy === now.getFullYear() && mm >= now.getMonth() + 1)));
-      mark('cvv', /^\d{3,4}$/.test(val('cvv')));
-      if (bad.length) return [bad, 'Confira os dados do cartão. Para testar, use um número de teste como 4111 1111 1111 1111.'];
     }
     if (i === 3 && !form.elements.ok.checked) return [[form.elements.ok], 'Marque a confirmação para continuar.'];
     return null;
@@ -281,11 +261,10 @@
   const payLabel = () => ({ pix: 'Pix (5% de desconto)', credit: `Cartão de crédito em ${form.elements.inst.value || 1}x`, debit: 'Cartão de débito', boleto: 'Boleto', onsite: 'Pagar ao receber' }[pay()]);
   const recvLabel = () => (mode() === 'pickup' ? `Retirada na loja de ${form.elements.store.value}` : `Entrega em ${val('street')}, ${val('number')}${val('complement') ? ' ' + val('complement') : ''}, ${val('district')}, ${val('city') === 'Outra' ? 'outra cidade' : val('city')} · CEP ${val('cep')}`);
   function review() {
-    const card = (pay() === 'credit' || pay() === 'debit') ? ` · final ${val('cc').replace(/\D/g, '').slice(-4)}` : '';
     $('[data-review]', form).innerHTML = [
-      ['Cliente', `${esc(val('name'))} · CPF ${esc(val('cpf'))}<br>${esc(val('phone'))} · ${esc(val('email'))}`, 0],
+      ['Cliente', `${esc(val('name'))}<br>${esc(val('phone'))} · ${esc(val('email'))}`, 0],
       ['Recebimento', esc(recvLabel()), 1],
-      ['Pagamento', esc(payLabel() + card), 2],
+      ['Pagamento', esc(payLabel()), 2],
       ['Total', `${money.format(total())} (demonstrativo)`, null]
     ].map(([k, v, s]) => `<div><dt>${k}</dt><dd>${v}</dd>${s === null ? '<span></span>' : `<button type="button" data-goto="${s}">Alterar</button>`}</div>`).join('');
   }
@@ -344,15 +323,13 @@
       status: 'Novo', demo: true,
       shipping: { carrier: mode() === 'pickup' ? 'Retirada na Loja' : 'Caminhonete Dekorar', tracking: '', estimate: '', notes: '' }
     };
-    const orders = store.get('dekorar-orders', []);
-    store.set('dekorar-orders', [order, ...(Array.isArray(orders) ? orders : [])]);
+    // dados do cliente não ficam no navegador: o pedido vai só para o banco
+    try { localStorage.removeItem('dekorar-orders'); } catch { /* sem armazenamento */ }
     // grava o pedido no banco (não bloqueia o fluxo se o banco falhar)
     window.DekorarDB?.createOrder(order).catch(() => {});
     // o resumo enviado não leva dados de cartão nem CPF
     const msg = [`Olá! Fiz o pedido ${id} na loja online da Dekorar.`, '', ...list.map(({ p, qty }) => `- ${qty}x ${p.name}: ${money.format(p.price * qty)}`), '',
       `Recebimento: ${recvLabel()}`, `Pagamento: ${payLabel()}`, `Total (demonstrativo): ${money.format(total())}`, '', `Cliente: ${val('name')} · ${val('phone')}`].join('\n');
-    // limpa os campos de cartão: nada fica guardado
-    ['cc', 'ccname', 'ccexp', 'cvv'].forEach(n => { form.elements[n].value = ''; });
     $('[data-done-title]', co).textContent = `Pedido ${id} recebido`;
     $('[data-done-text]', co).textContent = `Obrigado, ${val('name').split(' ')[0]}! Esta é uma loja de demonstração: nenhum valor foi cobrado. Envie o resumo pelo WhatsApp para a equipe confirmar preço, estoque e ${mode() === 'pickup' ? 'a retirada' : 'a entrega'}.`;
     $('[data-done-wa]', co).href = `${WA}?text=${encodeURIComponent(msg)}`;

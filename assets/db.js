@@ -17,33 +17,34 @@
     const r = await fetch(`${rest}/products?select=${cols}&active=eq.true`, { headers: headers() });
     if (!r.ok) throw new Error(`products ${r.status}`);
     const rows = await r.json();
-    return rows.map(p => ({ ...p, price: Number(p.price) }));
+    // imagem só do próprio site: uma linha adulterada no banco não carrega arquivo de fora
+    return rows.map(p => ({ ...p, price: Number(p.price) || 0, image: /^assets\/[\w./-]+$/.test(p.image || '') ? p.image : 'assets/img/dkorar-lata-cutout.webp' }));
   }
 
   // Grava pedido + itens. Gera o id do pedido no cliente (anon não lê de volta).
   async function createOrder(order) {
     const oid = uuid();
+    const cut = (v, n) => (v == null ? null : String(v).slice(0, n));
+    // status e data ficam com o padrão do banco: o visitante não escolhe
     const row = {
       id: oid,
-      order_number: order.id,
-      customer_name: order.customer.name,
-      customer_phone: order.customer.phone,
-      customer_city: order.customer.city,
-      delivery: order.delivery,
-      payment: order.payment,
+      order_number: cut(order.id, 20),
+      customer_name: cut(order.customer.name, 80),
+      customer_phone: cut(order.customer.phone, 20),
+      customer_city: cut(order.customer.city, 60),
+      delivery: cut(order.delivery, 60),
+      payment: cut(order.payment, 60),
       total: order.total,
-      status: order.status || 'Novo',
-      shipping_carrier: order.shipping?.carrier || null,
-      shipping_notes: order.address || order.shipping?.notes || null,
-      created_at: order.createdAt || new Date().toISOString()
+      shipping_carrier: cut(order.shipping?.carrier, 40),
+      shipping_notes: cut(order.address || order.shipping?.notes, 300)
     };
     const ro = await fetch(`${rest}/orders`, { method: 'POST', headers: headers({ Prefer: 'return=minimal' }), body: JSON.stringify(row) });
     if (!ro.ok) throw new Error(`orders ${ro.status}`);
-    const items = (order.items || []).map(it => ({
+    const items = (order.items || []).slice(0, 60).map(it => ({
       order_id: oid,
       // itens do tintométrico (id composto) e produtos só do catálogo local não têm linha no banco: sem FK
       product_id: /@/.test(it.id) || (dbIds.size && !dbIds.has(it.id)) ? null : it.id,
-      product_name: it.name,
+      product_name: cut(it.name, 160),
       qty: it.qty,
       unit_price: it.price
     }));
@@ -55,7 +56,8 @@
   }
 
   async function createLead(lead) {
-    const row = { name: lead.name || 'Visitante do site', phone: lead.phone || null, message: lead.message || null, source: lead.source || 'site' };
+    const cut = (v, n) => (v ? String(v).slice(0, n) : null);
+    const row = { name: cut(lead.name, 80) || 'Visitante do site', phone: cut(lead.phone, 20), message: cut(lead.message, 1000), source: cut(lead.source, 40) || 'site' };
     const r = await fetch(`${rest}/leads`, { method: 'POST', headers: headers({ Prefer: 'return=minimal' }), body: JSON.stringify(row) });
     if (!r.ok) throw new Error(`leads ${r.status}`);
   }
@@ -110,7 +112,7 @@
   }
 
   async function adminSetStock(productId, store, quantity) {
-    const r = await fetch(`${rest}/inventory?product_id=eq.${encodeURIComponent(productId)}&store_id=eq.${store}`, {
+    const r = await fetch(`${rest}/inventory?product_id=eq.${encodeURIComponent(productId)}&store_id=eq.${encodeURIComponent(store)}`, {
       method: 'PATCH', headers: authHeaders({ Prefer: 'return=minimal' }),
       body: JSON.stringify({ quantity, updated_at: new Date().toISOString() })
     });
@@ -118,7 +120,7 @@
   }
 
   async function adminUpdateOrder(uuid, o) {
-    const r = await fetch(`${rest}/orders?id=eq.${uuid}`, {
+    const r = await fetch(`${rest}/orders?id=eq.${encodeURIComponent(uuid)}`, {
       method: 'PATCH', headers: authHeaders({ Prefer: 'return=minimal' }),
       body: JSON.stringify({
         status: o.status,
