@@ -742,17 +742,24 @@
 }
 
 /* Ajustes: faixa de clientes centralizada e abas de obras em tablet/celular */
-@media (min-width: 621px) {
-  .numeros-line { flex-wrap: nowrap; }
-  .numeros-count { min-width: 0; }
-  .numeros-line span { max-width: none; white-space: nowrap; }
-}
+/* O número nunca encolhe abaixo do próprio texto (era isso que o fazia cobrir a frase) */
+.numeros-count { flex: 0 0 auto; }
 @media (max-width: 620px) {
   .numeros { padding-bottom: calc(clamp(40px, 5vw, 72px) + 6px); }
 }
-@media (max-width: 960px) {
-  .servico-res .stage-video { grid-template-columns: 1fr; justify-items: center; }
+/* Obras residenciais: vídeo centralizado, com o número acima dele (nunca por cima) */
+.servico-res .stage-video {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center; align-content: center;
+  gap: clamp(14px, 1.8vw, 24px);
 }
-@media (min-width: 1100px) {
-  .servico-res .stage-video { grid-template-columns: minmax(200px, .8fr) auto; }
+.servico-res .stage-side {
+  flex-direction: column; align-items: center; justify-content: flex-start;
+  gap: 0; width: 100%; text-align: center;
+}
+.servico-res .stage-stat span { max-width: none; margin-inline: auto; }
+.servico-res .stage-clip { max-width: 100%; }
+/* acima de 960px a altura manda (9/16 define a largura); abaixo, a largura manda */
+@media (min-width: 961px) {
+  .servico-res .stage-clip { height: clamp(360px, 32vw, 500px); }
 }
