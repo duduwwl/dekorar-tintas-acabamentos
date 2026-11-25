@@ -165,6 +165,7 @@
     $('[data-pd-use]', pd).textContent = p.indication || '';
     $('[data-pd-qty]', pd).textContent = '1';
     if (!pd.open) pd.showModal();
+    pd.scrollTop = 0; // no celular a janela ocupa a tela toda; abre mostrando a foto, não o meio
     history.replaceState(null, '', `?produto=${encodeURIComponent(id)}`);
   }
   pd.addEventListener('click', e => {
