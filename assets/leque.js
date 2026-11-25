@@ -135,7 +135,11 @@
   });
 
   // ?marca=Suvinil abre direto no leque da Suvinil
-  const q = new URLSearchParams(location.search).get('marca');
+  const qs = new URLSearchParams(location.search);
+  const q = qs.get('marca');
   const start = tabs.find(t => t.dataset.brand.toLowerCase() === (q || '').toLowerCase()) || tabs[0];
   setBrand(start);
+  // ?familia=N abre direto na família N da marca (usado pelos cards da home)
+  const fi = Number(qs.get('familia'));
+  if (Number.isInteger(fi) && fi >= 0 && fi < window.LEQUE[brand].length) setFamily(fi);
 })();

@@ -501,7 +501,7 @@
    ========================================================================== */
 
 /* Faixa de clientes: número grande, frase e cidades atendidas correndo */
-.numeros { padding: clamp(40px, 5vw, 72px) 0 0; overflow: hidden; }
+.numeros { padding: clamp(40px, 5vw, 72px) 0; overflow: hidden; }
 .numeros-inner { display: block; max-width: none; text-align: left; }
 .numeros-line {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .1em .4em;
@@ -739,4 +739,20 @@
 @media (max-width: 960px) {
   .servico-ind .stage-ind { grid-template-columns: 1fr; justify-items: center; padding-bottom: 64px; }
   .stage-ind .stage-surfaces { flex-direction: row; }
+}
+
+/* Ajustes: faixa de clientes centralizada e abas de obras em tablet/celular */
+@media (min-width: 621px) {
+  .numeros-line { flex-wrap: nowrap; }
+  .numeros-count { min-width: 0; }
+  .numeros-line span { max-width: none; white-space: nowrap; }
+}
+@media (max-width: 620px) {
+  .numeros { padding-bottom: calc(clamp(40px, 5vw, 72px) + 6px); }
+}
+@media (max-width: 960px) {
+  .servico-res .stage-video { grid-template-columns: 1fr; justify-items: center; }
+}
+@media (min-width: 1100px) {
+  .servico-res .stage-video { grid-template-columns: minmax(200px, .8fr) auto; }
 }

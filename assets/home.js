@@ -555,13 +555,17 @@
   }
 
   /* ---------- Sistema tintométrico: atalhos por tonalidade ---------- */
+  /* Cards puxam as famílias dos leques oficiais (Coral e Suvinil) e levam para o leque da marca certa */
   const toneLinks = $('[data-tone-links]');
-  if (toneLinks && Array.isArray(window.TINT_FAMILIES)) {
-    toneLinks.innerHTML = window.TINT_FAMILIES.map(f => {
-      const step = Math.ceil(f.colors.length / 3);
-      const sw = f.colors.filter((_, i) => i % step === 0).slice(0, 3).map(([, h]) => `<i style="background:${h}"></i>`).join('');
-      return `<li><a class="tone-card" href="tintometrico.html?tonalidade=${encodeURIComponent(f.name)}"><span class="tone-swatch" aria-hidden="true">${sw}</span><strong>${esc(f.name)}</strong><small>Explorar cores</small></a></li>`;
-    }).join('');
+  if (toneLinks && window.LEQUE) {
+    const cards = Object.entries(window.LEQUE).flatMap(([brand, fams]) => fams.map((f, i) => {
+      const tones = f.blades.flat();
+      const pick = [0, Math.floor(tones.length / 2), tones.length - 1].map(k => tones[k]);
+      const sw = pick.map(t => `<i style="background:#${t[2]}"></i>`).join('');
+      const href = `leque-de-cores.html?marca=${encodeURIComponent(brand)}&familia=${i}`;
+      return `<li><a class="tone-card" href="${href}"><span class="tone-swatch" aria-hidden="true">${sw}</span><strong>${esc(f.name)}</strong><small>${esc(brand)} · ${tones.length} cores</small></a></li>`;
+    }));
+    toneLinks.innerHTML = cards.join('');
   }
 
   $$('[data-year]').forEach(el => { el.textContent = String(new Date().getFullYear()); });
