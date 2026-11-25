@@ -357,7 +357,7 @@
     const copyHex = $('[data-copy-hex]', reader);
     // Tons de referência ilustrativos (não são códigos de fabricante)
     const TONES = [
-      ['Branco', '#f6f5f1'], ['Gelo', '#e9ebe8'], ['Pérola', '#ece6da'], ['Palha', '#e6d9b8'], ['Areia', '#d8c6a4'], ['Camúrça', '#c4a57f'],
+      ['Branco', '#f6f5f1'], ['Gelo', '#e9ebe8'], ['Pérola', '#ece6da'], ['Palha', '#e6d9b8'], ['Areia', '#d8c6a4'], ['Camurça', '#c4a57f'],
       ['Bege parede', '#d9c4a5'], ['Concreto', '#b9b7b1'], ['Cinza médio', '#8f8d88'], ['Grafite', '#4a4a48'], ['Preto', '#1f1f1f'],
       ['Laranja', '#e8561f'], ['Terracota', '#b5543a'], ['Telha', '#9c4a32'], ['Amarelo', '#f2c14e'], ['Mostarda', '#c99a2e'],
       ['Verde oliva', '#7a7d4a'], ['Verde folha', '#4f7a43'], ['Verde água', '#9fd3c7'], ['Azul céu', '#9cc3e4'], ['Azul royal', '#2f4f9a'],
