@@ -763,3 +763,17 @@
 @media (min-width: 961px) {
   .servico-res .stage-clip { height: clamp(420px, 38vw, 600px); }
 }
+
+/* Capa: arte da marca ao fundo, com véu escuro para o texto continuar legível */
+.cover {
+  background-color: #0b0c0f;
+  background-image: linear-gradient(rgba(9, 10, 13, .74), rgba(9, 10, 13, .84)), url("img/capa-fundo.webp"); /* taste-skill-ignore: véu neutro sobre a arte da capa */
+  background-repeat: no-repeat;
+  /* enquadra a curva laranja da arte; o texto da peça fica fora do corte */
+  background-position: 0% center;
+  background-size: cover, auto 200%;
+  color: var(--paper);
+}
+.cover .display { color: #fff; }
+.cover .lead { color: var(--on-dark-2); }
+.cover .text-link { color: #fff; }
