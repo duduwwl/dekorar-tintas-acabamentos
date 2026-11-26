@@ -12,6 +12,10 @@ on conflict (id) do nothing;
 
 alter table public.site_settings enable row level security;
 
+-- as políticas só valem depois do GRANT na tabela
+grant select on public.site_settings to anon, authenticated;
+grant update on public.site_settings to authenticated;
+
 -- qualquer visitante lê (o site precisa dos textos e cores)
 drop policy if exists site_settings_read on public.site_settings;
 create policy site_settings_read on public.site_settings
