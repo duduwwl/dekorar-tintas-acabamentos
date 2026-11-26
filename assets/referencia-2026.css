@@ -777,3 +777,7 @@
 .cover .display { color: #fff; }
 .cover .lead { color: var(--on-dark-2); }
 .cover .text-link { color: #fff; }
+
+/* Rodapé: WhatsApp e Instagram com o ícone da marca antes do contato */
+.footer-social { gap: 10px; }
+.brand-icon { width: 18px; height: 18px; flex: none; fill: currentColor; }
