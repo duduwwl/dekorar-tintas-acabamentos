@@ -11,7 +11,7 @@
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
   <link rel="preload" href="assets/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/home.css?v=20">
-  <link rel="stylesheet" href="assets/referencia-2026.css?v=31">
+  <link rel="stylesheet" href="assets/referencia-2026.css?v=37">
   <link rel="stylesheet" href="assets/paginas.css?v=3">
   <link rel="stylesheet" href="assets/mobile.css?v=1" media="(max-width: 767px)">
   <script>(function(d){d.classList.replace("no-js","js");if(!matchMedia("(prefers-reduced-motion: reduce)").matches)d.classList.add("motion");setTimeout(function(){if(!window.Motion)d.classList.remove("motion")},3000)})(document.documentElement)</script>
@@ -50,7 +50,7 @@
       <div class="leitor-copy">
         <h1 id="leitor-title" class="h2">Leitor de cor</h1>
         <p class="lead">Na loja, a Dekorar usa um leitor que identifica a cor direto na parede e busca os tons mais próximos nas cartelas. Assim você acerta a cor sem precisar levar um pedaço de reboco.</p>
-        <p>Experimente uma versão simplificada aqui: passe o dedo ou o mouse sobre a foto, ou use uma foto sua. A leitura acontece no seu aparelho; nenhuma imagem é enviada.</p>
+        <p>Experimente uma versão simplificada aqui: passe o mouse ou o dedo sobre a foto e clique (ou solte o dedo) para marcar a cor, ou use uma foto sua. A leitura acontece no seu aparelho; nenhuma imagem é enviada.</p>
         <div class="reader-sources" role="group" aria-label="Escolher foto" data-reader-sources>
           <button type="button" aria-pressed="true" data-src="assets/img/fachada-tres-coracoes-md.webp">Fachada azul</button>
           <button type="button" aria-pressed="false" data-src="assets/img/fachada-entrega-md.webp">Fachada</button>
@@ -63,6 +63,11 @@
           <canvas class="reader-canvas" width="900" height="1100" data-reader-canvas aria-label="Foto para leitura de cor. Use as setas para mover o ponto de leitura." tabindex="0" role="img"></canvas>
           <div class="loupe" aria-hidden="true" data-loupe><canvas width="140" height="140"></canvas></div>
           <div class="pick" aria-hidden="true" data-pick><i data-pick-swatch></i><span><strong data-pick-name>Cor</strong><small data-pick-hex>#000000</small></span></div>
+          <span class="reader-mark" aria-hidden="true" data-mark></span>
+          <div class="reader-marked" data-marked>
+            <i data-marked-swatch></i>
+            <p><small>Cor marcada</small><strong data-marked-name>Clique na foto para marcar</strong> <span data-marked-hex></span></p>
+          </div>
         </div>
         <div class="reader-result" aria-live="polite">
           <div class="swatch" data-swatch></div>
@@ -117,6 +122,6 @@
   <script src="assets/vendor/motion-12.23.12.min.js" defer></script>
   <script src="assets/cms.js?v=1" defer></script>
   <script src="assets/db.js?v=7" defer></script>
-  <script src="assets/home.js?v=20" defer></script>
+  <script src="assets/home.js?v=22" defer></script>
 </body>
 </html>

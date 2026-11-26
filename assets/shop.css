@@ -288,3 +288,24 @@
 .tint-dots li.is-done span::before { background: rgba(30, 30, 29, .16); border-color: transparent; }
 .tint-dots li[aria-current="step"] { color: var(--ink); }
 .tint-dots li[aria-current="step"] span::before { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+/* Página do tintométrico no estilo do leitor de cor: faixa grafite, texto à esquerda */
+.tint-dark { margin-top: 0; padding: var(--space) max(var(--m), env(safe-area-inset-right)) var(--space) max(var(--m), env(safe-area-inset-left)); background: var(--graphite); color: var(--on-dark); }
+.tint-dark .tint-hero { gap: 18px; padding: 0; border-radius: 0; background: none; color: var(--on-dark); max-width: 760px; }
+.tint-dark .tint-hero::after { display: none; }
+.tint-dark .tint-hero .eyebrow { color: var(--orange); }
+.tint-dark .tint-hero .h2 { color: #fff; }
+.tint-dark .tint-lead { color: var(--on-dark); font-size: var(--fs-lead); }
+.tint-more { max-width: 52ch; color: var(--on-dark-2); }
+.tint-dark .tint-dots li { color: var(--on-dark-2); }
+.tint-dark .tint-dots li + li::before { background: #4a4946; }
+.tint-dark .tint-dots li span::before { border-color: #4a4946; color: var(--on-dark); }
+.tint-dark .tint-dots li.is-done span::before { background: rgba(255, 255, 255, .14); border-color: transparent; }
+.tint-dark .tint-dots li[aria-current="step"] { color: #fff; }
+.tint-dark .tint-dots li[aria-current="step"] span::before { background: var(--orange); border-color: var(--orange); color: var(--ink); }
+.tint-dark .tint-panel { margin-top: 36px; }
+.tint-dark .tint-panel .tone-card { border-color: transparent; }
+.tint-dark .tint-list-head .h3, .tint-dark .tint-list-head h2 { color: #fff; }
+.tint-dark .tint-note { color: var(--on-dark-2); }
+.tint-dark .tint-back-row .text-link { color: var(--on-dark); }
+.tint-dark .tint-box, .tint-dark .tint-search, .tint-dark .base-card, .tint-dark .tint-empty, .tint-dark .tone-card { color: var(--ink); }

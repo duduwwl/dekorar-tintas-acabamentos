@@ -17,7 +17,7 @@
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
   <link rel="preload" href="assets/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/home.css?v=20">
-  <link rel="stylesheet" href="assets/referencia-2026.css?v=35">
+  <link rel="stylesheet" href="assets/referencia-2026.css?v=37">
   <link rel="stylesheet" href="assets/mobile.css?v=3" media="(max-width: 767px)">
   <script>(function(d){d.classList.replace("no-js","js");if(!matchMedia("(prefers-reduced-motion: reduce)").matches)d.classList.add("motion");setTimeout(function(){if(!window.Motion)d.classList.remove("motion")},3000)})(document.documentElement)</script>
   <script type="application/ld+json">
@@ -429,18 +429,32 @@
       </div>
     </section>
 
-    <!-- Sistema tintométrico -->
-    <section class="tint-banner-sec" id="tintometrico" aria-labelledby="tint-banner-title">
-      <div class="tint-banner" data-reveal>
-        <div class="tint-banner-copy">
-          <p class="eyebrow eyebrow-light">Sistema tintométrico</p>
-          <h2 id="tint-banner-title" class="h2">Escolha a tonalidade desejada</h2>
-          <p>Selecione uma família de cores, escolha a cor e a base, e a Dekorar prepara a tinta na loja.</p>
-          <p class="tint-step"><strong>1</strong><span>de 4 · Selecione uma tonalidade</span></p>
-        </div>
-        <ul class="tone-grid tone-grid-banner" data-tone-links></ul>
+    <!-- Ferramentas de cor: chamadas para as páginas do tintométrico e do leitor -->
+    <section class="tool-cta" id="tintometrico" aria-labelledby="tint-cta-title">
+      <div class="tool-cta-copy" data-reveal>
+        <p class="tool-cta-eyebrow">Sistema tintométrico</p>
+        <h2 id="tint-cta-title" class="h2">A tinta na cor exata, preparada na loja</h2>
+        <p>Escolha a tonalidade, a cor e a base em quatro passos. A Dekorar prepara a tinta no sistema tintométrico e você retira na loja ou recebe na obra.</p>
+        <ol class="tool-cta-steps" aria-label="Etapas"><li>Tonalidade</li><li>Cor</li><li>Base</li><li>Quantidade</li></ol>
+        <a class="btn btn-orange btn-lg" href="tintometrico.html">Montar minha tinta</a>
       </div>
+      <div class="tool-cta-media tool-cta-fan" aria-hidden="true"><i style="--c:#b5543a;--k:0"></i><i style="--c:#e8561f;--k:1"></i><i style="--c:#f2c14e;--k:2"></i><i style="--c:#7a7d4a;--k:3"></i><i style="--c:#4f7a43;--k:4"></i><i style="--c:#9fd3c7;--k:5"></i><i style="--c:#2f4f9a;--k:6"></i><i style="--c:#6e2232;--k:7"></i><i style="--c:#ecc6c9;--k:8"></i></div>
     </section>
+
+    <section class="tool-cta tool-cta-alt" id="leitor-de-cor" aria-labelledby="leitor-cta-title">
+      <div class="tool-cta-copy" data-reveal>
+        <p class="tool-cta-eyebrow">Leitor de cor</p>
+        <h2 id="leitor-cta-title" class="h2">Descubra a cor de qualquer parede</h2>
+        <p>Passe o mouse ou o dedo sobre uma foto e clique para marcar a cor. O leitor mostra o código e os tons mais próximos. Use uma foto sua: a leitura acontece no seu aparelho.</p>
+        <a class="btn btn-orange btn-lg" href="leitor-de-cor.html">Teste sua cor</a>
+      </div>
+      <a class="tool-cta-media tool-cta-photo" href="leitor-de-cor.html" tabindex="-1" aria-hidden="true">
+        <img src="assets/img/fachada-tres-coracoes-md.webp" width="1080" height="533" alt="" loading="lazy" decoding="async">
+        <span class="tool-cta-mark"></span>
+        <span class="tool-cta-chip"><i></i><span><strong>Azul royal</strong><small>#063B83</small></span></span>
+      </a>
+    </section>
+
     <!-- Empresas e lojas que confiam na Dekorar -->
     <section class="empresas" id="empresas" aria-labelledby="empresas-title">
       <div class="empresas-inner">
@@ -710,9 +724,8 @@
 
   <script src="assets/vendor/motion-12.23.12.min.js" defer></script>
   <script src="assets/catalog-data.js?v=13" defer></script>
-  <script src="assets/leque-data.js?v=2" defer></script>
   <script src="assets/nav-search.js?v=1" defer></script>
   <script src="assets/cms.js?v=1" defer></script>
-  <script src="assets/db.js?v=7" data-consumer="assets/home.js?v=21" defer></script>
+  <script src="assets/db.js?v=7" data-consumer="assets/home.js?v=22" defer></script>
 </body>
 </html>

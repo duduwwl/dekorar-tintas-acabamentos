@@ -387,22 +387,44 @@
         if (frame > finalText.length + 1) { clearInterval(scrambleTimer); el.textContent = finalText; }
       }, 32);
     };
-    const read = (x, y, animate) => {
-      if (!img) return;
+    const mark = $('[data-mark]', reader);
+    const markedSw = $('[data-marked-swatch]', reader), markedName = $('[data-marked-name]', reader), markedHex = $('[data-marked-hex]', reader);
+    // o marcador fica sobre o canvas; a faixa "Cor marcada" vem logo abaixo dele
+    const placeMark = () => {
+      const k = canvas.clientWidth / canvas.width;
+      mark.style.left = `${canvas.offsetLeft + point.x * k}px`; mark.style.top = `${canvas.offsetTop + point.y * k}px`;
+    };
+    addEventListener('resize', placeMark);
+    // lê a cor do ponto (média 5x5) sem mexer no resultado marcado
+    const sample = (x, y) => {
       x = Math.max(2, Math.min(canvas.width - 3, Math.round(x))); y = Math.max(2, Math.min(canvas.height - 3, Math.round(y)));
-      point = { x, y };
       const d = ctx.getImageData(x - 2, y - 2, 5, 5).data; let r = 0, g = 0, b = 0;
       for (let i = 0; i < d.length; i += 4) { r += d[i]; g += d[i + 1]; b += d[i + 2]; }
       r = Math.round(r / 25); g = Math.round(g / 25); b = Math.round(b / 25);
       const hex = hexOf(r, g, b).toUpperCase();
+      const lab = toLab(hex);
+      const near = TONES_LAB.map(([n, h, l]) => [n, h, Math.hypot(l[0] - lab[0], l[1] - lab[1], l[2] - lab[2])]).sort((a, b) => a[2] - b[2]).slice(0, 4);
+      return { x, y, r, g, b, hex, near };
+    };
+    // passar o mouse: só a etiqueta flutuante acompanha
+    const preview = (x, y) => {
+      if (!img) return;
+      const s = sample(x, y);
+      pickSw.style.backgroundColor = s.hex; pickName.textContent = s.near[0][0]; pickHex.textContent = s.hex;
+    };
+    // clicar: marca o ponto na foto e mostra a cor embaixo e no painel
+    const read = (x, y, animate) => {
+      if (!img) return;
+      const { r, g, b, hex, near } = sample(x, y);
+      point = { x: Math.max(2, Math.min(canvas.width - 3, Math.round(x))), y: Math.max(2, Math.min(canvas.height - 3, Math.round(y))) };
       current = hex;
       swatch.style.backgroundColor = hex;
       if (animate) scramble(hexEl, hex); else { clearInterval(scrambleTimer); hexEl.textContent = hex; }
       rgbEl.textContent = `RGB ${r}, ${g}, ${b}`;
-      const lab = toLab(hex);
-      const near = TONES_LAB.map(([n, h, l]) => [n, h, Math.hypot(l[0] - lab[0], l[1] - lab[1], l[2] - lab[2])]).sort((a, b) => a[2] - b[2]).slice(0, 4);
       nameEl.textContent = near[0][0];
       pickSw.style.backgroundColor = hex; pickName.textContent = near[0][0]; pickHex.textContent = hex;
+      mark.style.backgroundColor = hex; placeMark(); mark.classList.add('is-on');
+      markedSw.style.backgroundColor = hex; markedName.textContent = near[0][0]; markedHex.textContent = hex;
       nearEl.innerHTML = near.map(([n, h, de]) => `<li><button type="button" data-tone="${h}" aria-label="Copiar ${n}, ${h.toUpperCase()}"><i style="background:${h}"></i><span>${n}</span><small>ΔE ${fmt1.format(de)}</small></button></li>`).join('');
       waBtn.href = `${WA}?text=${encodeURIComponent(`Olá! Usei o leitor de cor no site da Dekorar e encontrei a cor ${hex} (RGB ${r}, ${g}, ${b}). Quero tinta nesse tom (parecido com ${near[0][0]}).`)}`;
     };
@@ -431,15 +453,19 @@
     });
     const fromEvent = e => { const r = canvas.getBoundingClientRect(); const k = canvas.width / r.width; return { x: (e.clientX - r.left) * k, y: (e.clientY - r.top) * k, r }; };
     let dragging = false;
-    canvas.addEventListener('pointerdown', e => { dragging = true; canvas.setPointerCapture(e.pointerId); const p = fromEvent(e); read(p.x, p.y, false); drawLoupe(p.x, p.y, p.r); loupe.classList.add('is-on'); });
+    canvas.addEventListener('pointerdown', e => { dragging = true; canvas.setPointerCapture(e.pointerId); const p = fromEvent(e); preview(p.x, p.y); drawLoupe(p.x, p.y, p.r); loupe.classList.add('is-on'); });
     canvas.addEventListener('pointermove', e => {
       if (e.pointerType !== 'mouse' && !dragging) return;
       const p = fromEvent(e);
-      read(p.x, p.y, false);
+      preview(p.x, p.y);
       drawLoupe(p.x, p.y, p.r); loupe.classList.add('is-on');
     });
     const end = () => { dragging = false; loupe.classList.remove('is-on'); pick.classList.remove('is-on'); };
-    canvas.addEventListener('pointerup', e => { end(); const p = fromEvent(e); read(p.x, p.y, true); });
+    canvas.addEventListener('pointerup', e => {
+      const p = fromEvent(e); read(p.x, p.y, true);
+      // no mouse a lupa continua seguindo o cursor depois do clique
+      if (e.pointerType === 'mouse') { dragging = false; preview(p.x, p.y); } else end();
+    });
     canvas.addEventListener('pointerleave', end);
     canvas.addEventListener('pointercancel', end);
     canvas.addEventListener('keydown', e => {
@@ -553,20 +579,6 @@
       const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); loadMap(); } }, { rootMargin: '200px' });
       io.observe(gframe.parentElement);
     } else loadMap();
-  }
-
-  /* ---------- Sistema tintométrico: atalhos por tonalidade ---------- */
-  /* Cards puxam as famílias dos leques oficiais (Coral e Suvinil) e levam para o leque da marca certa */
-  const toneLinks = $('[data-tone-links]');
-  if (toneLinks && window.LEQUE) {
-    const cards = Object.entries(window.LEQUE).flatMap(([brand, fams]) => fams.map((f, i) => {
-      const tones = f.blades.flat();
-      const pick = [0, Math.floor(tones.length / 2), tones.length - 1].map(k => tones[k]);
-      const sw = pick.map(t => `<i style="background:#${t[2]}"></i>`).join('');
-      const href = `leque-de-cores.html?marca=${encodeURIComponent(brand)}&familia=${i}`;
-      return `<li><a class="tone-card" href="${href}"><span class="tone-swatch" aria-hidden="true">${sw}</span><strong>${esc(f.name)}</strong><small>${esc(brand)} · ${tones.length} cores</small></a></li>`;
-    }));
-    toneLinks.innerHTML = cards.join('');
   }
 
   $$('[data-year]').forEach(el => { el.textContent = String(new Date().getFullYear()); });
