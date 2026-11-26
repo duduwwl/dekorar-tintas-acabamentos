@@ -764,20 +764,19 @@
   .servico-res .stage-clip { height: clamp(420px, 38vw, 600px); }
 }
 
-/* Capa: arte da marca ao fundo, com véu escuro para o texto continuar legível */
-.cover {
-  background-color: #0b0c0f;
-  background-image: linear-gradient(rgba(9, 10, 13, .74), rgba(9, 10, 13, .84)), url("img/capa-fundo.webp"); /* taste-skill-ignore: véu neutro sobre a arte da capa */
-  background-repeat: no-repeat;
-  /* enquadra a curva laranja da arte; o texto da peça fica fora do corte */
-  background-position: 0% center;
-  background-size: cover, auto 200%;
-  color: var(--paper);
-}
-.cover .display { color: #fff; }
-.cover .lead { color: var(--on-dark-2); }
-.cover .text-link { color: #fff; }
-
 /* Rodapé: WhatsApp e Instagram com o ícone da marca antes do contato */
 .footer-social { gap: 10px; }
 .brand-icon { width: 18px; height: 18px; flex: none; fill: currentColor; }
+
+/* Cards de linha: cinco categorias (3 + 2) com as marcas de cada uma */
+.promos-inner { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.promo { grid-column: span 2; }
+.promo:nth-child(4), .promo:nth-child(5) { grid-column: span 3; }
+.promo-brands { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 20px; padding: 0; list-style: none; }
+.promo-brands li { display: grid; place-items: center; height: 30px; padding: 0 10px; border-radius: 8px; background: var(--white); }
+.promo-brands img { height: 14px; width: auto; }
+@media (max-width: 1100px) {
+  .promos-inner { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .promo, .promo:nth-child(4), .promo:nth-child(5) { grid-column: auto; }
+}
+@media (max-width: 760px) { .promos-inner { grid-template-columns: 1fr; } }
