@@ -667,17 +667,40 @@
 @media (max-width: 720px) { .ad-chips { display: none; } }
 @media (prefers-reduced-motion: reduce) { .ad-track { animation: none; } }
 
-/* Seção Dkorar: linha Pedras Especiais com as 12 cores */
-.dk-pedras { max-width: 680px; padding-top: 22px; border-top: 1px solid rgba(43, 19, 12, .28); }
-.dk-pedras-head h3 { margin: 0; font-size: clamp(1.15rem, 1.5vw, 1.35rem); font-weight: 700; line-height: 1.2; color: var(--ink); }
-.dk-pedras-head p { max-width: 60ch; margin: 6px 0 0; font-size: .95rem; line-height: 1.5; color: #2b130c; }
-.dk-pedras-cores { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px 10px; margin: 16px 0 0; padding: 0; list-style: none; }
-.dk-pedras-cores a { display: grid; gap: 6px; justify-items: center; color: #2b130c; font-size: .82rem; font-weight: 620; text-decoration: none; }
-.dk-pedras-cores img { width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 10px; box-shadow: 0 0 0 2px rgba(255, 255, 255, .55), 0 8px 18px rgba(43, 19, 12, .28); transition: transform 220ms var(--ease-out), box-shadow 220ms ease; }
-@media (hover: hover) { .dk-pedras-cores a:hover img { transform: translateY(-4px); box-shadow: 0 0 0 2px var(--ink), 0 12px 22px rgba(43, 19, 12, .34); } }
-.dk-pedras-cores a:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; border-radius: 10px; }
-@media (max-width: 620px) { .dk-pedras-cores { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-@media (prefers-reduced-motion: reduce) { .dk-pedras-cores img { transition: none; } }
+/* Seção Pedras Especiais: fundo de pedras, ficha técnica, 12 cores e foto de fachada */
+.pedras { position: relative; overflow: hidden; background: #1c1b19; color: #fff; isolation: isolate; }
+.pedras-bg { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; object-fit: cover; opacity: .28; }
+.pedras::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(100deg, rgba(28, 27, 25, .96) 0%, rgba(28, 27, 25, .86) 55%, rgba(28, 27, 25, .55) 100%); } /* taste-skill-ignore: scrim neutro para contraste do texto sobre a foto */
+.pedras-inner { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(280px, .9fr); gap: clamp(32px, 5vw, 80px); align-items: center; max-width: 1360px; margin: 0 auto; padding: clamp(64px, 9vw, 128px) max(var(--m), env(safe-area-inset-left)); }
+.pedras-eyebrow { margin: 0 0 10px; color: var(--orange); font-size: .85rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.pedras .h2 { margin: 0; color: #fff; }
+.pedras-lead { max-width: 58ch; margin: 16px 0 0; color: rgba(255, 255, 255, .84); font-size: 1.05rem; line-height: 1.6; }
+.pedras-lead strong { color: #fff; }
+.pedras-specs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin: 28px 0 0; border-radius: 14px; overflow: hidden; background: rgba(255, 255, 255, .14); }
+.pedras-specs div { padding: 14px 16px; background: rgba(28, 27, 25, .82); }
+.pedras-specs dt { color: var(--orange); font-size: .74rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
+.pedras-specs dd { margin: 4px 0 0; color: #fff; font-size: .92rem; line-height: 1.4; }
+.pedras-note { max-width: 62ch; margin: 14px 0 0; color: rgba(255, 255, 255, .66); font-size: .86rem; line-height: 1.5; }
+.pedras-cores { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px 10px; margin: 28px 0 0; padding: 0; list-style: none; }
+.pedras-cores a { display: grid; gap: 6px; justify-items: center; color: #fff; font-size: .84rem; font-weight: 620; text-decoration: none; }
+.pedras-cores img { width: 100%; height: auto; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 10px; box-shadow: 0 0 0 1px rgba(255, 255, 255, .22), 0 8px 18px rgba(0, 0, 0, .4); transition: transform 220ms var(--ease-out), box-shadow 220ms ease; }
+@media (hover: hover) { .pedras-cores a:hover img { transform: translateY(-4px); box-shadow: 0 0 0 2px var(--orange), 0 12px 22px rgba(0, 0, 0, .5); } }
+.pedras-cores a:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; border-radius: 10px; }
+.pedras .actions { margin-top: 32px; }
+.pedras-foto { margin: 0; }
+.pedras-foto img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; border-radius: var(--r-lg); box-shadow: 0 24px 48px rgba(0, 0, 0, .45); }
+.pedras-foto figcaption { margin-top: 12px; color: rgba(255, 255, 255, .7); font-size: .88rem; }
+.pedras-foto figcaption strong { color: var(--orange); }
+@media (max-width: 960px) {
+  .pedras-inner { grid-template-columns: 1fr; }
+  .pedras-foto { max-width: 520px; }
+  .pedras-foto img { aspect-ratio: 4 / 3; }
+}
+@media (max-width: 620px) {
+  .pedras-specs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pedras-cores { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) { .pedras-cores img { transition: none; } }
 .ad-chips img { width: 24px; height: 54px; }
 
 /* Capa sem foto: texto e destaques centralizados */
@@ -791,15 +814,7 @@
 .cover.has-bg-video .cover-copy .text-link { color: #fff; }
 .cover.has-bg-video .cover-index { border-color: rgba(255, 255, 255, .34); }
 
-/* Revisão de hierarquia: pedras em primeiro plano, lata preservada */
-.dkorar { grid-template-columns: minmax(300px, 38fr) minmax(0, 62fr); }
-.dkorar-page { justify-content: flex-start; }
-.dk-pedras { max-width: none; padding: clamp(22px, 2vw, 30px); border: 1px solid rgba(43, 19, 12, .24); border-radius: var(--r-lg); background: rgba(255, 255, 255, .2); }
-.dk-pedras-head { display: grid; gap: 7px; }
-.dk-pedras-badge { justify-self: start; padding: 6px 10px; border-radius: 999px; background: var(--ink); color: var(--paper); font-size: .76rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
-.dk-pedras-head h3 { font-size: clamp(1.45rem, 2vw, 2rem); }
-.dk-pedras-cores { gap: 16px 12px; margin-top: 20px; }
-.dk-pedras-cores a { font-size: .88rem; }
+/* Seção Dkorar (marca própria) no celular */
 @media (max-width: 900px) {
   .dkorar { grid-template-columns: 1fr; }
   .dkorar-plate { aspect-ratio: 16 / 10; }
@@ -810,9 +825,3 @@
 .servico-res .stage-clip { background: transparent; }
 .servico-res .stage-clip video { width: calc(100% + 2px); margin-left: -1px; }
 
-/* Cards editoriais sem embalagens: texto, marcas e ação em sequência */
-.promo { align-items: stretch; min-height: clamp(280px, 22vw, 350px); }
-.promo-txt { display: flex; flex-direction: column; width: 100%; max-width: none; }
-.promo-sub { max-width: 46ch; }
-.promo-brands { margin-top: auto; padding-top: 10px; }
-.promo .btn { align-self: flex-start; }
