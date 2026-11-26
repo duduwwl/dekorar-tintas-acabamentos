@@ -386,20 +386,20 @@
 }
 
 /* Carrossel de marcas no topo */
-.ad-rail { position: relative; overflow: hidden; height: 140px; background: #1c1c1b; }
+.ad-rail { position: relative; overflow: hidden; height: 116px; background: #1c1c1b; }
 .ad-track { display: flex; width: 400%; height: 100%; animation: ad-slide 24s infinite; }
 .ad-rail:hover .ad-track, .ad-rail:focus-within .ad-track { animation-play-state: paused; }
 .ad-slide { flex: 0 0 25%; width: 25%; height: 100%; display: flex; align-items: center; justify-content: space-between; gap: clamp(16px, 3vw, 40px); padding: 0 clamp(20px, 5vw, 80px); overflow: hidden; text-decoration: none; color: #fff; }
-.ad-copy { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.ad-copy { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
 .ad-eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
 .ad-kicker { margin: 0; font-size: clamp(1.05rem, 2.2vw, 1.55rem); font-weight: 700; line-height: 1.14; letter-spacing: -.01em; }
 .ad-sub { margin: 0; font-size: clamp(.8rem, 1.4vw, .95rem); font-weight: 500; opacity: .92; }
-.ad-cta { margin-top: 4px; align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; padding: 5px 13px; border-radius: 999px; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.35); font-size: .8rem; font-weight: 600; transition: background-color 160ms ease; }
+.ad-cta { margin-top: 4px; align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; padding: 3px 12px; border-radius: 999px; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.35); font-size: .8rem; font-weight: 600; transition: background-color 160ms ease; }
 .ad-slide:hover .ad-cta { background: rgba(255,255,255,.28); }
 .ad-media { flex: none; display: flex; align-items: center; gap: clamp(16px, 2.2vw, 32px); height: 100%; }
 .ad-logo { height: 40px; width: auto; filter: drop-shadow(0 2px 6px rgba(0,0,0,.35)); }
 .ad-dkorar .ad-logo { height: 44px; filter: brightness(0) invert(1) drop-shadow(0 2px 6px rgba(0,0,0,.35)); }
-.ad-pack { height: 120px; width: auto; object-fit: contain; align-self: flex-end; filter: drop-shadow(0 10px 18px rgba(0,0,0,.4)); }
+.ad-pack { height: 104px; width: auto; object-fit: contain; align-self: flex-end; filter: drop-shadow(0 10px 18px rgba(0,0,0,.4)); }
 .ad-suvinil { background: linear-gradient(100deg, #e8561f 0%, #f07a2e 60%, #ffb060 100%); }
 .ad-coral { background: linear-gradient(100deg, #c8102e 0%, #e23744 62%, #ff6b5a 100%); }
 .ad-dkorar { background: linear-gradient(100deg, #15223f 0%, #23395e 62%, #3a5b8c 100%); }
@@ -682,7 +682,7 @@
 
 /* Capa sem foto: texto e destaques centralizados */
 .cover { display: block; min-height: 0; }
-.cover-page { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(40px, 6vh, 64px); min-height: calc(82svh - var(--hh)); padding: clamp(56px, 10vh, 120px) max(var(--m), env(safe-area-inset-left)) clamp(40px, 7vh, 72px); text-align: center; }
+.cover-page { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(40px, 6vh, 64px); min-height: calc(100svh - var(--hh) - 116px); padding: clamp(56px, 10vh, 120px) max(var(--m), env(safe-area-inset-left)) clamp(40px, 7vh, 72px); text-align: center; }
 .cover-copy { display: flex; flex-direction: column; align-items: center; max-width: 860px; }
 .cover-copy .display { max-width: 24ch; text-wrap: balance; }
 .cover-copy .lead { max-width: 56ch; }
@@ -726,7 +726,7 @@
 .ad-weg { background: linear-gradient(100deg, #003b6f 0%, #0055a5 55%, #0055a5 100%); }
 .ad-weg .ad-logo { height: 66px; filter: none; }
 @media (max-width: 720px) { .ad-weg .ad-logo { height: 44px; } }
-.ad-pack-weg { height: 118px; align-self: center; filter: drop-shadow(0 10px 16px rgba(0, 20, 50, .35)); }
+.ad-pack-weg { height: 104px; align-self: center; filter: drop-shadow(0 10px 16px rgba(0, 20, 50, .35)); }
 .ind-linha { margin: clamp(22px, 2.4vw, 32px) 0 0; }
 .ind-linha img { display: block; width: 100%; height: auto; filter: drop-shadow(0 18px 22px rgba(30, 30, 29, .16)); }
 .ind-linha figcaption { margin-top: 12px; }
