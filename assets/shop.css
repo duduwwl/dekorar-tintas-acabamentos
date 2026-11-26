@@ -309,3 +309,14 @@
 .tint-dark .tint-note { color: var(--on-dark-2); }
 .tint-dark .tint-back-row .text-link { color: var(--on-dark); }
 .tint-dark .tint-box, .tint-dark .tint-search, .tint-dark .base-card, .tint-dark .tint-empty, .tint-dark .tone-card { color: var(--ink); }
+
+/* Escolha do leque: Coral ou Suvinil */
+.tint-brands { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+.tint-brand { display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 22px; border: 1.5px solid #4a4946; border-radius: 999px; background: transparent; color: var(--on-dark); font: inherit; cursor: pointer; transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease; }
+.tint-brand strong { font-size: 1.05rem; }
+.tint-brand small { color: var(--on-dark-2); font-size: .82rem; }
+.tint-brand:hover { border-color: var(--on-dark-2); }
+.tint-brand[aria-pressed="true"] { background: var(--orange); border-color: var(--orange); color: var(--ink); }
+.tint-brand[aria-pressed="true"] small { color: rgba(30, 30, 29, .75); }
+.tint-brand:focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
+.tone-chip[hidden] { display: none; }

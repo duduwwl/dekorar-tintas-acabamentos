@@ -25,9 +25,10 @@
   const titleEl = $('[data-tint-title]'), leadEl = $('[data-tint-lead]');
   const dots = $$('[data-tint-dots] li');
   const panels = $$('[data-tint-step]');
-  const st = { step: 0, family: null, color: null, base: null, qty: 1 };
+  const BRANDS = Object.keys(LEQUE);
+  const st = { step: 0, brand: BRANDS[0] || '', family: null, color: null, base: null, qty: 1 };
   const TEXTS = [
-    ['Escolha a tonalidade desejada', 'Selecione uma família de cores do leque Coral ou Suvinil.'],
+    ['Escolha a tonalidade desejada', 'Escolha o leque Coral ou Suvinil e selecione uma família de cores.'],
     ['Escolha a cor', 'Toque em uma cor para ver as bases em que ela pode ser preparada.'],
     ['Escolha a base do produto', 'Veja as tintas e esmaltes em que a cor escolhida pode ser feita.'],
     ['Confira e adicione ao carrinho', 'Ajuste a quantidade. A equipe confere a fórmula antes de preparar a tinta.']
@@ -47,7 +48,8 @@
     titleEl.textContent = TEXTS[i][0]; leadEl.textContent = TEXTS[i][1];
     if (push) {
       const q = new URLSearchParams();
-      if (st.family && i >= 1) q.set('marca', famOf(st.family).brand), q.set('familia', String(famOf(st.family).index));
+      if (st.brand) q.set('marca', st.brand);
+      if (st.family && i >= 1) q.set('familia', String(famOf(st.family).index));
       if (st.color && i >= 2) q.set('cor', st.color.name);
       if (st.base && i >= 3) q.set('base', st.base.id);
       history.replaceState(null, '', q.toString() ? `?${q}` : location.pathname);
@@ -59,13 +61,25 @@
   }
   dots.forEach((d, k) => d.addEventListener('click', () => { if (k < st.step) go(k); }));
 
-  /* 1. Tonalidades: cards com as famílias dos leques Coral e Suvinil */
-  $('[data-tint-families]').innerHTML = FAMILIES.map(f => {
-    const picks = [0, Math.floor(f.colors.length / 2), f.colors.length - 1].map(k => f.colors[k].hex);
-    return `<li><button class="tone-card" type="button" data-family="${esc(f.key)}">
-      <span class="tone-swatch" aria-hidden="true">${picks.map(h => `<i style="background:${h}"></i>`).join('')}</span>
-      <strong>${esc(f.name)}</strong><small>${esc(f.brand)} · ${f.colors.length} cores</small></button></li>`;
-  }).join('');
+  /* 1. Leque (Coral ou Suvinil) e tonalidades: cards com as famílias do leque escolhido */
+  const brandsEl = $('[data-tint-brands]');
+  const brandCount = b => FAMILIES.filter(f => f.brand === b).reduce((n, f) => n + f.colors.length, 0);
+  brandsEl.innerHTML = BRANDS.map(b => `<button type="button" class="tint-brand" data-brand="${esc(b)}"><strong translate="no">${esc(b)}</strong><small>${brandCount(b)} cores</small></button>`).join('');
+  function renderFamilies() {
+    $$('[data-brand]', brandsEl).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.brand === st.brand)));
+    $('[data-tint-families]').innerHTML = FAMILIES.filter(f => f.brand === st.brand).map(f => {
+      const picks = [0, Math.floor(f.colors.length / 2), f.colors.length - 1].map(k => f.colors[k].hex);
+      return `<li><button class="tone-card" type="button" data-family="${esc(f.key)}">
+        <span class="tone-swatch" aria-hidden="true">${picks.map(h => `<i style="background:${h}"></i>`).join('')}</span>
+        <strong>${esc(f.name)}</strong><small>${esc(f.brand)} · ${f.colors.length} cores</small></button></li>`;
+    }).join('');
+  }
+  brandsEl.addEventListener('click', e => {
+    const b = e.target.closest('[data-brand]'); if (!b || b.dataset.brand === st.brand) return;
+    st.brand = b.dataset.brand; st.family = null; st.color = null; st.base = null;
+    renderFamilies(); go(0, false);
+    history.replaceState(null, '', `?marca=${encodeURIComponent(st.brand)}`);
+  });
   root.addEventListener('click', e => {
     const f = e.target.closest('[data-family]'); if (f) { st.family = f.dataset.family; $('[data-tint-search]').value = ''; go(1); return; }
     const c = e.target.closest('[data-color]'); if (c) { st.color = ALL.find(x => x.familyKey === c.dataset.cfamily && x.name === c.dataset.color) || null; if (st.color) go(2); return; }
@@ -81,9 +95,10 @@
   function renderColors() {
     const fam = famOf(st.family);
     $('[data-tint-family-name]').textContent = fam ? famLabel(fam) : 'Todas';
-    $$('[data-chip]', chips).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.chip === st.family)));
+    // só as tonalidades e a busca do leque escolhido
+    $$('[data-chip]', chips).forEach(b => { b.hidden = famOf(b.dataset.chip).brand !== st.brand; b.setAttribute('aria-pressed', String(b.dataset.chip === st.family)); });
     const q = norm($('[data-tint-search]').value.trim());
-    const list = q ? ALL.filter(c => norm(c.name).includes(q) || norm(c.code || '').includes(q)) : ALL.filter(c => c.familyKey === st.family);
+    const list = q ? ALL.filter(c => c.brand === st.brand && (norm(c.name).includes(q) || norm(c.code || '').includes(q))) : ALL.filter(c => c.familyKey === st.family);
     $('[data-tint-count]').textContent = `${list.length} ${list.length === 1 ? 'cor' : 'cores'}`;
     $('[data-tint-colors-title]').textContent = q ? 'Resultado da busca' : 'Cores da tonalidade';
     $('[data-tint-colors]').innerHTML = list.map(c => `<li><button class="color-card" type="button" data-color="${esc(c.name)}" data-cfamily="${esc(c.familyKey)}" style="--c:${c.hex};--t:${ink(c.hex)}"><span>${esc(c.name)}</span><small>${esc(c.brand)}${codeText(c)}${q ? ` · ${esc(c.family)}` : ''}</small></button></li>`).join('')
@@ -138,8 +153,10 @@
   const famQ = FAMILIES.find(f => norm(f.brand) === norm(brandQ) && String(f.index) === (qs.get('familia') || ''));
   const colQ = ALL.find(c => norm(c.name) === norm(qs.get('cor') || '') && (!brandQ || norm(c.brand) === norm(brandQ)));
   const base = byId.get(qs.get('base') || '');
+  if (BRANDS.some(b => norm(b) === norm(brandQ))) st.brand = BRANDS.find(b => norm(b) === norm(brandQ));
   if (famQ) st.family = famQ.key;
-  if (colQ) { st.color = colQ; st.family = colQ.familyKey; }
+  if (colQ) { st.color = colQ; st.family = colQ.familyKey; st.brand = colQ.brand; }
+  renderFamilies();
   if (base && st.color && basesFor(st.color).includes(base)) st.base = base;
   go(st.base && st.color ? 3 : st.color ? 2 : st.family ? 1 : 0, false);
 })();

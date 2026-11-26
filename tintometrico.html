@@ -12,7 +12,7 @@
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
   <link rel="preload" href="assets/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/home.css?v=20">
-  <link rel="stylesheet" href="assets/shop.css?v=5">
+  <link rel="stylesheet" href="assets/shop.css?v=6">
   <link rel="stylesheet" href="assets/mobile.css?v=1" media="(max-width: 767px)">
   <script>document.documentElement.classList.replace("no-js","js")</script>
 </head>
@@ -55,6 +55,7 @@
       </div>
 
       <div class="tint-panel" data-tint-step="0">
+        <div class="tint-brands" role="group" aria-label="Escolher o leque de cores" data-tint-brands></div>
         <ul class="tone-grid" data-tint-families></ul>
         <p class="form-note tint-note">Cartela de referência. Na loja, a equipe confere a fórmula e mostra a amostra antes de preparar a tinta.</p>
       </div>
@@ -64,7 +65,7 @@
           <div class="tint-box-head"><div><p class="eyebrow">Tonalidade selecionada</p><h2 class="h3" data-tint-family-name>Azuis</h2></div><button class="text-link" type="button" data-back="0">Voltar ao início</button></div>
           <div class="tone-chips" data-tint-chips role="group" aria-label="Trocar tonalidade"></div>
         </div>
-        <label class="tint-search"><span>Buscar uma cor em todas as tonalidades</span><input type="search" placeholder="Digite o nome ou parte do nome da cor" autocomplete="off" data-tint-search></label>
+        <label class="tint-search"><span>Buscar uma cor em todas as tonalidades deste leque</span><input type="search" placeholder="Digite o nome ou parte do nome da cor" autocomplete="off" data-tint-search></label>
         <div class="tint-list-head"><h2 class="h3" data-tint-colors-title>Cores da tonalidade</h2><span class="count-pill" data-tint-count></span></div>
         <ul class="color-grid" data-tint-colors aria-live="polite"></ul>
       </div>
@@ -268,7 +269,7 @@
   <script src="assets/cms.js?v=1" defer></script>
   <script src="assets/db.js?v=7" defer></script>
   <script src="assets/shop.js?v=9" defer></script>
-  <script src="assets/leque-data.js?v=2" defer></script>
-  <script src="assets/tint.js?v=3" defer></script>
+  <script src="assets/leque-data.js?v=3" defer></script>
+  <script src="assets/tint.js?v=4" defer></script>
 </body>
 </html>
