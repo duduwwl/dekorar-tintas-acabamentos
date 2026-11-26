@@ -135,10 +135,11 @@
 
   /* ---------- Vídeos curtos (antes e depois): tocam só quando aparecem na tela ---------- */
   $$('video[data-autoplay]').forEach(v => {
-    if (reduce || !('IntersectionObserver' in window)) { v.controls = true; v.preload = 'metadata'; return; }
+    const bg = v.hasAttribute('data-bg'); // vídeo de fundo: nunca mostra controles, só o poster
+    if (reduce || !('IntersectionObserver' in window)) { if (!bg) { v.controls = true; v.preload = 'metadata'; } return; }
     new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { v.play().catch(() => { v.controls = true; }); } else v.pause();
-    }, { threshold: 0.35 }).observe(v);
+      if (e.isIntersecting) { v.play().catch(() => { if (!bg) v.controls = true; }); } else v.pause();
+    }, { threshold: bg ? 0.05 : 0.35 }).observe(v);
   });
 
   /* ---------- Fancy Components: Text Highlighter ---------- */

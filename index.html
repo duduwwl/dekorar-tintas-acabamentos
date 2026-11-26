@@ -17,7 +17,7 @@
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
   <link rel="preload" href="assets/fonts/archivo-latin-wdth-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/home.css?v=20">
-  <link rel="stylesheet" href="assets/referencia-2026.css?v=31">
+  <link rel="stylesheet" href="assets/referencia-2026.css?v=32">
   <link rel="stylesheet" href="assets/mobile.css?v=1" media="(max-width: 767px)">
   <script>(function(d){d.classList.replace("no-js","js");if(!matchMedia("(prefers-reduced-motion: reduce)").matches)d.classList.add("motion");setTimeout(function(){if(!window.Motion)d.classList.remove("motion")},3000)})(document.documentElement)</script>
   <script type="application/ld+json">
@@ -85,7 +85,15 @@
   <main id="conteudo">
 
     <!-- Capa -->
-    <section class="cover" id="inicio" aria-labelledby="cover-title">
+    <section class="cover has-bg-video" id="inicio" aria-labelledby="cover-title">
+      <div class="cover-bg" aria-hidden="true">
+        <video class="cover-bg-video" poster="assets/video/loja-fundo-poster.webp" width="1920" height="1080" muted loop playsinline preload="none" tabindex="-1" data-autoplay data-bg>
+          <source media="(max-width: 767px)" src="assets/video/loja-fundo-mobile.webm" type="video/webm">
+          <source media="(max-width: 767px)" src="assets/video/loja-fundo-mobile.mp4" type="video/mp4">
+          <source src="assets/video/loja-fundo.webm" type="video/webm">
+          <source src="assets/video/loja-fundo.mp4" type="video/mp4">
+        </video>
+      </div>
       <div class="cover-page">
         <div class="cover-copy">
           <h1 id="cover-title" class="display" data-cms="capa-titulo" data-text-effect>Especialistas em tintas e acabamentos.</h1>
@@ -683,6 +691,6 @@
   <script src="assets/leque-data.js?v=2" defer></script>
   <script src="assets/nav-search.js?v=1" defer></script>
   <script src="assets/cms.js?v=1" defer></script>
-  <script src="assets/db.js?v=7" data-consumer="assets/home.js?v=20" defer></script>
+  <script src="assets/db.js?v=7" data-consumer="assets/home.js?v=21" defer></script>
 </body>
 </html>

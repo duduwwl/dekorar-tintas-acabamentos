@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "dekorar",
-      "runtimeExecutable": "npx",
+      "runtimeExecutable": "npx.cmd",
       "runtimeArgs": ["-y", "serve", "-l", "5500", "."],
       "port": 5500
     }
