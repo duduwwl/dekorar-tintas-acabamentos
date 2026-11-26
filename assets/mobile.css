@@ -5,7 +5,7 @@
   .empresas + .entrega { margin-top: 0; } /* tirava uma faixa cinza vazia entre duas seções brancas */
 
   /* Faixa de anúncios: texto inteiro, sem corte em cima e embaixo */
-  .ad-rail { height: 124px; }
+  .ad-rail { height: 112px; }
   .ad-slide { padding: 0 20px; gap: 14px; }
   .ad-copy { gap: 3px; }
   .ad-eyebrow { font-size: .68rem; }
