@@ -37,6 +37,7 @@
           <button type="button" data-admin-tab="inventory"><span aria-hidden="true">▦</span> Estoque <span class="nav-badge" data-low-count>0</span></button>
           <button type="button" data-admin-tab="orders"><span aria-hidden="true">□</span> Pedidos <span class="nav-badge" data-open-count>0</span></button>
           <button type="button" data-admin-tab="shipping"><span aria-hidden="true">⌁</span> Envios <span class="nav-badge" data-shipping-count>0</span></button>
+          <button type="button" data-admin-tab="site"><span aria-hidden="true">✎</span> Site</button>
         </nav>
         <div class="admin-local-note"><span aria-hidden="true">●</span><div><strong>Conectado ao banco</strong><small>Estoque e pedidos no Supabase.</small></div></div>
       </aside>
@@ -77,6 +78,31 @@
         <section class="admin-view" data-admin-view="shipping" aria-labelledby="shipping-title">
           <div class="view-heading"><div><span>Logística</span><h2 id="shipping-title">Envios & Retiradas</h2><p>Registre transportadora, previsão e código de rastreio.</p></div></div>
           <div class="shipping-board" data-shipping-board></div>
+        </section>
+
+        <section class="admin-view" data-admin-view="site" aria-labelledby="site-title">
+          <div class="view-heading"><div><span>Conteúdo</span><h2 id="site-title">Textos e cores do site</h2><p>O que você salvar aqui aparece na página inicial para todo mundo.</p></div></div>
+          <form class="site-form" data-site-form>
+            <div class="site-grid">
+              <label>Título da capa<textarea class="field" name="capa-titulo" rows="2" maxlength="120"></textarea></label>
+              <label>Texto da capa<textarea class="field" name="capa-texto" rows="4" maxlength="400"></textarea></label>
+              <label>Número de clientes<input class="field" name="clientes-numero" maxlength="20"></label>
+              <label>Frase dos clientes<input class="field" name="clientes-frase" maxlength="120"></label>
+              <label>Título das entregas<textarea class="field" name="entrega-titulo" rows="2" maxlength="120"></textarea></label>
+              <label>Texto das entregas<textarea class="field" name="entrega-texto" rows="4" maxlength="400"></textarea></label>
+            </div>
+            <div class="site-colors">
+              <label>Laranja<input type="color" name="cor-laranja" value="#e8561f"></label>
+              <label>Escuro<input type="color" name="cor-escuro" value="#1e1e1d"></label>
+              <label>Fundo claro<input type="color" name="cor-fundo" value="#f2f2f0"></label>
+            </div>
+            <p class="site-note" data-site-note>Deixe um campo em branco para manter o texto que já está no site.</p>
+            <div class="site-actions">
+              <button class="btn btn-primary" type="submit">Salvar e publicar</button>
+              <button class="text-action" type="button" data-site-reset>Voltar ao padrão</button>
+              <a class="text-action" href="index.html" target="_blank" rel="noopener">Ver o site</a>
+            </div>
+          </form>
         </section>
       </div>
     </div>
@@ -119,9 +145,8 @@
     <form class="admin-login-card" data-login-form>
       <img src="assets/img/logo-dekorar-dark.svg" width="576" height="126" alt="Dekorar" style="height:40px;width:auto">
       <h2>Área da equipe</h2>
-      <p>Entre para gerenciar estoque e pedidos.</p>
-      <label>E-mail<input class="field" type="email" name="email" autocomplete="username" required></label>
-      <label>Senha<input class="field" type="password" name="password" autocomplete="current-password" required></label>
+      <p>Digite a senha para gerenciar o site, o estoque e os pedidos.</p>
+      <label>Senha<input class="field" type="password" name="password" autocomplete="current-password" inputmode="numeric" required autofocus></label>
       <p class="admin-login-error" data-login-error role="alert"></p>
       <button class="btn btn-primary" type="submit">Entrar</button>
     </form>
@@ -137,9 +162,18 @@
     .admin-login-card .btn{margin-top:4px}
     .admin-login-error{color:#b13e12;min-height:1.2em;font-weight:600}
     .admin-login-error:empty{min-height:0}
+    .site-form{display:flex;flex-direction:column;gap:22px;max-width:920px}
+    .site-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .site-grid label,.site-colors label{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.9rem}
+    .site-grid .field{font-weight:400;resize:vertical}
+    .site-colors{display:flex;flex-wrap:wrap;gap:18px}
+    .site-colors input[type=color]{width:64px;height:40px;padding:2px;border:1px solid #d9d5cd;border-radius:10px;background:#fff;cursor:pointer}
+    .site-note{margin:0;color:#55534f;font-size:.9rem}
+    .site-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+    @media (max-width:760px){.site-grid{grid-template-columns:1fr}}
   </style>
-  <script src="assets/db.js?v=6"></script>
+  <script src="assets/db.js?v=7"></script>
   <script src="assets/site.js"></script>
-  <script src="assets/admin.js?v=4"></script>
+  <script src="assets/admin.js?v=5"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@ let inventory=[];
 let orders=[];
 const DB=window.DekorarDB;
 const statusClasses={'Novo':'new','Separação':'packing','Pronto':'ready','Enviado':'shipping','Entregue':'done','Cancelado':'cancelled'};
-const viewTitles={overview:'Visão Geral',inventory:'Estoque',orders:'Pedidos',shipping:'Envios & Retiradas'};
+const viewTitles={overview:'Visão Geral',inventory:'Estoque',orders:'Pedidos',shipping:'Envios & Retiradas',site:'Textos e cores do site'};
 const orderDialog=document.querySelector('#orderDialog');
 const productDialog=document.querySelector('#productDialog');
 const orderForm=document.querySelector('[data-order-form]');
@@ -163,15 +163,56 @@ async function start(){
   catch(e){ if(String(e&&e.message).includes('401')){ requireLogin(); return; } showAdminToast('Erro ao carregar do banco.'); }
   setView(location.hash.slice(1)||'overview');
   renderAll();
+  loadSiteSettings();
 }
+/* a equipe digita só a senha: a conta do Supabase é sempre a mesma */
+const ADMIN_EMAIL='dekorar.acabamentos@gmail.com';
 loginForm?.addEventListener('submit',async event=>{
   event.preventDefault(); if(loginError) loginError.textContent='';
   const data=new FormData(loginForm);
   const btn=loginForm.querySelector('button[type=submit]'); if(btn) btn.disabled=true;
-  try{ await DB.signIn(data.get('email').trim(),data.get('password')); await start(); }
-  catch{ if(loginError) loginError.textContent='E-mail ou senha incorretos.'; }
+  try{ await DB.signIn(ADMIN_EMAIL,data.get('password')); await start(); }
+  catch{ if(loginError) loginError.textContent='Senha incorreta.'; }
   finally{ if(btn) btn.disabled=false; }
 });
 document.querySelector('[data-logout]')?.addEventListener('click',()=>{ DB.signOut(); location.reload(); });
+
+/* ---------- Textos e cores do site ---------- */
+const siteForm=document.querySelector('[data-site-form]');
+const siteNote=document.querySelector('[data-site-note]');
+const TEXT_KEYS=['capa-titulo','capa-texto','clientes-numero','clientes-frase','entrega-titulo','entrega-texto'];
+const COLOR_KEYS={'cor-laranja':'laranja','cor-escuro':'escuro','cor-fundo':'fundo'};
+const SITE_DEFAULT_COLORS={laranja:'#e8561f',escuro:'#1e1e1d',fundo:'#f2f2f0'};
+
+function fillSiteForm(cfg){
+  if(!siteForm) return;
+  const textos=(cfg&&cfg.textos)||{}, cores=(cfg&&cfg.cores)||{};
+  TEXT_KEYS.forEach(k=>{ const el=siteForm.elements[k]; if(el) el.value=textos[k]||''; });
+  Object.entries(COLOR_KEYS).forEach(([campo,chave])=>{ const el=siteForm.elements[campo]; if(el) el.value=cores[chave]||SITE_DEFAULT_COLORS[chave]; });
+}
+
+async function loadSiteSettings(){
+  if(!siteForm||!DB.getSettings) return;
+  try{ fillSiteForm(await DB.getSettings()); }
+  catch{ if(siteNote) siteNote.textContent='Não consegui ler as configurações do banco. Confira se a tabela site_settings existe.'; }
+}
+
+siteForm?.addEventListener('submit',async event=>{
+  event.preventDefault();
+  const btn=siteForm.querySelector('button[type=submit]'); if(btn) btn.disabled=true;
+  const textos={}, cores={};
+  TEXT_KEYS.forEach(k=>{ const v=(siteForm.elements[k]?.value||'').trim(); if(v) textos[k]=v; });
+  Object.entries(COLOR_KEYS).forEach(([campo,chave])=>{ const v=siteForm.elements[campo]?.value||''; if(/^#[0-9a-f]{6}$/i.test(v)) cores[chave]=v; });
+  try{ await DB.saveSettings({textos,cores}); showAdminToast('Site atualizado.'); }
+  catch{ showAdminToast('Não consegui salvar. Confira a tabela site_settings.'); }
+  finally{ if(btn) btn.disabled=false; }
+});
+
+document.querySelector('[data-site-reset]')?.addEventListener('click',async()=>{
+  const btn=siteForm?.querySelector('button[type=submit]'); if(btn) btn.disabled=true;
+  try{ await DB.saveSettings({textos:{},cores:{}}); fillSiteForm({}); showAdminToast('Site de volta ao padrão.'); }
+  catch{ showAdminToast('Não consegui salvar. Confira a tabela site_settings.'); }
+  finally{ if(btn) btn.disabled=false; }
+});
 
 if(DB && DB.isAuthed()) start(); else requireLogin();

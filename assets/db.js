@@ -149,9 +149,26 @@
     return id;
   }
 
+  /* ---------- Textos e cores do site (tabela site_settings, linha "home") ---------- */
+  async function getSettings() {
+    const r = await fetch(`${rest}/site_settings?id=eq.home&select=data`, { headers: headers() });
+    if (!r.ok) throw new Error(`settings ${r.status}`);
+    const rows = await r.json();
+    return (rows[0] && rows[0].data) || {};
+  }
+
+  async function saveSettings(data) {
+    const r = await fetch(`${rest}/site_settings?id=eq.home`, {
+      method: 'PATCH', headers: authHeaders({ Prefer: 'return=minimal' }),
+      body: JSON.stringify({ data, updated_at: new Date().toISOString() })
+    });
+    if (!r.ok) throw new Error(`settings ${r.status}`);
+  }
+
   window.DekorarDB = {
     getProducts, createOrder, createLead,
     signIn, signOut, isAuthed,
+    getSettings, saveSettings,
     adminGetInventory, adminGetOrders, adminSetStock, adminUpdateOrder, adminAddProduct
   };
 
